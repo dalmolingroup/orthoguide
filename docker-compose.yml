@@ -1,0 +1,16 @@
+services:
+  api:
+    build:
+      context: ./orthoguide_api
+    ports:
+      - "8000:8000"
+
+    develop:
+      watch:
+        - path: ./orthoguide_api
+          target: /app
+          action: sync+restart
+          ignore:
+            - __pycache__
+            - .git
+            - venv
