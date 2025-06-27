@@ -67,8 +67,8 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-@app.get("/get_root", summary="Get roots for a specific set of genes")
-async def get_root(genes: Optional[str] = Query(None, description="A comma-separated string of gene names.")):
+@app.get("/get_roots", summary="Get roots for a specific set of genes")
+async def get_roots(genes: Optional[str] = Query(None, description="A comma-separated string of gene names.")):
     """
     Retrieves rooting information from the database based on a provided list of gene names.
     """
