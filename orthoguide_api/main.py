@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from typing import List, Optional
 import sqlite3
@@ -59,6 +60,20 @@ app = FastAPI(
     title="OrthoGuide API",
     description="An API to get rooting results from GeneBridge.",
     lifespan=lifespan
+)
+
+origins = [
+    "http://localhost:8080",
+    "http://localhost:5173",
+    "http://localhost",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 def get_db_connection():
