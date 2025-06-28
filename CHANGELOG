@@ -1,3 +1,9 @@
+# v0.2.0
+
+- **Finalizes MVP**
+- Adds a SPA with Vue.js that interacts with the python API + docker compose service (dev only)
+- Implement cors permissions for the API
+
 # v0.1.0
 
 - Adds a simple FastAPI script + test cases for a test database
