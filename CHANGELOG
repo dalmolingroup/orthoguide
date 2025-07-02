@@ -1,3 +1,13 @@
+# v0.3.0
+
+- feat: Add download button for rooting results
+- feat: Implement species param in the API
+- feat: Add bar chart visualization for number of genes in each clade
+- feat: Add export button for saving bar chart as png
+- tests: Implement vitest unit tests for the frontend
+- refact: Modularize frontend code
+- chore: Add a watch rule service for the frontend
+
 # v0.2.0
 
 - **Finalizes MVP**

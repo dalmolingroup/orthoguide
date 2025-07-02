@@ -22,3 +22,11 @@ services:
       - "8080:5173"
     depends_on:
       - api
+    develop:
+      watch:
+        - path: ./orthoguide_front
+          target: /app
+          action: sync+restart
+          ignore:
+            - node_modules
+            - .vscode

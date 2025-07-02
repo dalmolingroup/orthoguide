@@ -9,7 +9,7 @@ def test_get_root_with_valid_genes(test_app):
     It checks for a successful status code and verifies the content of the response.
     """
     # Make a GET request to the test client
-    response = test_app.get("/get_root?genes=NRP1,CDK6")
+    response = test_app.get("/get_roots?genes=NRP1,CDK6&species=hsa")
     
     assert response.status_code == 200
     
@@ -32,9 +32,18 @@ def test_get_root_with_no_genes(test_app):
     Tests the /get_root endpoint without providing the 'genes' query parameter.
     It checks that the API returns a 400 Bad Request error.
     """
-    response = test_app.get("/get_root")
+    response = test_app.get("/get_roots")
     assert response.status_code == 400
-    assert response.json() == {"detail": "Please provide a comma-separated list of genes in the 'genes' parameter."}
+    assert response.json() == {"detail": "Please provide a comma-separated list of genes in the 'genes' parameter and a species code in the 'species' parameter."}
+    print("Test 'test_get_root_with_no_genes' passed successfully!")
+
+def test_get_root_with_invalid_species(test_app):
+    """
+    Tests the /get_root endpoint with an invalid or absent species query parameter.
+    It checks that the API returns a 400 Bad Request error.
+    """
+    response = test_app.get("/get_roots?genes=NRP1,CDK6")
+    assert response.status_code == 400
     print("Test 'test_get_root_with_no_genes' passed successfully!")
 
 def test_get_root_with_nonexistent_gene(test_app):
@@ -42,7 +51,7 @@ def test_get_root_with_nonexistent_gene(test_app):
     Tests the /get_root endpoint with a gene that is not in the database.
     It should return an empty list.
     """
-    response = test_app.get("/get_root?genes=XYZ")
+    response = test_app.get("/get_roots?genes=XYZ&species=hsa")
     assert response.status_code == 200
     assert response.json() == []
     print("Test 'test_get_root_with_nonexistent_gene' passed successfully!")

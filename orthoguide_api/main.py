@@ -6,7 +6,8 @@ import sqlite3
 import os
 
 DB_PATH = "data/test_data.db"
-TABLE_NAME = "hsa"
+ALLOWED_ORGANISMS = ["hsa"]
+DEFAULT_TABLE_NAME = "hsa"
 
 # This function creates and populates the database if it doesn't exist.
 # It's useful for ensuring the app is runnable out-of-the-box.
@@ -20,7 +21,7 @@ def setup_database():
 
             # Create the table
             cur.execute(f'''
-                CREATE TABLE {TABLE_NAME} (
+                CREATE TABLE {DEFAULT_TABLE_NAME} (
                     node TEXT,
                     cog_id TEXT,
                     root REAL,
@@ -40,7 +41,7 @@ def setup_database():
             ]
 
             # Insert dummy data
-            cur.executemany(f'INSERT INTO {TABLE_NAME} VALUES (?,?,?,?,?,?)', dummy_data)
+            cur.executemany(f'INSERT INTO {DEFAULT_TABLE_NAME} VALUES (?,?,?,?,?,?)', dummy_data)
             
             con.commit()
             print("Dummy database 'test_data.db' created successfully.")
@@ -82,22 +83,32 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-@app.get("/get_roots", summary="Get roots for a specific set of genes")
-async def get_roots(genes: Optional[str] = Query(None, description="A comma-separated string of gene names.")):
+@app.get("/get_roots", summary="Get roots for a specific set of genes in a reference species")
+async def get_roots(
+    genes: Optional[str] = Query(None, description="A comma-separated string of gene names."),
+    species: Optional[str] = Query(None, description="A string with a species code (e.g. 'hsa' for human)")
+):
     """
     Retrieves rooting information from the database based on a provided list of gene names.
     """
     if not genes:
         raise HTTPException(
             status_code=400, 
-            detail="Please provide a comma-separated list of genes in the 'genes' parameter."
+            detail="Please provide a comma-separated list of genes in the 'genes' parameter and a species code in the 'species' parameter."
+        )
+
+    if species not in ALLOWED_ORGANISMS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid species code. Allowed values are: {', '.join(ALLOWED_ORGANISMS)}"
         )
 
     gene_list = [gene.strip() for gene in genes.split(',')]
     
     # Using '?' as placeholders prevents SQL inject
     placeholders = ','.join(['?'] * len(gene_list))
-    sql_query = f"SELECT * FROM {TABLE_NAME} WHERE queryItem IN ({placeholders})"
+
+    sql_query = f"SELECT * FROM {species} WHERE queryItem IN ({placeholders})"
 
     conn = None
     try:
