@@ -9,3 +9,13 @@ The project is organized into two main directories:
 - `orthoguide_api/`: Contains the backend API built with FastAPI. It serves rooting data from a pre-processed database. This directory also includes tests written with pytest.
 
 - `orthoguide_front/`: Contains the frontend single-page applicaiton built with Vue.js.
+
+# Serving the application
+
+To serve the application in dev mode, run the following:
+
+```bash
+docker compose watch
+```
+
+The frontend is accessible through localhost:8080, while the API is available through localhost:8000
