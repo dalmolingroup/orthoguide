@@ -2,23 +2,6 @@
   <section class="results-card">
     <div class="results-header">
       <h3>Analysis Results</h3>
-      <button v-if="results && results.length > 0" @click="$emit('export')" class="export-button">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        <span>Export to CSV</span>
-      </button>
     </div>
 
     <div v-if="apiErrorMessage" class="error-message">
@@ -26,7 +9,26 @@
     </div>
 
     <div v-if="results && results.length > 0" class="table-section">
-      <h4>Detailed Results</h4>
+      <span class="chart-section-header"
+        >Detailed Results
+        <button v-if="results && results.length > 0" @click="$emit('export')" class="export-button">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Export to CSV</span>
+        </button></span
+      >
       <ResultsTable :results="results" />
     </div>
 
@@ -59,6 +61,40 @@
       <BarChart ref="barChartRef" :chart-data="chartData" />
     </div>
 
+    <div v-if="networkData && networkData.length > 0" class="chart-section">
+      <span class="chart-section-header">
+        Protein Interaction Network
+        <button
+          v-if="filteredNetworkData.length > 0"
+          @click="handleExportNetwork"
+          class="export-button"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Export Network</span>
+        </button>
+      </span>
+      <CladeSlider
+        v-if="cladeList.length > 1"
+        :clades="cladeList"
+        :modelValue="selectedCladeIndex"
+        @update:modelValue="$emit('update:selectedCladeIndex', $event)"
+      />
+      <NetworkGraph ref="networkGraphRef" :network-data="filteredNetworkData" />
+    </div>
+
     <div v-if="results && results.length === 0 && !apiErrorMessage" class="no-results-message">
       <p>No rooting data found for the submitted genes.</p>
     </div>
@@ -69,20 +105,33 @@
 import { ref } from 'vue'
 import ResultsTable from './ResultsTable.vue'
 import BarChart from './BarChart.vue'
+import NetworkGraph from './NetworkGraph.vue'
+import CladeSlider from './CladeSlider.vue'
 
 defineProps({
   results: Array,
   apiErrorMessage: String,
   chartData: Object,
+  networkData: Array,
+  cladeList: Array,
+  filteredNetworkData: Array,
+  selectedCladeIndex: Number,
 })
 
-defineEmits(['export'])
+defineEmits(['export', 'update:selectedCladeIndex'])
 
 const barChartRef = ref(null)
+const networkGraphRef = ref(null)
 
 const handleExportChart = () => {
   if (barChartRef.value) {
     barChartRef.value.exportChart()
+  }
+}
+
+const handleExportNetwork = () => {
+  if (networkGraphRef.value) {
+    networkGraphRef.value.exportSVG()
   }
 }
 </script>
@@ -114,10 +163,12 @@ const handleExportChart = () => {
 .chart-section-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
 .chart-section-header,
+.chart-section h4,
 .table-section h4 {
   font-size: 1.25rem;
   font-weight: 600;
