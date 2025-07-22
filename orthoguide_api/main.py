@@ -6,8 +6,8 @@ import sqlite3
 import os
 
 DB_PATH = "data/test_data.db"
-ALLOWED_ORGANISMS = ["hsa"]
-DEFAULT_TABLE_NAME = "hsa"
+ALLOWED_ORGANISMS = ["9606"]
+DEFAULT_TABLE_NAME = "9606"
 
 # This function creates and populates the database if it doesn't exist.
 # It's useful for ensuring the app is runnable out-of-the-box.
@@ -21,7 +21,7 @@ def setup_database():
 
             # Create the table
             cur.execute(f'''
-                CREATE TABLE {DEFAULT_TABLE_NAME} (
+                CREATE TABLE "{DEFAULT_TABLE_NAME}" (
                     node TEXT,
                     cog_id TEXT,
                     root REAL,
@@ -86,7 +86,7 @@ def get_db_connection():
 @app.get("/get_roots", summary="Get roots for a specific set of genes in a reference species")
 async def get_roots(
     genes: Optional[str] = Query(None, description="A comma-separated string of gene names."),
-    species: Optional[str] = Query(None, description="A string with a species code (e.g. 'hsa' for human)")
+    species: Optional[str] = Query(None, description="A string with a species code (e.g. '9606' for human)")
 ):
     """
     Retrieves rooting information from the database based on a provided list of gene names.
@@ -108,7 +108,7 @@ async def get_roots(
     # Using '?' as placeholders prevents SQL inject
     placeholders = ','.join(['?'] * len(gene_list))
 
-    sql_query = f"SELECT * FROM {species} WHERE queryItem IN ({placeholders})"
+    sql_query = f'SELECT * FROM "{species}" WHERE queryItem IN ({placeholders})'
 
     conn = None
     try:

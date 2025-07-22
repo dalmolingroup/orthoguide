@@ -9,7 +9,7 @@ def test_get_root_with_valid_genes(test_app):
     It checks for a successful status code and verifies the content of the response.
     """
     # Make a GET request to the test client
-    response = test_app.get("/get_roots?genes=NRP1,CDK6&species=hsa")
+    response = test_app.get("/get_roots?genes=NRP1,CDK6&species=9606")
     
     assert response.status_code == 200
     
@@ -51,7 +51,7 @@ def test_get_root_with_nonexistent_gene(test_app):
     Tests the /get_root endpoint with a gene that is not in the database.
     It should return an empty list.
     """
-    response = test_app.get("/get_roots?genes=XYZ&species=hsa")
+    response = test_app.get("/get_roots?genes=XYZ&species=9606")
     assert response.status_code == 200
     assert response.json() == []
     print("Test 'test_get_root_with_nonexistent_gene' passed successfully!")

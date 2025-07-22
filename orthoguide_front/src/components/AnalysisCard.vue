@@ -19,7 +19,7 @@
       <div class="form-group">
         <label for="organism-db">Organism <span class="required">*</span></label>
         <select id="organism-db" v-model="selectedOrganism">
-          <option value="hsa">Homo sapiens</option>
+          <option value="9606">Homo sapiens</option>
         </select>
         <button class="infer-button" @click="handleInferRoots" :disabled="isLoading">
           <svg
@@ -74,7 +74,7 @@ const props = defineProps({
 const emit = defineEmits(['start-analysis'])
 
 const geneIds = ref('')
-const selectedOrganism = ref('hsa')
+const selectedOrganism = ref('9606')
 const validationError = ref('')
 
 const handleInferRoots = () => {
