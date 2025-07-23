@@ -3,7 +3,26 @@
     <h2>Rooting Analysis</h2>
     <div class="form-grid">
       <div class="form-group">
-        <label for="gene-ids">Input Gene IDs: <span class="required">*</span></label>
+        <div class="label-with-button">
+          <label for="gene-ids">Input Gene IDs: <span class="required">*</span></label>
+          <button @click="triggerFileUpload" class="upload-button">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span>Upload .txt</span>
+          </button>
+        </div>
         <textarea
           id="gene-ids"
           v-model="geneIds"
@@ -12,8 +31,15 @@
           :class="{ 'border-error': validationError }"
           @input="clearValidationError"
         ></textarea>
+        <input
+          type="file"
+          ref="fileInput"
+          @change="handleFileUpload"
+          accept=".txt"
+          style="display: none"
+        />
         <p v-if="validationError" class="input-error-hint">{{ validationError }}</p>
-        <p v-else class="input-hint">Insert one HGNC Gene ID per line.</p>
+        <p v-else class="input-hint">Insert one HGNC Gene ID per line or upload a .txt file.</p>
       </div>
 
       <div class="form-group">
@@ -76,6 +102,28 @@ const emit = defineEmits(['start-analysis'])
 const geneIds = ref('')
 const selectedOrganism = ref('9606')
 const validationError = ref('')
+const fileInput = ref(null)
+
+const triggerFileUpload = () => {
+  fileInput.value.click()
+}
+
+const handleFileUpload = (event) => {
+  const file = event.target.files[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    geneIds.value = e.target.result
+    clearValidationError()
+  }
+  reader.onerror = (e) => {
+    console.error('File reading error:', e)
+    alert('Error reading file.')
+  }
+  reader.readAsText(file)
+  event.target.value = '' // Reset input
+}
 
 const handleInferRoots = () => {
   const genes = geneIds.value
@@ -119,6 +167,27 @@ const clearValidationError = () => {
   display: flex;
   flex-direction: column;
 }
+.label-with-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.upload-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #f9fafb;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.upload-button:hover {
+  background-color: #f3f4f6;
+}
 label {
   font-weight: 600;
   margin-bottom: 8px;
@@ -141,17 +210,17 @@ textarea {
     border-color 0.2s,
     box-shadow 0.2s;
 }
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
 .border-error {
   border-color: #ef4444;
 }
 .border-error:focus {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 .input-hint {
   font-size: 0.8rem;

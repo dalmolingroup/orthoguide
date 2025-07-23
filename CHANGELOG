@@ -1,3 +1,7 @@
+# v0.6.0
+
+- feat: Add txt upload button
+
 # v0.5.0
 
 - refact: Use ncbi tax id for species table
