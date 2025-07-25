@@ -6,6 +6,8 @@ Welcome to the OrthoGuide project! This repository contains the backend API and 
 
 The project is organized into two main directories:
 
+- `db_creation/`: Contains the R/bash code for creating the SQLite3 db used by the API
+
 - `orthoguide_api/`: Contains the backend API built with FastAPI. It serves rooting data from a pre-processed database. This directory also includes tests written with pytest.
 
 - `orthoguide_front/`: Contains the frontend single-page applicaiton built with Vue.js.

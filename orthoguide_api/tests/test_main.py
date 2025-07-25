@@ -17,7 +17,7 @@ def test_get_root_with_valid_genes(test_app):
     
     assert len(data) == 2
 
-    results_by_gene = {item['queryItem']: item for item in data}
+    results_by_gene = {item['preferred_name']: item for item in data}
     
     assert "NRP1" in results_by_gene
     assert "CDK6" in results_by_gene

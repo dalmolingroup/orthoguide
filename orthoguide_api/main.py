@@ -5,8 +5,8 @@ from typing import List, Optional
 import sqlite3
 import os
 
-DB_PATH = "data/test_data.db"
-ALLOWED_ORGANISMS = ["9606"]
+DB_PATH = "data/orthoguide_data.db"
+ALLOWED_ORGANISMS = ["9606", "10090", "6239", "4932", "7227", "3702"]
 DEFAULT_TABLE_NAME = "9606"
 
 # This function creates and populates the database if it doesn't exist.
@@ -22,12 +22,12 @@ def setup_database():
             # Create the table
             cur.execute(f'''
                 CREATE TABLE "{DEFAULT_TABLE_NAME}" (
-                    node TEXT,
+                    protein_id TEXT,
                     cog_id TEXT,
                     root REAL,
                     clade_name TEXT,
-                    queryItem TEXT PRIMARY KEY,
-                    ncbiTaxonId REAL
+                    preferred_name TEXT PRIMARY KEY,
+                    ssp_id REAL
                 )
             ''')
 
@@ -108,7 +108,7 @@ async def get_roots(
     # Using '?' as placeholders prevents SQL inject
     placeholders = ','.join(['?'] * len(gene_list))
 
-    sql_query = f'SELECT * FROM "{species}" WHERE queryItem IN ({placeholders})'
+    sql_query = f'SELECT preferred_name, clade_name, root, cog_id FROM "{species}" WHERE preferred_name IN ({placeholders})'
 
     conn = None
     try:

@@ -1,3 +1,8 @@
+# v1.0.0
+
+- feat: Add full database with 6 distinct species
+- refact: Adapt frontend and API code to use full db
+
 # v0.6.0
 
 - feat: Add txt upload button

@@ -241,3 +241,5 @@ rsconnect/
 ### R.Bookdown Stack ###
 # R package: bookdown caching files
 /*_files/
+*RData
+*txt.gz

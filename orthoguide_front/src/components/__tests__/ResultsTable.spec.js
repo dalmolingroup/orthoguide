@@ -4,8 +4,8 @@ import ResultsTable from '../ResultsTable.vue'
 
 describe('ResultsTable.vue', () => {
   const mockResults = [
-    { queryItem: 'NRP1', clade_name: 'Ambulacraria', root: 23.0, cog_id: 'NOG06579' },
-    { queryItem: 'CDK6', clade_name: 'Metamonada', root: 37.0, cog_id: 'KOG0594' },
+    { preferred_name: 'NRP1', clade_name: 'Ambulacraria', root: 23.0, cog_id: 'NOG06579' },
+    { preferred_name: 'CDK6', clade_name: 'Metamonada', root: 37.0, cog_id: 'KOG0594' },
   ]
 
   it('renders table headers correctly', () => {
@@ -44,7 +44,7 @@ describe('ResultsTable.vue', () => {
 
     const firstRowCells = wrapper.findAll('tbody tr:first-child td')
     expect(firstRowCells.length).toBe(4)
-    expect(firstRowCells[0].text()).toBe(mockResults[0].queryItem)
+    expect(firstRowCells[0].text()).toBe(mockResults[0].preferred_name)
     expect(firstRowCells[1].text()).toBe(mockResults[0].clade_name)
     expect(firstRowCells[2].text()).toBe(String(mockResults[0].root))
     expect(firstRowCells[3].text()).toBe(mockResults[0].cog_id)

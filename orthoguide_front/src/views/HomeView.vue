@@ -92,7 +92,7 @@ const filteredNetworkData = computed(() => {
 
   // Only genes in the selected clade and more ancient clades
   const genesInScope = new Set(
-    results.value.filter((r) => r.root >= selectedRootId).map((r) => r.queryItem),
+    results.value.filter((r) => r.root >= selectedRootId).map((r) => r.preferred_name),
   )
 
   return networkData.value.filter(
@@ -149,7 +149,7 @@ const inferRoots = async (genes, species) => {
 
     if (data.length > 0) {
       selectedCladeIndex.value = cladeList.value.length - 1
-      const resultGenes = data.map((r) => r.queryItem)
+      const resultGenes = data.map((r) => r.preferred_name)
       await getPPINet(resultGenes, species)
     }
   } catch (error) {
@@ -170,7 +170,7 @@ const exportToCSV = () => {
   const headers = ['Gene', 'Root Clade', 'Root ID', 'COG ID']
   const rows = results.value.map((row) =>
     [
-      `"${row.queryItem || ''}"`,
+      `"${row.preferred_name || ''}"`,
       `"${row.clade_name || ''}"`,
       `"${row.root || ''}"`,
       `"${row.cog_id || ''}"`,

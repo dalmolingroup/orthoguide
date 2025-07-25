@@ -10,8 +10,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in results" :key="item.queryItem">
-          <td>{{ item.queryItem }}</td>
+        <tr v-for="item in results" :key="item.preferred_name">
+          <td>{{ item.preferred_name }}</td>
           <td>{{ item.clade_name }}</td>
           <td>{{ item.root }}</td>
           <td>{{ item.cog_id }}</td>

@@ -46,6 +46,11 @@
         <label for="organism-db">Organism <span class="required">*</span></label>
         <select id="organism-db" v-model="selectedOrganism">
           <option value="9606">Homo sapiens</option>
+          <option value="10090">Mus musculus</option>
+          <option value="3702">Arabidopsis thaliana</option>
+          <option value="4932">Saccharomyces cerevisiae</option>
+          <option value="6239">Caenorhabditis elegans</option>
+          <option value="7227">Drosophila melanogaster</option>
         </select>
         <button class="infer-button" @click="handleInferRoots" :disabled="isLoading">
           <svg
