@@ -34,6 +34,25 @@
         41(2), msae019.
         <a href="https://doi.org/10.1093/molbev/msae019" target="_blank">10.1093/molbev/msae019</a>
       </p>
+      <h3>Database</h3>
+      <div class="buttons-div">
+        <a
+          href="https://projetos.imd.ufrn.br/bioinfo-app/orthoguide/-/raw/main/orthoguide_api/data/orthoguide_data.db?ref_type=heads"
+          class="download-button"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Download Database
+        </a>
+        <a
+          href="https://projetos.imd.ufrn.br/bioinfo-app/orthoguide/-/raw/main/orthoguide_api/data/orthoguide_database.schema.csv?ref_type=heads"
+          class="download-button"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Download Schema
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -41,7 +60,7 @@
 <style scoped>
 .about {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Alinha os itens ao topo */
   justify-content: space-between;
   background-color: white;
   padding: 40px;
@@ -57,9 +76,37 @@
 
 p {
   font-size: 12px;
+  line-height: 1.6; /* Melhora a legibilidade */
 }
 
 .text-section > p {
   margin: 1em 0;
+}
+
+.buttons-div {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.download-button {
+  display: inline-block;
+  margin-top: 1.5em;
+  background-color: #f9fafb;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.download-button:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
 }
 </style>

@@ -10,6 +10,7 @@
         :network-data="networkData"
         :filtered-network-data="filteredNetworkData"
         :clade-list="cladeList"
+        :table-headers="tableHeaders"
         v-model:selectedCladeIndex="selectedCladeIndex"
         @export="exportToCSV"
       />
@@ -27,6 +28,14 @@ const results = ref(null)
 const networkData = ref([])
 const apiErrorMessage = ref('')
 const selectedCladeIndex = ref(0)
+
+// Configuração para o DataTables.net
+const tableHeaders = ref([
+  { title: 'Gene', data: 'preferred_name' },
+  { title: 'Root Clade', data: 'clade_name' },
+  { title: 'Root ID', data: 'root' },
+  { title: 'COG ID', data: 'cog_id' },
+])
 
 const chartData = computed(() => {
   if (!results.value || results.value.length === 0) {
@@ -167,14 +176,14 @@ const handleAnalysis = (genes, species) => {
 const exportToCSV = () => {
   if (!results.value || results.value.length === 0) return
 
-  const headers = ['Gene', 'Root Clade', 'Root ID', 'COG ID']
+  const headers = tableHeaders.value.map((h) => h.title)
   const rows = results.value.map((row) =>
-    [
-      `"${row.preferred_name || ''}"`,
-      `"${row.clade_name || ''}"`,
-      `"${row.root || ''}"`,
-      `"${row.cog_id || ''}"`,
-    ].join(','),
+    tableHeaders.value
+      .map(
+        // --- Lógica do Slider e Filtragem da Rede ---
+        (header) => `"${row[header.data] || ''}"`,
+      )
+      .join(','),
   )
 
   const csvContent = [headers.join(','), ...rows].join('\n')

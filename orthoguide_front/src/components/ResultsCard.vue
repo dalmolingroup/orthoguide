@@ -29,7 +29,7 @@
           <span>Export to CSV</span>
         </button></span
       >
-      <ResultsTable :results="results" />
+      <ResultsTable :items="results" :columns="tableHeaders" />
     </div>
 
     <div v-if="chartData.labels && chartData.labels.length > 0" class="chart-section">
@@ -114,6 +114,7 @@ defineProps({
   chartData: Object,
   networkData: Array,
   cladeList: Array,
+  tableHeaders: Array,
   filteredNetworkData: Array,
   selectedCladeIndex: Number,
 })

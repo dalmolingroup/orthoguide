@@ -39,7 +39,7 @@
           style="display: none"
         />
         <p v-if="validationError" class="input-error-hint">{{ validationError }}</p>
-        <p v-else class="input-hint">Insert one HGNC Gene ID per line or upload a .txt file.</p>
+        <p v-else class="input-hint">Insert one Gene ID per line or upload a .txt file.</p>
       </div>
 
       <div class="form-group">
