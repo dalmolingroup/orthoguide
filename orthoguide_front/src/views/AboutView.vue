@@ -3,22 +3,22 @@
     <div class="text-section">
       <h3>About OrthoGuide</h3>
       <p>
-        Correctly rooting a phylogenetic tree is a critical step in evolutionary biology, but it's
-        often a slow and computationally intensive process. This can create a significant bottleneck
-        for research.
-      </p>
-      <p>
-        OrthoGuide eliminates this bottleneck by providing immediate access to high-quality,
-        pre-computed rooting data. Instead of running complex analyses, users can query our database
-        and get the information they need in seconds.
+        OrthoGuide provides immediate access to high-quality, pre-computed rooting data for 6
+        species. Instead of running complex analyses, users can query our database and get the
+        information they need in seconds, along with a few exploratory plots.
       </p>
       <p>
         All data in our database is generated using the
         <a href="https://github.com/sysbiolab/GeneBridge" target="_blank" rel="noopener noreferrer"
           >GeneBridge R package</a
         >, a method that infers a gene's evolutionary root based on the distribution of its
-        orthologs. This approach does not require an outgroup, making it ideal for large-scale
-        analyses.
+        orthologs. The gene-to-cog information as well as the network information was obtained from
+        <a
+          href="https://version-11-0b.string-db.org/cgi/download"
+          target="_blank"
+          rel="noopener noreferrer"
+          >STRING-db version 11.0</a
+        >.
       </p>
     </div>
     <div class="text-section">
