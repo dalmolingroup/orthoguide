@@ -46,10 +46,10 @@ const tableHeaders = ref([
 onMounted(async () => {
   try {
     const SQL = await initSqlJs({
-      locateFile: (file) => `/${file}`,
+      locateFile: (file) => `${import.meta.env.BASE_URL}${file}`,
     })
 
-    const response = await fetch('/orthoguide_data.db')
+    const response = await fetch(`${import.meta.env.BASE_URL}orthoguide_data.db`)
     const buffer = await response.arrayBuffer()
 
     // Carrega o banco de dados
