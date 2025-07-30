@@ -19,15 +19,18 @@ jobs:
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+        with:
+          working-directory: ./orthoguide_front
 
       - name: Build project
         run: npm run build
+        working-directory: ./orthoguide_front
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: ./dist
+          path: ./orthoguide_front/dist
 
   deploy:
     name: Deploy
