@@ -24,5 +24,5 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  base: 'https://joao.bio.br/orthoguide/',
+  base: '/orthoguide/',
 })
