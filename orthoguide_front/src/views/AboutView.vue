@@ -37,7 +37,7 @@
       <h3>Database</h3>
       <div class="buttons-div">
         <a
-          href="https://projetos.imd.ufrn.br/bioinfo-app/orthoguide/-/raw/main/orthoguide_api/data/orthoguide_data.db?ref_type=heads"
+          href="/orthoguide_data.db"
           class="download-button"
           target="_blank"
           rel="noopener noreferrer"

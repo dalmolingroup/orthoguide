@@ -1,6 +1,9 @@
 <template>
   <div class="space-y-8">
-    <AnalysisCard :is-loading="isLoading" @start-analysis="handleAnalysis" />
+    <AnalysisCard :is-loading="isLoading || isDbLoading" @start-analysis="handleAnalysis" />
+    <div v-if="isDbLoading" class="loading-db-message">
+      <p>Loading database, please wait...</p>
+    </div>
     <transition name="fade">
       <ResultsCard
         v-if="results !== null"
@@ -19,11 +22,14 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import initSqlJs from 'sql.js'
 import AnalysisCard from '../components/AnalysisCard.vue'
 import ResultsCard from '../components/ResultsCard.vue'
 
 const isLoading = ref(false)
+const isDbLoading = ref(true)
+const db = ref(null)
 const results = ref(null)
 const networkData = ref([])
 const apiErrorMessage = ref('')
@@ -36,6 +42,26 @@ const tableHeaders = ref([
   { title: 'Root ID', data: 'root' },
   { title: 'COG ID', data: 'cog_id' },
 ])
+
+onMounted(async () => {
+  try {
+    const SQL = await initSqlJs({
+      locateFile: (file) => `/${file}`,
+    })
+
+    const response = await fetch('/orthoguide_data.db')
+    const buffer = await response.arrayBuffer()
+
+    // Carrega o banco de dados
+    db.value = new SQL.Database(new Uint8Array(buffer))
+    console.log('Database loaded successfully!')
+  } catch (error) {
+    console.error('Failed to load database:', error)
+    apiErrorMessage.value = 'Could not load the application database.'
+  } finally {
+    isDbLoading.value = false
+  }
+})
 
 const chartData = computed(() => {
   if (!results.value || results.value.length === 0) {
@@ -140,29 +166,41 @@ const inferRoots = async (genes, species) => {
     alert('Please enter at least one Gene ID.')
     return
   }
+  if (!db.value) {
+    apiErrorMessage.value = 'Database is not loaded yet. Please wait.'
+    results.value = []
+    return
+  }
 
   isLoading.value = true
 
   try {
-    const geneQueryString = genes.join(',')
-    const apiUrl = `http://localhost:8000/get_roots?genes=${encodeURIComponent(geneQueryString)}&species=${encodeURIComponent(species)}`
-    const response = await fetch(apiUrl)
-
-    if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(errorData.detail || `HTTP error! Status: ${response.status}`)
+    const speciesTableMap = [9606, 10090, 7227, 6239, 3702, 4932]
+    if (speciesTableMap.includes(species)) {
+      throw new Error(`Organism '${species}' is not supported.`)
     }
 
-    const data = await response.json()
-    results.value = data
+    const placeholders = genes.map(() => '?').join(',')
+    const stmt = db.value.prepare(
+      `SELECT preferred_name, clade_name, root, cog_id FROM "${species}" WHERE preferred_name IN (${placeholders})`,
+    )
 
-    if (data.length > 0) {
+    stmt.bind(genes)
+    const queryResult = []
+    while (stmt.step()) {
+      queryResult.push(stmt.getAsObject())
+    }
+    stmt.free()
+
+    results.value = queryResult
+
+    if (queryResult.length > 0) {
       selectedCladeIndex.value = cladeList.value.length - 1
-      const resultGenes = data.map((r) => r.preferred_name)
+      const resultGenes = queryResult.map((r) => r.preferred_name)
       await getPPINet(resultGenes, species)
     }
   } catch (error) {
-    console.error('Failed to fetch rooting data:', error)
+    console.error('Failed to query database:', error)
     apiErrorMessage.value = error.message
     results.value = []
   } finally {

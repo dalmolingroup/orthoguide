@@ -1,27 +1,10 @@
 services:
-  # Serviço da API Backend (FastAPI)
-  api:
-    build:
-      context: ./orthoguide_api
-    ports:
-      - "8000:8000"
-    develop:
-      watch:
-        - path: ./orthoguide_api
-          target: /app
-          action: sync+restart
-          ignore:
-            - __pycache__
-            - venv
-
   # Serviço do Frontend (Vue.js com Nginx)
   frontend:
     build:
       context: ./orthoguide_front
     ports:
       - "8080:5173"
-    depends_on:
-      - api
     develop:
       watch:
         - path: ./orthoguide_front

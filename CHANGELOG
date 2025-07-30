@@ -1,3 +1,9 @@
+# v2.0.0
+
+- refact: Deprecate API and use sqlite db in webassembly
+
+**Frontend-only app**
+
 # v1.1.1
 
 - fix: Change resulttable unittest to use datatable

@@ -4,7 +4,7 @@
 # Script to Create SQLite Database from GeneBridge CSV Results
 # =============================================================================
 
-DB_FILE="../orthoguide_api/data/orthoguide_data.db"
+DB_FILE="../orthoguide_front/public/orthoguide_data.db"
 CSV_DIR="results"
 
 
