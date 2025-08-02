@@ -86,6 +86,11 @@
           <span>Export Network</span>
         </button>
       </span>
+      <p>
+        Results retrieved from the
+        <a href="https://string-db.org/" target="_blank">STRING</a> database
+      </p>
+
       <CladeSlider
         v-if="cladeList.length > 1"
         :clades="cladeList"
@@ -94,7 +99,6 @@
       />
       <NetworkGraph ref="networkGraphRef" :network-data="filteredNetworkData" />
     </div>
-
     <div v-if="results && results.length === 0 && !apiErrorMessage" class="no-results-message">
       <p>No rooting data found for the submitted genes.</p>
     </div>

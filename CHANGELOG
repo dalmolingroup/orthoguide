@@ -1,3 +1,11 @@
+# v2.1.0
+
+- refact: Make db_creation a nextflow pipeline
+- refact: Chunk query genes to allow for more than 1000 genes
+- refact: Don't run network viz for big queries
+- docs: Add package info to the about page
+- fix: Change db download urls
+
 # v2.0.0
 
 - refact: Deprecate API and use sqlite db in webassembly

@@ -137,6 +137,10 @@ const filteredNetworkData = computed(() => {
 
 const getPPINet = async (genes, species) => {
   if (!genes || genes.length === 0) return
+  if (genes.length >= 500) {
+    networkData.value = []
+    return
+  }
   const speciesMap = { hsa: 9606, mmu: 10090, dme: 7227, cel: 6239, atl: 3702, sce: 4932 }
   const speciesId = speciesMap[species] || 9606
 
@@ -180,23 +184,28 @@ const inferRoots = async (genes, species) => {
       throw new Error(`Organism '${species}' is not supported.`)
     }
 
-    const placeholders = genes.map(() => '?').join(',')
-    const stmt = db.value.prepare(
-      `SELECT preferred_name, clade_name, root, cog_id FROM "${species}" WHERE preferred_name IN (${placeholders})`,
-    )
+    const CHUNK_SIZE = 600
+    let allResults = []
 
-    stmt.bind(genes)
-    const queryResult = []
-    while (stmt.step()) {
-      queryResult.push(stmt.getAsObject())
+    for (let i = 0; i < genes.length; i += CHUNK_SIZE) {
+      const chunk = genes.slice(i, i + CHUNK_SIZE)
+      const placeholders = chunk.map(() => '?').join(',')
+      const stmt = db.value.prepare(
+        `SELECT preferred_name, clade_name, root, cog_id FROM "${species}" WHERE preferred_name IN (${placeholders})`,
+      )
+
+      stmt.bind(chunk)
+      while (stmt.step()) {
+        allResults.push(stmt.getAsObject())
+      }
+      stmt.free()
     }
-    stmt.free()
 
-    results.value = queryResult
+    results.value = allResults
 
-    if (queryResult.length > 0) {
+    if (allResults.length > 0) {
       selectedCladeIndex.value = cladeList.value.length - 1
-      const resultGenes = queryResult.map((r) => r.preferred_name)
+      const resultGenes = allResults.map((r) => r.preferred_name)
       await getPPINet(resultGenes, species)
     }
   } catch (error) {

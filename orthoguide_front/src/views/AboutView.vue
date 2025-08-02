@@ -10,9 +10,9 @@
       <p>
         All data in our database is generated using the
         <a href="https://github.com/sysbiolab/GeneBridge" target="_blank" rel="noopener noreferrer"
-          >GeneBridge R package</a
+          >GeneBridge R package (v0.99.2)</a
         >, a method that infers a gene's evolutionary root based on the distribution of its
-        orthologs. The gene-to-cog information as well as the network information was obtained from
+        orthologs. The gene-to-cog information was obtained from
         <a
           href="https://version-11-0b.string-db.org/cgi/download"
           target="_blank"
@@ -37,7 +37,7 @@
       <h3>Database</h3>
       <div class="buttons-div">
         <a
-          href="/orthoguide_data.db"
+          href="https://github.com/jvfe/orthoguide/raw/refs/heads/main/orthoguide_front/public/orthoguide_data.db"
           class="download-button"
           target="_blank"
           rel="noopener noreferrer"
@@ -45,7 +45,7 @@
           Download Database
         </a>
         <a
-          href="https://projetos.imd.ufrn.br/bioinfo-app/orthoguide/-/raw/main/orthoguide_api/data/orthoguide_database.schema.csv?ref_type=heads"
+          href="https://github.com/jvfe/orthoguide/raw/refs/heads/main/db_creation/results/orthoguide_database.schema.csv"
           class="download-button"
           target="_blank"
           rel="noopener noreferrer"
