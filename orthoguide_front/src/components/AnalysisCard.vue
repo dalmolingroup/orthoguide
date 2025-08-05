@@ -5,23 +5,26 @@
       <div class="form-group">
         <div class="label-with-button">
           <label for="gene-ids">Input Gene IDs: <span class="required">*</span></label>
-          <button @click="triggerFileUpload" class="upload-button">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="17 8 12 3 7 8"></polyline>
-              <line x1="12" y1="3" x2="12" y2="15"></line>
-            </svg>
-            <span>Upload .txt</span>
-          </button>
+          <div class="action-buttons">
+            <button @click="loadExampleData" class="example-button">Use Example Data</button>
+            <button @click="triggerFileUpload" class="upload-button">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <span>Upload .txt</span>
+            </button>
+          </div>
         </div>
         <textarea
           id="gene-ids"
@@ -36,7 +39,7 @@
           accept=".txt"
           style="display: none"
         />
-        <p class="input-hint">Insert one Gene Symbol ID per line or upload a .txt file.</p>
+        <p class="input-hint">Insert one HGNC Gene ID per line or upload a .txt file.</p>
       </div>
 
       <div class="form-group">
@@ -106,16 +109,21 @@
         </button>
       </div>
     </div>
-    <span id="version-statement">OrthoGuide v2.2.0</span>
+    <span id="version-statement">OrthoGuide v2.3.0</span>
   </main>
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { exampleGenes } from '../data/exampleGenes.js'
 
 const props = defineProps({
   isLoading: Boolean,
 })
+
+const loadExampleData = () => {
+  geneIds.value = exampleGenes.join('\n')
+}
 
 const emit = defineEmits(['start-analysis'])
 
@@ -209,7 +217,12 @@ const clearValidationError = () => {
   justify-content: space-between;
   align-items: center;
 }
-.upload-button {
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+.upload-button,
+.example-button {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -222,7 +235,8 @@ const clearValidationError = () => {
   cursor: pointer;
   transition: background-color 0.2s;
 }
-.upload-button:hover {
+.upload-button:hover,
+.example-button:hover {
   background-color: #f3f4f6;
 }
 label {
@@ -371,7 +385,6 @@ input:disabled + .slider {
   background-color: #e5e7eb;
   cursor: not-allowed;
 }
-
 #version-statement {
   text-align: center;
   width: 100%;

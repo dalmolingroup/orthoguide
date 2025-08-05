@@ -75,7 +75,9 @@ const renderNetwork = () => {
     .force('y', d3.forceY().strength(0.05))
     .force('collide', d3.forceCollide().radius(12))
 
-  const link = svg
+  const g = svg.append('g')
+
+  const link = g
     .append('g')
     .attr('stroke', '#999')
     .attr('stroke-opacity', 0.6)
@@ -84,7 +86,7 @@ const renderNetwork = () => {
     .join('line')
     .attr('stroke-width', (d) => Math.sqrt(d.score) * 2)
 
-  const node = svg
+  const node = g
     .append('g')
     .attr('stroke', '#fff')
     .attr('stroke-width', 1.5)
@@ -95,7 +97,7 @@ const renderNetwork = () => {
     .attr('fill', '#2563eb')
     .call(drag(simulation))
 
-  const text = svg
+  const text = g
     .append('g')
     .selectAll('text')
     .data(nodes)
@@ -140,6 +142,15 @@ const renderNetwork = () => {
 
     text.attr('x', (d) => d.x + 12).attr('y', (d) => d.y + 4)
   })
+
+  const zoom = d3
+    .zoom()
+    .scaleExtent([0.5, 4])
+    .on('zoom', (event) => {
+      g.attr('transform', event.transform)
+    })
+
+  svg.call(zoom)
 }
 
 const drag = (simulation) => {

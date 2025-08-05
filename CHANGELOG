@@ -1,3 +1,8 @@
+# v2.3.0
+
+- feat: Add zoom capability to the network visualization
+- feat: Add example data button for quick start + application
+
 # v2.2.0
 
 - feat: Add network switch to inputs
