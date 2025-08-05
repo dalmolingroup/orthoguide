@@ -35,7 +35,6 @@ const networkData = ref([])
 const apiErrorMessage = ref('')
 const selectedCladeIndex = ref(0)
 
-// Configuração para o DataTables.net
 const tableHeaders = ref([
   { title: 'Gene', data: 'preferred_name' },
   { title: 'Root Clade', data: 'clade_name' },
@@ -52,7 +51,6 @@ onMounted(async () => {
     const response = await fetch(`${import.meta.env.BASE_URL}orthoguide_data.db`)
     const buffer = await response.arrayBuffer()
 
-    // Carrega o banco de dados
     db.value = new SQL.Database(new Uint8Array(buffer))
     console.log('Database loaded successfully!')
   } catch (error) {
@@ -77,10 +75,8 @@ const chartData = computed(() => {
     return acc
   }, {})
 
-  // Order clades in decreasing order
   const sortedClades = Object.entries(cladeCounts).sort(([, a], [, b]) => b.rootId - a.rootId)
 
-  // Calculate cumulative sum
   let cumulativeCount = 0
   const cumulativeData = sortedClades.map(([, { count }]) => {
     cumulativeCount += count
@@ -125,7 +121,6 @@ const filteredNetworkData = computed(() => {
 
   const selectedRootId = selectedClade.rootId
 
-  // Only genes in the selected clade and more ancient clades
   const genesInScope = new Set(
     results.value.filter((r) => r.root >= selectedRootId).map((r) => r.preferred_name),
   )
@@ -135,14 +130,12 @@ const filteredNetworkData = computed(() => {
   )
 })
 
-const getPPINet = async (genes, species) => {
+const getPPINet = async (genes, speciesId) => {
   if (!genes || genes.length === 0) return
   if (genes.length >= 500) {
     networkData.value = []
     return
   }
-  const speciesMap = { hsa: 9606, mmu: 10090, dme: 7227, cel: 6239, atl: 3702, sce: 4932 }
-  const speciesId = speciesMap[species] || 9606
 
   try {
     const geneQueryString = genes.join('%0d')
@@ -160,7 +153,7 @@ const getPPINet = async (genes, species) => {
   }
 }
 
-const inferRoots = async (genes, species) => {
+const inferRoots = async (genes, species, fetchNetwork) => {
   results.value = null
   networkData.value = []
   apiErrorMessage.value = ''
@@ -179,9 +172,10 @@ const inferRoots = async (genes, species) => {
   isLoading.value = true
 
   try {
-    const speciesTableMap = [9606, 10090, 7227, 6239, 3702, 4932]
-    if (speciesTableMap.includes(species)) {
-      throw new Error(`Organism '${species}' is not supported.`)
+    const allowedTableNames = ['9606', '10090', '7227', '6239', '3702', '4932']
+
+    if (!allowedTableNames.includes(species)) {
+      throw new Error(`Organism ID '${species}' is not supported.`)
     }
 
     const CHUNK_SIZE = 600
@@ -203,7 +197,7 @@ const inferRoots = async (genes, species) => {
 
     results.value = allResults
 
-    if (allResults.length > 0) {
+    if (fetchNetwork && allResults.length > 0) {
       selectedCladeIndex.value = cladeList.value.length - 1
       const resultGenes = allResults.map((r) => r.preferred_name)
       await getPPINet(resultGenes, species)
@@ -217,20 +211,15 @@ const inferRoots = async (genes, species) => {
   }
 }
 
-const handleAnalysis = (genes, species) => {
-  inferRoots(genes, species)
+const handleAnalysis = (genes, species, fetchNetwork) => {
+  inferRoots(genes, species, fetchNetwork)
 }
 const exportToCSV = () => {
   if (!results.value || results.value.length === 0) return
 
   const headers = tableHeaders.value.map((h) => h.title)
   const rows = results.value.map((row) =>
-    tableHeaders.value
-      .map(
-        // --- Lógica do Slider e Filtragem da Rede ---
-        (header) => `"${row[header.data] || ''}"`,
-      )
-      .join(','),
+    tableHeaders.value.map((header) => `"${row[header.data] || ''}"`).join(','),
   )
 
   const csvContent = [headers.join(','), ...rows].join('\n')
@@ -257,5 +246,11 @@ const exportToCSV = () => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+.loading-db-message {
+  text-align: center;
+  padding: 1rem;
+  font-style: italic;
+  color: #6b7280;
 }
 </style>

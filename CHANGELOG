@@ -1,3 +1,10 @@
+# v2.2.0
+
+- feat: Add network switch to inputs
+- chore: Display version in interface
+- refact: Limit network to 200 genes max
+- docs: Add documentation for the db_creation folder
+
 # v2.1.0
 
 - refact: Make db_creation a nextflow pipeline

@@ -28,8 +28,6 @@
           v-model="geneIds"
           placeholder="Ex: NRP1, CDK6, ITGB7..."
           rows="8"
-          :class="{ 'border-error': validationError }"
-          @input="clearValidationError"
         ></textarea>
         <input
           type="file"
@@ -38,8 +36,7 @@
           accept=".txt"
           style="display: none"
         />
-        <p v-if="validationError" class="input-error-hint">{{ validationError }}</p>
-        <p v-else class="input-hint">Insert one Gene ID per line or upload a .txt file.</p>
+        <p class="input-hint">Insert one Gene Symbol ID per line or upload a .txt file.</p>
       </div>
 
       <div class="form-group">
@@ -47,11 +44,28 @@
         <select id="organism-db" v-model="selectedOrganism">
           <option value="9606">Homo sapiens</option>
           <option value="10090">Mus musculus</option>
+          <option value="7227">Drosophila melanogaster</option>
+          <option value="6239">Caenorhabditis elegans</option>
           <option value="3702">Arabidopsis thaliana</option>
           <option value="4932">Saccharomyces cerevisiae</option>
-          <option value="6239">Caenorhabditis elegans</option>
-          <option value="7227">Drosophila melanogaster</option>
         </select>
+
+        <div class="switch-wrapper">
+          <div class="switch-container">
+            <label for="network-switch" class="switch-label">Show Protein Network</label>
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="network-switch"
+                v-model="showNetwork"
+                :disabled="isNetworkSwitchDisabled"
+              />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <p v-if="isNetworkSwitchDisabled" class="input-hint-warning">Disabled for > 200 genes.</p>
+        </div>
+
         <button class="infer-button" @click="handleInferRoots" :disabled="isLoading">
           <svg
             v-if="!isLoading"
@@ -92,11 +106,12 @@
         </button>
       </div>
     </div>
+    <span id="version-statement">OrthoGuide v2.2.0</span>
   </main>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
   isLoading: Boolean,
@@ -108,6 +123,22 @@ const geneIds = ref('')
 const selectedOrganism = ref('9606')
 const validationError = ref('')
 const fileInput = ref(null)
+const showNetwork = ref(true)
+
+const geneCount = computed(() => {
+  return geneIds.value
+    .split('\n')
+    .map((id) => id.trim())
+    .filter((id) => id !== '').length
+})
+
+const isNetworkSwitchDisabled = computed(() => geneCount.value > 200)
+
+watch(isNetworkSwitchDisabled, (isDisabled) => {
+  if (isDisabled) {
+    showNetwork.value = false
+  }
+})
 
 const triggerFileUpload = () => {
   fileInput.value.click()
@@ -127,7 +158,7 @@ const handleFileUpload = (event) => {
     alert('Error reading file.')
   }
   reader.readAsText(file)
-  event.target.value = '' // Reset input
+  event.target.value = ''
 }
 
 const handleInferRoots = () => {
@@ -141,7 +172,7 @@ const handleInferRoots = () => {
     return
   }
 
-  emit('start-analysis', genes, selectedOrganism.value)
+  emit('start-analysis', genes, selectedOrganism.value, showNetwork.value)
 }
 
 const clearValidationError = () => {
@@ -156,6 +187,7 @@ const clearValidationError = () => {
   border-radius: 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
   border: 1px solid #e9ecef;
+  padding-bottom: 20px;
 }
 .analysis-card h2 {
   font-size: 1.75rem;
@@ -215,12 +247,6 @@ textarea {
     border-color 0.2s,
     box-shadow 0.2s;
 }
-.border-error {
-  border-color: #ef4444;
-}
-.border-error:focus {
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
-}
 textarea:focus,
 select:focus {
   outline: none;
@@ -232,10 +258,10 @@ select:focus {
   color: #6c757d;
   margin-top: 8px;
 }
-.input-error-hint {
+.input-hint-warning {
   font-size: 0.8rem;
-  color: #b91c1c;
-  margin-top: 8px;
+  color: #d97706;
+  margin-top: 4px;
 }
 select {
   padding: 12px;
@@ -265,7 +291,7 @@ select {
   cursor: pointer;
   transition: background-color 0.2s;
   width: 100%;
-  margin-top: auto;
+  margin-top: 1rem;
 }
 .infer-button:hover:not(:disabled) {
   background-color: #1d4ed8;
@@ -284,6 +310,74 @@ select {
   to {
     transform: rotate(360deg);
   }
+}
+.switch-wrapper {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+.switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.switch-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 28px;
+}
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #2563eb;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #2563eb;
+}
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+input:disabled + .slider {
+  background-color: #e5e7eb;
+  cursor: not-allowed;
+}
+
+#version-statement {
+  text-align: center;
+  width: 100%;
+  display: block;
+  color: #9ca3af;
+  margin-top: 2rem;
 }
 @media (max-width: 768px) {
   .form-grid {
