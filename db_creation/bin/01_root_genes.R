@@ -13,15 +13,16 @@ library(magrittr)
 
 args <- commandArgs(trailingOnly = TRUE)
 
-if (length(args) != 5) {
-  stop("Usage: Rscript 01_root_genes.R <species_list_file> <clade_names_file> <string_eukaryotes_rda> <geneplast_data_rdata> <protein_info_gz>", call. = FALSE)
+if (length(args) != 6) {
+  stop("Usage: Rscript 01_root_genes.R <species_list_file> <clade_names_file> <string_eukaryotes_rda> <geneplast_data_rdata> <cogdata_table> <protein_info_gz>", call. = FALSE)
 }
 
 species_list_file <- args[1]
 clade_names_file <- args[2]
 string_eukaryotes_rda <- args[3]
 geneplast_data_rdata <- args[4]
-protein_info_gz <- args[5]
+cogdata_table_string <- args[5]
+protein_info_gz <- args[6]
 
 #' Processes the evolutionary rooting for a specific species.
 #'
@@ -51,7 +52,7 @@ process_species_rooting <- function(species_id, cogdata, phyloTree, protein_info
   ogr <- newBridge(
     ogdata = cogdata,
     phyloTree = phyloTree,
-    ogids = unique(species_proteins$cog_id),
+    ogids = unique(species_proteins$og_id),
     refsp = species_id
   )
   
@@ -70,7 +71,7 @@ process_species_rooting <- function(species_id, cogdata, phyloTree, protein_info
     tibble::rownames_to_column("cog_id") %>%
     dplyr::select(cog_id, root = Root) %>%
     inner_join(lca_names, by = "root") %>%
-    inner_join(species_proteins, by = "cog_id") %>%
+    inner_join(species_proteins, by = c("cog_id" = "og_id")) %>%
     mutate(gene_merge = paste0(species_id, ".", protein_id)) %>%
     left_join(protein_info, by = c("gene_merge" = "protein_external_id")) %>%
     dplyr::select(-c(gene_merge))
@@ -87,6 +88,34 @@ TARGET_SPECIES_IDS <- readLines(species_list_file)
 load(string_eukaryotes_rda)
 load(geneplast_data_rdata)
 
+cogs <- cogs <- vroom(
+  cogdata_table_string,
+  col_select = c(1, 4)
+)
+
+cogs <- cogs |> 
+  rename(`taxid.string_id` = "##protein",
+          og_id = orthologous_group)
+
+separated_ids <- cogs %$%
+  stri_split_fixed(taxid.string_id, pattern = ".", n = 2, simplify = T)
+
+cogs[["taxid"]]     <- separated_ids[, 1]
+cogs[["protein_id"]] <- separated_ids[, 2]
+
+rm(separated_ids)
+
+cogs %<>% dplyr::select(-taxid.string_id) %>% 
+  filter(taxid %in% string_eukaryotes[["taxid"]])
+
+cogs <- cogs %>% 
+  dplyr::select(protein_id, ssp_id = taxid, og_id)
+cogs <- as.data.frame(cogs)
+
+cogdata <- dplyr::select(cogdata, "protein_id", "ssp_id", "og_id" = "cog_id")
+
+ogdata <- unique(rbind(cogdata, cogs))
+
 lca_names <- vroom(clade_names_file)
 
 protein_info <- vroom(protein_info_gz) %>%
@@ -99,7 +128,7 @@ for (current_species_id in TARGET_SPECIES_IDS) {
   tryCatch({
     final_results <- process_species_rooting(
       species_id = current_species_id,
-      cogdata = cogdata,
+      cogdata = ogdata,
       phyloTree = phyloTree,
       protein_info = protein_info,
       lca_names = lca_names

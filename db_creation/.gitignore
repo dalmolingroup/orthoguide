@@ -1,1 +1,8 @@
-*cogs.csv
+.nextflow*
+work/
+.DS_Store
+testing/
+testing*
+*.pyc
+null/
+results/*cogs.csv

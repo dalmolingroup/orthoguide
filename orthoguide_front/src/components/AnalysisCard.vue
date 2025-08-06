@@ -39,7 +39,7 @@
           accept=".txt"
           style="display: none"
         />
-        <p class="input-hint">Insert one HGNC Gene ID per line or upload a .txt file.</p>
+        <p class="input-hint">Insert one Gene Symbol ID per line or upload a .txt file.</p>
       </div>
 
       <div class="form-group">
@@ -109,7 +109,7 @@
         </button>
       </div>
     </div>
-    <span id="version-statement">OrthoGuide v2.3.0</span>
+    <span id="version-statement">OrthoGuide v2.3.1</span>
   </main>
 </template>
 

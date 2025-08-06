@@ -8,6 +8,7 @@ process GENEBRIDGE {
         path clade_names
         path string_eukaryotes
         path geneplast_data
+        path cogdata_table
         path protein_info
 
     output:
@@ -20,6 +21,7 @@ process GENEBRIDGE {
         $clade_names \\
         $string_eukaryotes \\
         $geneplast_data \\
+        $cogdata_table \\
         $protein_info
     """
 }
@@ -49,6 +51,7 @@ workflow {
         file(params.clade_names),
         file(params.string_eukaryotes),
         file(params.geneplast_data),
+        file(params.cogdata_table),
         file(params.protein_info)
     )
 
