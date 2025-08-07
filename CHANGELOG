@@ -1,3 +1,7 @@
+# v2.4.0
+
+- feat: Add example data for all organisms
+
 # v2.3.1
 
 - fix: Merge results from geneplast.data with cogtable from STRING

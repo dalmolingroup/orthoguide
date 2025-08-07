@@ -44,7 +44,7 @@
 
       <div class="form-group">
         <label for="organism-db">Organism <span class="required">*</span></label>
-        <select id="organism-db" v-model="selectedOrganism">
+        <select id="organism-db" v-model="selectedOrganism" @change="clearInput">
           <option value="9606">Homo sapiens</option>
           <option value="10090">Mus musculus</option>
           <option value="7227">Drosophila melanogaster</option>
@@ -115,15 +115,11 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { exampleGenes } from '../data/exampleGenes.js'
+import { hsa, mmu, dme, cel, ath, sce } from '../data/exampleGenes.js'
 
 const props = defineProps({
   isLoading: Boolean,
 })
-
-const loadExampleData = () => {
-  geneIds.value = exampleGenes.join('\n')
-}
 
 const emit = defineEmits(['start-analysis'])
 
@@ -139,6 +135,33 @@ const geneCount = computed(() => {
     .map((id) => id.trim())
     .filter((id) => id !== '').length
 })
+
+const clearInput = () => {
+  geneIds.value = ''
+}
+
+const loadExampleData = () => {
+  switch (selectedOrganism.value) {
+    case '9606':
+      geneIds.value = hsa.join('\n')
+      break
+    case '10090':
+      geneIds.value = mmu.join('\n')
+      break
+    case '7227':
+      geneIds.value = dme.join('\n')
+      break
+    case '6239':
+      geneIds.value = cel.join('\n')
+      break
+    case '3702':
+      geneIds.value = ath.join('\n')
+      break
+    case '4932':
+      geneIds.value = sce.join('\n')
+      break
+  }
+}
 
 const isNetworkSwitchDisabled = computed(() => geneCount.value > 200)
 
