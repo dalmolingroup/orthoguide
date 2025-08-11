@@ -172,7 +172,7 @@ const inferRoots = async (genes, species, fetchNetwork) => {
   isLoading.value = true
 
   try {
-    const allowedTableNames = ['9606', '10090', '7227', '6239', '3702', '4932']
+    const allowedTableNames = ['9606', '10090', '10116', '7227', '6239', '3702', '4932']
 
     if (!allowedTableNames.includes(species)) {
       throw new Error(`Organism ID '${species}' is not supported.`)
