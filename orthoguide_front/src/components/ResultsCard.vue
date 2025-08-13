@@ -97,7 +97,11 @@
         :modelValue="selectedCladeIndex"
         @update:modelValue="$emit('update:selectedCladeIndex', $event)"
       />
-      <NetworkGraph ref="networkGraphRef" :network-data="filteredNetworkData" />
+      <NetworkGraph
+        ref="networkGraphRef"
+        :network-data="filteredNetworkData"
+        :genes-in-selected-clade="genesInSelectedClade"
+      />
     </div>
     <div v-if="results && results.length === 0 && !apiErrorMessage" class="no-results-message">
       <p>No rooting data found for the submitted genes.</p>
@@ -118,9 +122,10 @@ defineProps({
   chartData: Object,
   networkData: Array,
   cladeList: Array,
-  tableHeaders: Array,
   filteredNetworkData: Array,
   selectedCladeIndex: Number,
+  tableHeaders: Array,
+  genesInSelectedClade: Set, // Accept the new prop
 })
 
 defineEmits(['export', 'update:selectedCladeIndex'])

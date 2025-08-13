@@ -14,6 +14,7 @@
         :filtered-network-data="filteredNetworkData"
         :clade-list="cladeList"
         :table-headers="tableHeaders"
+        :genes-in-selected-clade="genesInSelectedClade"
         v-model:selectedCladeIndex="selectedCladeIndex"
         @export="exportToCSV"
       />
@@ -111,6 +112,15 @@ const cladeList = computed(() => {
     return acc
   }, new Map())
   return Array.from(uniqueClades.values()).sort((a, b) => b.rootId - a.rootId)
+})
+
+const genesInSelectedClade = computed(() => {
+  if (!results.value || !cladeList.value.length) return new Set()
+  const selectedClade = cladeList.value[selectedCladeIndex.value]
+  if (!selectedClade) return new Set()
+  return new Set(
+    results.value.filter((r) => r.clade_name === selectedClade.name).map((r) => r.preferred_name),
+  )
 })
 
 const filteredNetworkData = computed(() => {

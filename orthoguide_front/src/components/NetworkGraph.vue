@@ -1,6 +1,16 @@
 <template>
   <div class="network-container" ref="networkContainer">
     <svg v-if="networkData && networkData.length > 0" ref="svgRef"></svg>
+    <div v-if="networkData && networkData.length > 0" class="legend">
+      <div class="legend-item">
+        <span class="legend-color-box orange"></span>
+        <span>Arose in this clade</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color-box blue"></span>
+        <span>Previously present</span>
+      </div>
+    </div>
     <div v-else class="no-data-placeholder">
       <p>No network data for this clade is available</p>
     </div>
@@ -14,6 +24,10 @@ import * as d3 from 'd3'
 const props = defineProps({
   networkData: {
     type: Array,
+    required: true,
+  },
+  genesInSelectedClade: {
+    type: Set,
     required: true,
   },
 })
@@ -45,7 +59,7 @@ const renderNetwork = () => {
 
   const linkedByIndex = {}
   links.forEach((d) => {
-    linkedByIndex[`${d.source},${d.target}`] = 1
+    linkedByIndex[`${d.source.id},${d.target.id}`] = 1
   })
 
   function isConnected(a, b) {
@@ -58,7 +72,7 @@ const renderNetwork = () => {
     .attr('width', width)
     .attr('height', height)
     .attr('viewBox', [-width / 2, -height / 2, width, height])
-    .attr('style', 'max-width: 100%; height: auto;')
+    .attr('style', 'max-width: 100%; height: auto; cursor: grab;')
 
   simulation = d3
     .forceSimulation(nodes)
@@ -74,6 +88,15 @@ const renderNetwork = () => {
     .force('x', d3.forceX().strength(0.05))
     .force('y', d3.forceY().strength(0.05))
     .force('collide', d3.forceCollide().radius(12))
+
+  const zoomRect = svg
+    .append('rect')
+    .attr('width', width)
+    .attr('height', height)
+    .attr('x', -width / 2)
+    .attr('y', -height / 2)
+    .style('fill', 'none')
+    .style('pointer-events', 'all')
 
   const g = svg.append('g')
 
@@ -94,7 +117,7 @@ const renderNetwork = () => {
     .data(nodes)
     .join('circle')
     .attr('r', 8)
-    .attr('fill', '#2563eb')
+    .attr('fill', (d) => (props.genesInSelectedClade.has(d.id) ? '#f97316' : '#2563eb'))
     .call(drag(simulation))
 
   const text = g
@@ -119,7 +142,9 @@ const renderNetwork = () => {
         return o.id === d.id ? 'visible' : 'hidden'
       })
 
-      link.style('stroke-opacity', (o) => (o.source === d || o.target === d ? 1 : opacity))
+      link.style('stroke-opacity', (o) =>
+        o.source.id === d.id || o.target.id === d.id ? 1 : opacity,
+      )
 
       if (opacity === 1) {
         node.style('opacity', 1)
@@ -236,5 +261,37 @@ onBeforeUnmount(() => {
   color: #6b7280;
   font-style: italic;
   background-color: #f9fafb;
+}
+.legend {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  font-size: 12px;
+  pointer-events: none;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.legend-item:last-child {
+  margin-bottom: 0;
+}
+.legend-color-box {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.legend-color-box.orange {
+  background-color: #f97316;
+}
+.legend-color-box.blue {
+  background-color: #2563eb;
 }
 </style>
