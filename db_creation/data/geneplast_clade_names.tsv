@@ -1,38 +1,197 @@
-root	clade_name
-1	Homo
-2	Pan
-3	Gorilla
-4	Ponginae
-5	Hylobatidae
-6	Cercopithecoidea
-7	Platyrrhini
-8	Tarsiiformes
-9	Strepsirrhini
-10	Dermoptera
-11	Scandentia
-12	Glires
-13	Laurasiatheria
-14	Afrotheria
-15	Metatheria
-16	Prototheria
-17	Sauropsida
-18	Amphibia
-19	Coelacanthimorpha
-20	Actinopterygii
-21	Tunicata
-22	Cephalochordata
-23	Ambulacraria
-24	Ecdysozoa
-25	Spiralia
-26	Cnidaria
-27	Placozoa
-28	Porifera
-29	Ctenophora
-30	Choanoflagellata
-31	Fungi
-32	Amoebozoa
-33	Viridiplantae
-34	Discoba
-35	Rhodophyta
-36	SAR
-37	Metamonada
+species_id	root	clade_name
+10090	1	Mus
+10090	2	Rattus
+10090	3	Cricetidae
+10090	4	Spalacidae
+10090	5	Dipodoidea
+10090	6	Sciuromorpha
+10090	7	Hystricomorpha
+10090	8	Lagomorpha
+10090	9	Primates
+10090	10	Laurasiatheria
+10090	11	Afrotheria
+10090	12	Metatheria
+10090	13	Prototheria
+10090	14	Sauropsida
+10090	15	Amphibia
+10090	16	Coelacanthimorpha
+10090	17	Actinopterygii
+10090	18	Tunicata
+10090	19	Cephalochordata
+10090	20	Ambulacraria
+10090	21	Ecdysozoa
+10090	22	Spiralia
+10090	23	Cnidaria
+10090	24	Ctenophora
+10090	25	Placozoa
+10090	26	Porifera
+10090	27	Choanoflagellata
+10090	28	Fungi
+10090	29	Amoebozoa
+10090	30	Viridiplantae
+10090	31	Discoba
+10090	32	Rhodophyta
+10090	33	SAR
+10090	34	Metamonada
+10116	1	Rattus
+10116	2	Mus
+10116	3	Cricetidae
+10116	4	Spalacidae
+10116	5	Dipodoidea
+10116	6	Sciuromorpha
+10116	7	Hystricomorpha
+10116	8	Lagomorpha
+10116	9	Primates
+10116	10	Laurasiatheria
+10116	11	Afrotheria
+10116	12	Metatheria
+10116	13	Prototheria
+10116	14	Sauropsida
+10116	15	Amphibia
+10116	16	Coelacanthimorpha
+10116	17	Actinopterygii
+10116	18	Tunicata
+10116	19	Cephalochordata
+10116	20	Ambulacraria
+10116	21	Ecdysozoa
+10116	22	Spiralia
+10116	23	Cnidaria
+10116	24	Ctenophora
+10116	25	Placozoa
+10116	26	Porifera
+10116	27	Choanoflagellata
+10116	28	Fungi
+10116	29	Amoebozoa
+10116	30	Viridiplantae
+10116	31	Discoba
+10116	32	Rhodophyta
+10116	33	SAR
+10116	34	Metamonada
+3702	3	Camelineae
+3702	4	Boechereae
+3702	5	Arabodae
+3702	6	Cleomaceae
+3702	7	Caricaceae
+3702	8	Malvales
+3702	9	Sapindales
+3702	10	Myrtales
+3702	11	Fabids
+3702	12	Rosids
+3702	13	Superasterids
+3702	14	Proteales
+3702	15	Ranunculales
+3702	16	Liliopsida
+3702	17	Amborellales
+3702	18	Lycopodiopsida
+3702	19	Bryophyta
+3702	20	Chlorophyta
+3702	21	Opisthokonta
+3702	22	Discoba
+3702	23	Rhodophyta
+3702	24	SAR
+3702	25	Metamonada
+4932	1	Saccharomyces
+4932	2	Naumovozyma
+4932	3	Huiozyma/Kazachstania
+4932	4	Saccharomyces sensu lato
+4932	5	Saccharomycetales
+4932	6	Kluyveromyces/Lachancea/Eremothecium
+4932	7	Pichiomycetes
+4932	8	Saccharomycotina
+4932	9	Pezizomycotina
+4932	10	Taphrinomycotina
+4932	11	Basidiomycota
+4932	12	Mucoromycota
+4932	13	Chytridiomycota
+4932	14	Blastocladiomycota
+4932	15	Metazoa
+4932	16	Amoebozoa
+4932	17	Viridiplantae
+4932	18	Discoba
+4932	19	Rhodophyta
+4932	20	SAR
+4932	21	Metamonada
+6239	3	Chromadorea
+6239	4	Enoplea
+6239	5	Panarthropoda
+6239	6	Lophotrochozoa
+6239	7	Deuterostomia
+6239	8	Cnidaria
+6239	9	Ctenophora
+6239	10	Placozoa
+6239	11	Porifera
+6239	12	Choanoflagellata
+6239	13	Fungi
+6239	14	Amoebozoa
+6239	15	Viridiplantae
+6239	16	Discoba
+6239	17	Rhodophyta
+6239	18	SAR
+6239	19	Metamonada
+7227	3	ananassae subgroup
+7227	4	obscura group
+7227	5	willistoni group
+7227	6	Drosophila
+7227	7	Tephritoidea
+7227	8	Calyptratae
+7227	9	Nematocera
+7227	10	Amphiesmenoptera
+7227	11	Coleoptera
+7227	12	Hymenoptera
+7227	13	Paraneoptera
+7227	14	Polyneoptera
+7227	15	Crustacea
+7227	16	Myriapoda
+7227	17	Nematoda
+7227	18	Lophotrochozoa
+7227	19	Deuterostomia
+7227	20	Platyhelminthes
+7227	21	Cnidaria
+7227	22	Ctenophora
+7227	23	Placozoa
+7227	24	Porifera
+7227	25	Choanoflagellata
+7227	26	Fungi
+7227	27	Amoebozoa
+7227	28	Viridiplantae
+7227	29	Discoba
+7227	30	Rhodophyta
+7227	31	SAR
+7227	32	Metamonada
+9606	1	Homo
+9606	2	Pan
+9606	3	Gorilla
+9606	4	Ponginae
+9606	5	Hylobatidae
+9606	6	Cercopithecoidea
+9606	7	Platyrrhini
+9606	8	Tarsiiformes
+9606	9	Strepsirrhini
+9606	10	Dermoptera
+9606	11	Scandentia
+9606	12	Glires
+9606	13	Laurasiatheria
+9606	14	Afrotheria
+9606	15	Metatheria
+9606	16	Prototheria
+9606	17	Sauropsida
+9606	18	Amphibia
+9606	19	Coelacanthimorpha
+9606	20	Actinopterygii
+9606	21	Tunicata
+9606	22	Cephalochordata
+9606	23	Ambulacraria
+9606	24	Ecdysozoa
+9606	25	Spiralia
+9606	26	Cnidaria
+9606	27	Ctenophora
+9606	28	Placozoa
+9606	29	Porifera
+9606	30	Choanoflagellata
+9606	31	Fungi
+9606	32	Amoebozoa
+9606	33	Viridiplantae
+9606	34	Discoba
+9606	35	Rhodophyta
+9606	36	SAR
+9606	37	Metamonada

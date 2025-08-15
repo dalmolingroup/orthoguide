@@ -110,7 +110,7 @@
         </button>
       </div>
     </div>
-    <span id="version-statement">OrthoGuide v2.6.0</span>
+    <span id="version-statement">OrthoGuide v2.7.0</span>
   </main>
 </template>
 

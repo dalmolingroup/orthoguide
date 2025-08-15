@@ -1,3 +1,7 @@
+# v2.7.0
+
+- fix: Recreate db with correct root names
+
 # v2.6.0
 
 - feat: Add node colors for emergent nodes

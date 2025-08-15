@@ -69,7 +69,7 @@ process_species_rooting <- function(species_id, cogdata, phyloTree, protein_info
   
   groot_df <- res %>%
     tibble::rownames_to_column("cog_id") %>%
-    dplyr::select(cog_id, root = Root) %>%
+    dplyr::select(cog_id, root = Root, Dscore,	Statistic, Pvalue, AdjPvalue) %>%
     inner_join(lca_names, by = "root") %>%
     inner_join(species_proteins, by = c("cog_id" = "og_id")) %>%
     mutate(gene_merge = paste0(species_id, ".", protein_id)) %>%
@@ -126,12 +126,16 @@ dir.create("results", showWarnings = FALSE)
 for (current_species_id in TARGET_SPECIES_IDS) {
   
   tryCatch({
+    lca_names_filter <- lca_names %>%
+      filter(species_id == current_species_id) %>%
+      dplyr::select(-species_id)
+
     final_results <- process_species_rooting(
       species_id = current_species_id,
       cogdata = ogdata,
       phyloTree = phyloTree,
       protein_info = protein_info,
-      lca_names = lca_names
+      lca_names = lca_names_filter
     )
     
     output_file_path <- file.path("results", paste0(current_species_id, "_result.csv"))
