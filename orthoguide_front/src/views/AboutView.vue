@@ -3,7 +3,7 @@
     <div class="text-section">
       <h3>About OrthoGuide</h3>
       <p>
-        OrthoGuide provides immediate access to high-quality, pre-computed rooting data for 6
+        OrthoGuide provides immediate access to high-quality, pre-computed rooting data for 7
         species. Instead of running complex analyses, users can query our database and get the
         information they need in seconds, along with a few exploratory plots.
       </p>

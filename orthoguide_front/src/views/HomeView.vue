@@ -129,7 +129,7 @@ const filteredNetworkData = computed(() => {
   const selectedClade = cladeList.value[selectedCladeIndex.value]
   if (!selectedClade) return []
 
-  const selectedRootId = selectedClade.rootId
+  const selectedRootId = parseInt(selectedClade.rootId)
 
   const genesInScope = new Set(
     results.value.filter((r) => r.root >= selectedRootId).map((r) => r.preferred_name),
