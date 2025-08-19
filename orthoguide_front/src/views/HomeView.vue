@@ -15,6 +15,7 @@
         :clade-list="cladeList"
         :table-headers="tableHeaders"
         :genes-in-selected-clade="genesInSelectedClade"
+        :missing-genes="missingGenes"
         v-model:selectedCladeIndex="selectedCladeIndex"
         @export="exportToCSV"
       />
@@ -35,6 +36,7 @@ const results = ref(null)
 const networkData = ref([])
 const apiErrorMessage = ref('')
 const selectedCladeIndex = ref(0)
+const missingGenes = ref([])
 
 const tableHeaders = ref([
   { title: 'Gene', data: 'preferred_name' },
@@ -168,6 +170,7 @@ const inferRoots = async (genes, species, fetchNetwork) => {
   networkData.value = []
   apiErrorMessage.value = ''
   selectedCladeIndex.value = 0
+  missingGenes.value = []
 
   if (!genes || genes.length === 0) {
     alert('Please enter at least one Gene ID.')
@@ -206,6 +209,9 @@ const inferRoots = async (genes, species, fetchNetwork) => {
     }
 
     results.value = allResults
+
+    const foundGenes = new Set(allResults.map((r) => r.preferred_name))
+    missingGenes.value = genes.filter((g) => !foundGenes.has(g))
 
     if (fetchNetwork && allResults.length > 0) {
       selectedCladeIndex.value = cladeList.value.length - 1

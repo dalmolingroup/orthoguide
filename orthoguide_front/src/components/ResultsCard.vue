@@ -30,6 +30,12 @@
         </button></span
       >
       <ResultsTable :items="results" :columns="tableHeaders" />
+      <div v-if="missingGenes.length > 0" class="missing-genes-note">
+        <p>
+          <strong>Note:</strong> The following genes were not found in our database:
+          {{ missingGenes.join(', ') }}
+        </p>
+      </div>
     </div>
 
     <div v-if="chartData.labels && chartData.labels.length > 0" class="chart-section">
@@ -125,7 +131,8 @@ defineProps({
   filteredNetworkData: Array,
   selectedCladeIndex: Number,
   tableHeaders: Array,
-  genesInSelectedClade: Set, // Accept the new prop
+  genesInSelectedClade: Set,
+  missingGenes: Array,
 })
 
 defineEmits(['export', 'update:selectedCladeIndex'])
@@ -219,6 +226,15 @@ const handleExportNetwork = () => {
   padding: 2rem;
   border-radius: 8px;
   color: #6c757d;
+}
+.missing-genes-note {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #fefce8;
+  border-left: 4px solid #facc15;
+  color: #713f12;
+  font-size: 0.9rem;
+  border-radius: 8px;
 }
 @media (max-width: 768px) {
   .results-card {

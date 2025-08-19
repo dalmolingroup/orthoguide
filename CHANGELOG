@@ -1,3 +1,8 @@
+# v2.9.0
+
+- feat/refact: Add test gene list generation script & change lists
+- feat: Add a warning for genes not found in database
+
 # v2.8.0
 
 - refact: Use d3js for bar chart too
