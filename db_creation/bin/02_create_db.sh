@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # =============================================================================
-# Script to Create SQLite Database from GeneBridge CSV Results
+# Script to Create SQLite Database from GeneBridge CSV Results with Schema
 # =============================================================================
 
-set -e # Exit immediately if a command exits with a non-zero status.
+set -e
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <path_to_csv_results_directory>"
@@ -38,8 +38,24 @@ find "$CSV_DIR/" -name "*_result.csv" | while read -r filepath; do
     echo "Processing file: $filename -> Table: \"$species_id\""
     
     sqlite3 "$DB_FILE" <<EOF
+
+CREATE TABLE IF NOT EXISTS "$species_id" (
+    cog_id          TEXT,
+    root            INTEGER,
+    Dscore          REAL,
+    Statistic       REAL,
+    Pvalue          REAL,
+    AdjPvalue       REAL,
+    clade_name      TEXT,
+    protein_id      TEXT,
+    ssp_id          INTEGER,
+    preferred_name  TEXT
+);
+
 .mode csv
-.import "$filepath" "$species_id"
+
+.import --skip 1 "$filepath" "$species_id"
+
 EOF
     
 done

@@ -1,7 +1,11 @@
 column_name,data_type,description,example
-protein_id,TEXT,"The STRING protein identifier for the specific protein.",ENSP00000265371
-cog_id,TEXT,"The Cluster of Orthologous Groups (COG) identifier.",NOG06579
-root,REAL,"The numerical ID representing the last common ancestor (LCA) or root clade.",23.00
-clade_name,TEXT,"The descriptive name of the root clade.",Ambulacraria
-preferred_name,TEXT,"The common gene name (e.g., HGNC symbol) used for querying. This is the PRIMARY KEY.",NRP1
-ssp_id,REAL,"The NCBI Taxonomy ID for the species of the protein.",9606.00
+cog_id,TEXT,"The Cluster of Orthologous Groups (COG) identifier.",NOG106405
+root,INTEGER,"The numerical ID representing the last common ancestor (LCA) or root clade.",1
+Dscore,REAL,"The consistency score from the Bridge algorithm, measuring conformity to a vertical inheritance model.",0.9956
+Statistic,REAL,"The statistic value associated with the Dscore.",8.188
+Pvalue,REAL,"The P-value for the Dscore, indicating statistical significance.",1.33e-16
+AdjPvalue,REAL,"The adjusted P-value for multiple testing correction.",8.81e-13
+clade_name,TEXT,"The descriptive name of the root clade.",Homo
+protein_id,TEXT,"The STRING protein identifier for the specific protein.",ENSP00000490314
+ssp_id,INTEGER,"The NCBI Taxonomy ID for the species of the protein.",9606
+preferred_name,TEXT,"The common gene name (e.g., HGNC symbol) used for querying.",BRCA1
