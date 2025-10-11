@@ -24,6 +24,13 @@ geneplast_data_rdata <- args[4]
 cogdata_table_string <- args[5]
 protein_info_gz <- args[6]
 
+# species_list_file      <- "data/species_list.txt"
+# clade_names_file       <- "data/geneplast_clade_names.tsv"
+# string_eukaryotes_rda <- "data/string_eukaryotes.rda"
+# geneplast_data_rdata    <- "data/gpdata_string_v11.RData"
+# cogdata_table_string     <- "data/COG.mappings.v11.0.txt.gz"
+# protein_info_gz      <- "data/protein.info.v11.0.txt.gz"
+
 #' Processes the evolutionary rooting for a specific species.
 #'
 #' This function runs the GeneBridge pipeline for a given species ID,
@@ -37,36 +44,36 @@ protein_info_gz <- args[6]
 #'
 #' @return A dataframe containing the final rooting results for the species.
 process_species_rooting <- function(species_id, cogdata, phyloTree, protein_info, lca_names) {
-  
+
   message(paste("Starting analysis for species:", species_id))
-  
+
   species_proteins <- cogdata %>%
     filter(ssp_id == species_id)
-  
+
   if (nrow(species_proteins) == 0) {
     stop(paste("No proteins found for species_id:", species_id, "in the cogdata dataframe."))
   }
-  
+
   message("Running the GeneBridge pipeline...")
-  
+
   ogr <- newBridge(
     ogdata = cogdata,
     phyloTree = phyloTree,
     ogids = unique(species_proteins$og_id),
     refsp = species_id
   )
-  
+
   ogr <- runBridge(ogr,
                    penalty = 2,
                    threshold = 0.5,
                    verbose = TRUE)
-  
+
   ogr <- runPermutation(ogr, nPermutations = 1000, verbose = TRUE)
-  
+
   res <- getBridge(ogr, what = "results")
-  
+
   message("Processing and annotating results...")
-  
+
   groot_df <- res %>%
     tibble::rownames_to_column("cog_id") %>%
     dplyr::select(cog_id, root = Root, Dscore,	Statistic, Pvalue, AdjPvalue) %>%
@@ -75,9 +82,9 @@ process_species_rooting <- function(species_id, cogdata, phyloTree, protein_info
     mutate(gene_merge = paste0(species_id, ".", protein_id)) %>%
     left_join(protein_info, by = c("gene_merge" = "protein_external_id")) %>%
     dplyr::select(-c(gene_merge))
-  
+
   message(paste("Analysis for species", species_id, "completed."))
-  
+
   return(groot_df)
 }
 
@@ -88,12 +95,12 @@ TARGET_SPECIES_IDS <- readLines(species_list_file)
 load(string_eukaryotes_rda)
 load(geneplast_data_rdata)
 
-cogs <- cogs <- vroom(
+cogs <- vroom(
   cogdata_table_string,
   col_select = c(1, 4)
 )
 
-cogs <- cogs |> 
+cogs <- cogs |>
   rename(`taxid.string_id` = "##protein",
           og_id = orthologous_group)
 
@@ -105,10 +112,10 @@ cogs[["protein_id"]] <- separated_ids[, 2]
 
 rm(separated_ids)
 
-cogs %<>% dplyr::select(-taxid.string_id) %>% 
+cogs %<>% dplyr::select(-taxid.string_id) %>%
   filter(taxid %in% string_eukaryotes[["taxid"]])
 
-cogs <- cogs %>% 
+cogs <- cogs %>%
   dplyr::select(protein_id, ssp_id = taxid, og_id)
 cogs <- as.data.frame(cogs)
 
@@ -124,35 +131,42 @@ protein_info <- vroom(protein_info_gz) %>%
 dir.create("results", showWarnings = FALSE)
 
 for (current_species_id in TARGET_SPECIES_IDS) {
-  
+
   tryCatch({
+
+    if (current_species_id %in% c("10090", "10116", "9606")) {
+      cogref <- ogdata
+    } else {
+      cogref <- cogs
+    }
+
     lca_names_filter <- lca_names %>%
       filter(species_id == current_species_id) %>%
       dplyr::select(-species_id)
 
     final_results <- process_species_rooting(
       species_id = current_species_id,
-      cogdata = ogdata,
+      cogdata = cogref,
       phyloTree = phyloTree,
       protein_info = protein_info,
       lca_names = lca_names_filter
     )
-    
+
     output_file_path <- file.path("results", paste0(current_species_id, "_result.csv"))
     message(paste("Saving results for species", current_species_id, "to:", output_file_path))
-    
+
     vroom::vroom_write(
       x = final_results,
       file = output_file_path,
       delim = ","
     )
-    
+
   }, error = function(e) {
     # If an error occurs for one species, print it and continue to the next.
     message(paste("An error occurred for species", current_species_id, ":", e$message))
     message("Skipping to the next species.")
   })
-  
+
 }
 
 message("All processes finished.")
