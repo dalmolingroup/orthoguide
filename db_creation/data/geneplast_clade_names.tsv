@@ -67,9 +67,11 @@ species_id	root	clade_name
 10116	32	Rhodophyta
 10116	33	SAR
 10116	34	Metamonada
+3702	1	Arabidopsis
+3702	2	Capsella
 3702	3	Camelineae
 3702	4	Boechereae
-3702	5	Arabodae
+3702	5	Brassiceae
 3702	6	Cleomaceae
 3702	7	Caricaceae
 3702	8	Malvales
@@ -77,7 +79,7 @@ species_id	root	clade_name
 3702	10	Myrtales
 3702	11	Fabids
 3702	12	Rosids
-3702	13	Superasterids
+3702	13	Asterids
 3702	14	Proteales
 3702	15	Ranunculales
 3702	16	Liliopsida
@@ -111,23 +113,28 @@ species_id	root	clade_name
 4932	19	Rhodophyta
 4932	20	SAR
 4932	21	Metamonada
-6239	3	Chromadorea
+6239	1	Caenorhabditis
+6239	2	Peloderinae
+6239	3	Rhabditida
 6239	4	Enoplea
 6239	5	Panarthropoda
 6239	6	Lophotrochozoa
 6239	7	Deuterostomia
-6239	8	Cnidaria
-6239	9	Ctenophora
-6239	10	Placozoa
-6239	11	Porifera
-6239	12	Choanoflagellata
-6239	13	Fungi
-6239	14	Amoebozoa
-6239	15	Viridiplantae
-6239	16	Discoba
-6239	17	Rhodophyta
-6239	18	SAR
-6239	19	Metamonada
+6239	8	Platyhelminthes
+6239	9	Cnidaria
+6239	10	Ctenophora
+6239	11	Placozoa
+6239	12	Porifera
+6239	13	Choanoflagellata
+6239	14	Fungi
+6239	15	Amoebozoa
+6239	16	Viridiplantae
+6239	17	Discoba
+6239	18	Rhodophyta
+6239	19	SAR
+6239	20	Metamonada
+7227	1	melanogaster complex
+7227	2	melanogaster subgroup
 7227	3	ananassae subgroup
 7227	4	obscura group
 7227	5	willistoni group
@@ -158,6 +165,27 @@ species_id	root	clade_name
 7227	30	Rhodophyta
 7227	31	SAR
 7227	32	Metamonada
+7955	1	Otomorpha
+7955	2	Euteleosteomorpha
+7955	3	Holostei
+7955	4	Sarcopterygii
+7955	5	Tunicata
+7955	6	Cephalochordata
+7955	7	Ambulacraria
+7955	8	Ecdysozoa
+7955	9	Spiralia
+7955	10	Cnidaria
+7955	11	Ctenophora
+7955	12	Placozoa
+7955	13	Porifera
+7955	14	Choanoflagellata
+7955	15	Fungi
+7955	16	Amoebozoa
+7955	17	Viridiplantae
+7955	18	Discoba
+7955	19	Rhodophyta
+7955	20	SAR
+7955	21	Metamonada
 9606	1	Homo
 9606	2	Pan
 9606	3	Gorilla
