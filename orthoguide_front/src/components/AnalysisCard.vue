@@ -121,7 +121,7 @@
               fill="currentColor"
             />
           </svg>
-          <span>{{ isLoading ? 'Loading...' : 'Infer Roots' }}</span>
+          <span>{{ isLoading ? 'Loading...' : 'Get Roots' }}</span>
         </button>
       </div>
     </div>
