@@ -40,6 +40,7 @@ const missingGenes = ref([])
 
 const tableHeaders = ref([
   { title: 'Gene', data: 'preferred_name' },
+  { title: 'Protein ID', data: 'protein_id' },
   { title: 'Root Clade', data: 'clade_name' },
   { title: 'Root ID', data: 'root' },
   { title: 'COG ID', data: 'cog_id' },
@@ -165,7 +166,7 @@ const getPPINet = async (genes, speciesId) => {
   }
 }
 
-const inferRoots = async (genes, species, fetchNetwork) => {
+const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred_name') => {
   results.value = null
   networkData.value = []
   apiErrorMessage.value = ''
@@ -198,7 +199,7 @@ const inferRoots = async (genes, species, fetchNetwork) => {
       const chunk = genes.slice(i, i + CHUNK_SIZE)
       const placeholders = chunk.map(() => '?').join(',')
       const stmt = db.value.prepare(
-        `SELECT preferred_name, clade_name, root, cog_id FROM "${species}" WHERE preferred_name IN (${placeholders})`,
+        `SELECT preferred_name, clade_name, root, cog_id, protein_id FROM "${species}" WHERE ${queryColumn} IN (${placeholders})`,
       )
 
       stmt.bind(chunk)
@@ -210,7 +211,7 @@ const inferRoots = async (genes, species, fetchNetwork) => {
 
     results.value = allResults
 
-    const foundGenes = new Set(allResults.map((r) => r.preferred_name))
+    const foundGenes = new Set(allResults.map((r) => r[queryColumn]))
     missingGenes.value = genes.filter((g) => !foundGenes.has(g))
 
     if (fetchNetwork && allResults.length > 0) {
@@ -227,9 +228,10 @@ const inferRoots = async (genes, species, fetchNetwork) => {
   }
 }
 
-const handleAnalysis = (genes, species, fetchNetwork) => {
-  inferRoots(genes, species, fetchNetwork)
+const handleAnalysis = (genes, species, fetchNetwork, queryColumn) => {
+  inferRoots(genes, species, fetchNetwork, queryColumn)
 }
+
 const exportToCSV = () => {
   if (!results.value || results.value.length === 0) return
 

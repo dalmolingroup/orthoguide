@@ -29,7 +29,7 @@
         <textarea
           id="gene-ids"
           v-model="geneIds"
-          placeholder="Ex: NRP1, CDK6, ITGB7..."
+          :placeholder="placeholderText"
           rows="8"
         ></textarea>
         <input
@@ -39,21 +39,35 @@
           accept=".txt"
           style="display: none"
         />
-        <p class="input-hint">Insert one Gene Symbol ID per line or upload a .txt file.</p>
+        <p class="input-hint">
+          Insert one {{ identifierType === 'preferred_name' ? 'Gene Symbol' : 'Protein' }} ID per
+          line or upload a .txt file.
+        </p>
       </div>
 
       <div class="form-group">
-        <label for="organism-db">Organism <span class="required">*</span></label>
-        <select id="organism-db" v-model="selectedOrganism" @change="clearInput">
-          <option value="9606">Homo sapiens</option>
-          <option value="10090">Mus musculus</option>
-          <option value="10116">Rattus norvegicus</option>
-          <option value="7955">Danio rerio</option>
-          <option value="7227">Drosophila melanogaster</option>
-          <option value="6239">Caenorhabditis elegans</option>
-          <option value="3702">Arabidopsis thaliana</option>
-          <option value="4932">Saccharomyces cerevisiae</option>
-        </select>
+        <div class="organism-identifier-wrapper">
+          <div class="form-group-small">
+            <label for="organism-db">Organism <span class="required">*</span></label>
+            <select id="organism-db" v-model="selectedOrganism" @change="clearInput">
+              <option value="9606">Homo sapiens</option>
+              <option value="10090">Mus musculus</option>
+              <option value="10116">Rattus norvegicus</option>
+              <option value="7955">Danio rerio</option>
+              <option value="7227">Drosophila melanogaster</option>
+              <option value="6239">Caenorhabditis elegans</option>
+              <option value="3702">Arabidopsis thaliana</option>
+              <option value="4932">Saccharomyces cerevisiae</option>
+            </select>
+          </div>
+          <div class="form-group-small">
+            <label for="identifier-type">Identifier Type <span class="required">*</span></label>
+            <select id="identifier-type" v-model="identifierType" @change="clearInput">
+              <option value="preferred_name">Gene Symbol</option>
+              <option value="protein_id">Protein ID</option>
+            </select>
+          </div>
+        </div>
 
         <div class="switch-wrapper">
           <div class="switch-container">
@@ -127,9 +141,16 @@ const emit = defineEmits(['start-analysis'])
 
 const geneIds = ref('')
 const selectedOrganism = ref('9606')
+const identifierType = ref('preferred_name')
 const validationError = ref('')
 const fileInput = ref(null)
 const showNetwork = ref(true)
+
+const placeholderText = computed(() => {
+  return identifierType.value === 'preferred_name'
+    ? 'Ex: NRP1, CDK6, ITGB7...'
+    : 'Ex: ENSP00000223177, ENSP00000266970...'
+})
 
 const geneCount = computed(() => {
   return geneIds.value
@@ -143,6 +164,8 @@ const clearInput = () => {
 }
 
 const loadExampleData = () => {
+  identifierType.value = 'preferred_name'
+  clearInput()
   switch (selectedOrganism.value) {
     case '9606':
       geneIds.value = hsa.join('\n')
@@ -211,7 +234,7 @@ const handleInferRoots = () => {
     return
   }
 
-  emit('start-analysis', genes, selectedOrganism.value, showNetwork.value)
+  emit('start-analysis', genes, selectedOrganism.value, showNetwork.value, identifierType.value)
 }
 
 const clearValidationError = () => {
@@ -233,6 +256,15 @@ const clearValidationError = () => {
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 30px;
+}
+.organism-identifier-wrapper {
+  display: flex;
+  gap: 20px;
+}
+.form-group-small {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .form-grid {
   display: grid;

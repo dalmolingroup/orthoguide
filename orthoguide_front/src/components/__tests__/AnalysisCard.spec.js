@@ -27,6 +27,20 @@ describe('AnalysisCard.vue', () => {
     expect(emittedEvent[0][0]).toEqual(['TP53', 'BRCA1', 'EGFR'])
   })
 
+  it('emits "start-analysis" with protein_id as query column', async () => {
+    const wrapper = mount(AnalysisCard)
+
+    const identifierSelect = wrapper.find('#identifier-type')
+    await identifierSelect.setValue('protein_id')
+
+    const textarea = wrapper.find('textarea#gene-ids')
+    await textarea.setValue('ENSP00000369497\nENSP00000266970')
+
+    await wrapper.find('.infer-button').trigger('click')
+
+    expect(wrapper.emitted('start-analysis')[0][3]).toBe('protein_id')
+  })
+
   it('does not emit "start-analysis" if the gene input is empty', async () => {
     const wrapper = mount(AnalysisCard)
 
