@@ -1,3 +1,12 @@
+# v2.11.0
+
+- refact: Change button name
+- feat: Add input selector for identifier type
+- feat: Add danio rerio data to the frontend
+- feat: Update database with d rerio species
+- fix: Update clade names and add d. rerio
+- fix: Only concat cog refs for specific species
+
 # v2.10.0
 
 - refact: Add all schema columns in schema file and enforce it
