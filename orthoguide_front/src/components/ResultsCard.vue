@@ -109,6 +109,9 @@
         :genes-in-selected-clade="genesInSelectedClade"
       />
     </div>
+    <div v-if="networkData.length == 0" class="no-data-placeholder">
+      <p>No network data is available</p>
+    </div>
     <div v-if="results && results.length === 0 && !apiErrorMessage" class="no-results-message">
       <p>No rooting data found for the submitted genes.</p>
     </div>
@@ -226,6 +229,16 @@ const handleExportNetwork = () => {
   padding: 2rem;
   border-radius: 8px;
   color: #6c757d;
+}
+.no-data-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 500px;
+  color: #6b7280;
+  font-style: italic;
+  background-color: #f9fafb;
 }
 .missing-genes-note {
   margin-top: 1.5rem;

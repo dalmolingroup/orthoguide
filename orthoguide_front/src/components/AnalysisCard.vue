@@ -48,6 +48,7 @@
           <option value="9606">Homo sapiens</option>
           <option value="10090">Mus musculus</option>
           <option value="10116">Rattus norvegicus</option>
+          <option value="7955">Danio rerio</option>
           <option value="7227">Drosophila melanogaster</option>
           <option value="6239">Caenorhabditis elegans</option>
           <option value="3702">Arabidopsis thaliana</option>
@@ -116,7 +117,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { hsa, mmu, rno, dme, cel, ath, sce } from '../data/exampleGenes.js'
+import { hsa, mmu, rno, dme, cel, ath, sce, dre } from '../data/exampleGenes.js'
 
 const props = defineProps({
   isLoading: Boolean,
@@ -151,6 +152,9 @@ const loadExampleData = () => {
       break
     case '10116':
       geneIds.value = rno.join('\n')
+      break
+    case '7955':
+      geneIds.value = dre.join('\n')
       break
     case '7227':
       geneIds.value = dme.join('\n')
