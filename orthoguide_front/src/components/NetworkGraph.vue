@@ -210,8 +210,52 @@ const exportSVG = () => {
   URL.revokeObjectURL(url)
 }
 
+const exportPNG = () => {
+  if (!svgRef.value) return
+
+  const svgNode = svgRef.value.cloneNode(true)
+  d3.select(svgNode)
+    .attr('style', 'background-color: white;')
+    .selectAll('text')
+    .attr('font-family', 'sans-serif')
+
+  const svgData = new XMLSerializer().serializeToString(svgNode)
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+
+  const width = parseInt(svgRef.value.getAttribute('width'))
+  const height = parseInt(svgRef.value.getAttribute('height'))
+
+  const scale = 2
+  canvas.width = width * scale
+  canvas.height = height * scale
+  ctx.scale(scale, scale)
+
+  const img = new Image()
+  img.onload = () => {
+    ctx.fillStyle = 'white'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(img, 0, 0)
+    const url = canvas.toDataURL('image/png')
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'orthoguide_network.png'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+  img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgData)}`
+}
+
 defineExpose({
-  exportSVG,
+  exportGraph: (format = 'svg') => {
+    if (format === 'png') {
+      exportPNG()
+    } else {
+      exportSVG()
+    }
+  },
 })
 
 let resizeObserver

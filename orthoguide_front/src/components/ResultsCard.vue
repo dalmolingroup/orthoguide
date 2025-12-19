@@ -42,28 +42,34 @@
     <div v-if="chartData.labels && chartData.labels.length > 0" class="chart-section">
       <span class="chart-section-header"
         >Root Clade Distribution
-        <button
-          v-if="results && results.length > 0"
-          @click="handleExportChart"
-          class="export-button"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+        <div class="export-container">
+          <button
+            v-if="results && results.length > 0"
+            @click="showChartExportOptions = !showChartExportOptions"
+            class="export-button"
           >
-            <path d="M3 3h7v9H3z"></path>
-            <path d="M14 3h7v5h-7z"></path>
-            <path d="M14 12h7v9h-7z"></path>
-            <path d="M3 16h7v5H3z"></path>
-          </svg>
-          <span>Export Chart</span>
-        </button>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 3h7v9H3z"></path>
+              <path d="M14 3h7v5h-7z"></path>
+              <path d="M14 12h7v9h-7z"></path>
+              <path d="M3 16h7v5H3z"></path>
+            </svg>
+            <span>Export Chart</span>
+          </button>
+          <div v-if="showChartExportOptions" class="export-options">
+            <button @click="handleExportChart('svg')">as SVG</button>
+            <button @click="handleExportChart('png')">as PNG</button>
+          </div>
+        </div>
       </span>
       <BarChart ref="barChartRef" :chart-data="chartData" />
     </div>
@@ -71,27 +77,33 @@
     <div v-if="networkData && networkData.length > 0" class="chart-section">
       <span class="chart-section-header">
         Protein Interaction Network
-        <button
-          v-if="filteredNetworkData.length > 0"
-          @click="handleExportNetwork"
-          class="export-button"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+        <div class="export-container">
+          <button
+            v-if="filteredNetworkData.length > 0"
+            @click="showNetworkExportOptions = !showNetworkExportOptions"
+            class="export-button"
           >
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          <span>Export Network</span>
-        </button>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Export Network</span>
+          </button>
+          <div v-if="showNetworkExportOptions" class="export-options">
+            <button @click="handleExportNetwork('svg')">as SVG</button>
+            <button @click="handleExportNetwork('png')">as PNG</button>
+          </div>
+        </div>
       </span>
       <p>
         Results retrieved from the
@@ -149,17 +161,21 @@ defineEmits(['export', 'update:selectedCladeIndex'])
 
 const barChartRef = ref(null)
 const networkGraphRef = ref(null)
+const showChartExportOptions = ref(false)
+const showNetworkExportOptions = ref(false)
 
-const handleExportChart = () => {
+const handleExportChart = (format) => {
   if (barChartRef.value) {
-    barChartRef.value.exportChart()
+    barChartRef.value.exportChart(format)
   }
+  showChartExportOptions.value = false
 }
 
-const handleExportNetwork = () => {
+const handleExportNetwork = (format) => {
   if (networkGraphRef.value) {
-    networkGraphRef.value.exportSVG()
+    networkGraphRef.value.exportGraph(format)
   }
+  showNetworkExportOptions.value = false
 }
 </script>
 
@@ -255,6 +271,36 @@ const handleExportNetwork = () => {
   color: #713f12;
   font-size: 0.9rem;
   border-radius: 8px;
+}
+.export-container {
+  position: relative;
+  display: inline-block;
+}
+.export-options {
+  position: absolute;
+  right: 0;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  margin-top: 4px;
+  padding: 4px;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  width: max-content;
+}
+.export-options button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 6px;
+}
+.export-options button:hover {
+  background-color: #f3f4f6;
 }
 @media (max-width: 768px) {
   .results-card {
