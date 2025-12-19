@@ -109,4 +109,28 @@ p {
   background-color: #f3f4f6;
   border-color: #9ca3af;
 }
+
+@media (max-width: 768px) {
+  .about {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .about > div {
+    width: 100%;
+    margin: 0 0 2em 0;
+  }
+
+  .about > div:last-child {
+    margin-bottom: 0;
+  }
+
+  .buttons-div {
+    flex-direction: column;
+  }
+
+  .download-button {
+    text-align: center;
+  }
+}
 </style>

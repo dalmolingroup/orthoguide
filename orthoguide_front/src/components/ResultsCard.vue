@@ -29,7 +29,9 @@
           <span>Export to CSV</span>
         </button></span
       >
-      <ResultsTable :items="results" :columns="tableHeaders" />
+      <div class="table-container">
+        <ResultsTable :items="results" :columns="tableHeaders" />
+      </div>
     </div>
 
     <div v-if="missingGenes.length > 0" class="missing-genes-note">
@@ -222,6 +224,8 @@ const handleExportNetwork = (format) => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .chart-section-header,
@@ -232,6 +236,10 @@ const handleExportNetwork = (format) => {
   margin-bottom: 20px;
   border-bottom: 1px solid #e9ecef;
   padding-bottom: 10px;
+}
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .export-button {
   display: flex;
@@ -290,6 +298,7 @@ const handleExportNetwork = (format) => {
   display: flex;
   align-items: center;
   gap: 16px;
+  flex-wrap: wrap;
 }
 .checkbox-wrapper {
   display: flex;
@@ -341,6 +350,10 @@ const handleExportNetwork = (format) => {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+  }
+  .chart-section-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 </style>
