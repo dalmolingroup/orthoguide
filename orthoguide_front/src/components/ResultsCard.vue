@@ -30,12 +30,13 @@
         </button></span
       >
       <ResultsTable :items="results" :columns="tableHeaders" />
-      <div v-if="missingGenes.length > 0" class="missing-genes-note">
-        <p>
-          <strong>Note:</strong> The following genes were not found in our database:
-          {{ missingGenes.join(', ') }}
-        </p>
-      </div>
+    </div>
+
+    <div v-if="missingGenes.length > 0" class="missing-genes-note">
+      <p>
+        <strong>Note:</strong> The following genes were not found in our database:
+        {{ missingGenes.join(', ') }}
+      </p>
     </div>
 
     <div v-if="chartData.labels && chartData.labels.length > 0" class="chart-section">
@@ -109,10 +110,16 @@
         :genes-in-selected-clade="genesInSelectedClade"
       />
     </div>
-    <div v-if="networkData.length == 0" class="no-data-placeholder">
+    <div
+      v-if="networkData.length == 0 && (results.length > 0 || missingGenes.length == 0)"
+      class="no-data-placeholder"
+    >
       <p>No network data is available</p>
     </div>
-    <div v-if="results && results.length === 0 && !apiErrorMessage" class="no-results-message">
+    <div
+      v-if="results && results.length === 0 && !apiErrorMessage && missingGenes.length === 0"
+      class="no-results-message"
+    >
       <p>No rooting data found for the submitted genes.</p>
     </div>
   </section>
