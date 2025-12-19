@@ -77,31 +77,41 @@
     <div v-if="networkData && networkData.length > 0" class="chart-section">
       <span class="chart-section-header">
         Protein Interaction Network
-        <div class="export-container">
-          <button
-            v-if="filteredNetworkData.length > 0"
-            @click="showNetworkExportOptions = !showNetworkExportOptions"
-            class="export-button"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+        <div class="network-controls">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" v-model="showGeneNames" />
+            <span class="checkbox-text">Show Gene Names</span>
+          </label>
+          <label class="checkbox-wrapper" v-if="showGeneNames">
+            <input type="checkbox" v-model="largeFont" />
+            <span class="checkbox-text">Large Font</span>
+          </label>
+          <div class="export-container">
+            <button
+              v-if="filteredNetworkData.length > 0"
+              @click="showNetworkExportOptions = !showNetworkExportOptions"
+              class="export-button"
             >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            <span>Export Network</span>
-          </button>
-          <div v-if="showNetworkExportOptions" class="export-options">
-            <button @click="handleExportNetwork('svg')">as SVG</button>
-            <button @click="handleExportNetwork('png')">as PNG</button>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Export Network</span>
+            </button>
+            <div v-if="showNetworkExportOptions" class="export-options">
+              <button @click="handleExportNetwork('svg')">as SVG</button>
+              <button @click="handleExportNetwork('png')">as PNG</button>
+            </div>
           </div>
         </div>
       </span>
@@ -120,6 +130,8 @@
         ref="networkGraphRef"
         :network-data="filteredNetworkData"
         :genes-in-selected-clade="genesInSelectedClade"
+        :show-gene-names="showGeneNames"
+        :large-font="largeFont"
       />
     </div>
     <div
@@ -163,6 +175,8 @@ const barChartRef = ref(null)
 const networkGraphRef = ref(null)
 const showChartExportOptions = ref(false)
 const showNetworkExportOptions = ref(false)
+const showGeneNames = ref(false)
+const largeFont = ref(false)
 
 const handleExportChart = (format) => {
   if (barChartRef.value) {
@@ -271,6 +285,23 @@ const handleExportNetwork = (format) => {
   color: #713f12;
   font-size: 0.9rem;
   border-radius: 8px;
+}
+.network-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox-text {
+  font-weight: 500;
+  color: #374151;
 }
 .export-container {
   position: relative;

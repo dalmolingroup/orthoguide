@@ -30,6 +30,14 @@ const props = defineProps({
     type: Set,
     required: true,
   },
+  showGeneNames: {
+    type: Boolean,
+    default: false,
+  },
+  largeFont: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const networkContainer = ref(null)
@@ -59,7 +67,7 @@ const renderNetwork = () => {
 
   const linkedByIndex = {}
   links.forEach((d) => {
-    linkedByIndex[`${d.source.id},${d.target.id}`] = 1
+    linkedByIndex[`${d.source},${d.target}`] = 1
   })
 
   function isConnected(a, b) {
@@ -126,11 +134,11 @@ const renderNetwork = () => {
     .data(nodes)
     .join('text')
     .text((d) => d.id)
-    .attr('font-size', '12px')
+    .attr('font-size', props.largeFont ? '16px' : '12px')
     .attr('paint-order', 'stroke')
     .attr('stroke', 'white')
     .attr('stroke-width', '3px')
-    .attr('visibility', 'hidden')
+    .attr('visibility', props.showGeneNames ? 'visible' : 'hidden')
 
   function fade(opacity) {
     return (event, d) => {
@@ -139,7 +147,7 @@ const renderNetwork = () => {
       })
 
       text.style('visibility', function (o) {
-        return o.id === d.id ? 'visible' : 'hidden'
+        return isConnected(d, o) ? 'visible' : 'hidden'
       })
 
       link.style('stroke-opacity', (o) =>
@@ -148,7 +156,7 @@ const renderNetwork = () => {
 
       if (opacity === 1) {
         node.style('opacity', 1)
-        text.style('visibility', 'hidden')
+        text.style('visibility', props.showGeneNames ? 'visible' : 'hidden')
         link.style('stroke-opacity', 0.6)
       }
     }
@@ -267,7 +275,7 @@ onMounted(() => {
   }
 })
 
-watch(() => props.networkData, renderNetwork)
+watch([() => props.networkData, () => props.showGeneNames, () => props.largeFont], renderNetwork)
 
 onBeforeUnmount(() => {
   if (simulation) {
