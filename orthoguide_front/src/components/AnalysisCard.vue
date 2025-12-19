@@ -72,7 +72,7 @@
             <select id="identifier-type" v-model="identifierType" @change="clearInput">
               <option value="preferred_name">Gene Symbol</option>
               <option value="protein_id">Protein ID</option>
-              <option value="cog_id">COG ID</option>
+              <option value="cog_id">Orthologous Group ID</option>
             </select>
           </div>
         </div>
@@ -271,6 +271,7 @@ const clearValidationError = () => {
 }
 .organism-identifier-wrapper {
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 .form-group-small {
