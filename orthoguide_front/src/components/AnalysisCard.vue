@@ -57,14 +57,9 @@
           <div class="form-group-small">
             <label for="organism-db">Organism <span class="required">*</span></label>
             <select id="organism-db" v-model="selectedOrganism" @change="clearInput">
-              <option value="9606">Homo sapiens</option>
-              <option value="10090">Mus musculus</option>
-              <option value="10116">Rattus norvegicus</option>
-              <option value="7955">Danio rerio</option>
-              <option value="7227">Drosophila melanogaster</option>
-              <option value="6239">Caenorhabditis elegans</option>
-              <option value="3702">Arabidopsis thaliana</option>
-              <option value="4932">Saccharomyces cerevisiae</option>
+              <option v-for="species in speciesList" :key="species.id" :value="species.id">
+                {{ species.name }}
+              </option>
             </select>
           </div>
           <div class="form-group-small">
@@ -143,6 +138,10 @@ import { hsa, mmu, rno, dme, cel, ath, sce, dre } from '../data/exampleGenes.js'
 
 const props = defineProps({
   isLoading: Boolean,
+  speciesList: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 const emit = defineEmits(['start-analysis'])
