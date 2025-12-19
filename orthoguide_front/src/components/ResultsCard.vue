@@ -34,7 +34,7 @@
 
     <div v-if="missingGenes.length > 0" class="missing-genes-note">
       <p>
-        <strong>Note:</strong> The following genes were not found in our database:
+        <strong>Note:</strong> The following identifiers were not found in our database:
         {{ missingGenes.join(', ') }}
       </p>
     </div>

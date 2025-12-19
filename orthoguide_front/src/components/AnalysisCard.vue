@@ -40,8 +40,15 @@
           style="display: none"
         />
         <p class="input-hint">
-          Insert one {{ identifierType === 'preferred_name' ? 'Gene Symbol' : 'Protein' }} ID per
-          line or upload a .txt file.
+          Insert one
+          {{
+            identifierType === 'preferred_name'
+              ? 'Gene Symbol'
+              : identifierType === 'protein_id'
+                ? 'Protein'
+                : 'COG'
+          }}
+          ID per line or upload a .txt file.
         </p>
       </div>
 
@@ -65,6 +72,7 @@
             <select id="identifier-type" v-model="identifierType" @change="clearInput">
               <option value="preferred_name">Gene Symbol</option>
               <option value="protein_id">Protein ID</option>
+              <option value="cog_id">COG ID</option>
             </select>
           </div>
         </div>
@@ -147,9 +155,13 @@ const fileInput = ref(null)
 const showNetwork = ref(true)
 
 const placeholderText = computed(() => {
-  return identifierType.value === 'preferred_name'
-    ? 'Ex: NRP1, CDK6, ITGB7...'
-    : 'Ex: ENSP00000223177, ENSP00000266970...'
+  if (identifierType.value === 'preferred_name') {
+    return 'Ex: NRP1, CDK6, ITGB7...'
+  } else if (identifierType.value === 'protein_id') {
+    return 'Ex: ENSP00000223177, ENSP00000266970...'
+  } else {
+    return 'Ex: NOG106405, KOG0018...'
+  }
 })
 
 const geneCount = computed(() => {
