@@ -38,6 +38,17 @@ const apiErrorMessage = ref('')
 const selectedCladeIndex = ref(0)
 const missingGenes = ref([])
 
+const speciesNameMap = {
+  9606: 'Human',
+  10090: 'Mouse',
+  10116: 'Rat',
+  7955: 'Zebrafish',
+  7227: 'Fruit fly',
+  6239: 'C. elegans',
+  3702: 'Arabidopsis',
+  4932: 'Yeast',
+}
+
 const tableHeaders = ref([
   { title: 'Gene', data: 'preferred_name' },
   { title: 'Protein ID', data: 'protein_id' },
@@ -204,7 +215,10 @@ const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred
 
       stmt.bind(chunk)
       while (stmt.step()) {
-        allResults.push(stmt.getAsObject())
+        const row = stmt.getAsObject()
+        const commonName = speciesNameMap[species] || 'Species'
+        row.clade_name = `${commonName}-${row.clade_name} LCA`
+        allResults.push(row)
       }
       stmt.free()
     }

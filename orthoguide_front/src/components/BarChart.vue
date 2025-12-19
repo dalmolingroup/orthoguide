@@ -33,7 +33,7 @@ const renderChart = () => {
     value: props.chartData.datasets[0].data[i],
   }))
 
-  const margin = { top: 20, right: 20, bottom: 150, left: 60 }
+  const margin = { top: 20, right: 20, bottom: 180, left: 60 }
   const containerWidth = chartContainer.value.clientWidth
   const containerHeight = chartContainer.value.clientHeight
 
