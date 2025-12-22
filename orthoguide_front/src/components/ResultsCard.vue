@@ -30,7 +30,7 @@
         </button></span
       >
       <div class="table-container">
-        <ResultsTable :items="results" :columns="tableHeaders" />
+        <ResultsTable :items="results" :columns="tableHeaders" :key="results.length" />
       </div>
     </div>
 
@@ -76,7 +76,10 @@
       <BarChart ref="barChartRef" :chart-data="chartData" />
     </div>
 
-    <div v-if="networkData && networkData.length > 0" class="chart-section">
+    <div
+      v-if="(networkData && networkData.length > 0) || (genesInScope && genesInScope.length > 0)"
+      class="chart-section"
+    >
       <span class="chart-section-header">
         Protein Interaction Network
         <div class="network-controls">
@@ -131,13 +134,18 @@
       <NetworkGraph
         ref="networkGraphRef"
         :network-data="filteredNetworkData"
+        :all-genes="genesInScope"
         :genes-in-selected-clade="genesInSelectedClade"
         :show-gene-names="showGeneNames"
         :large-font="largeFont"
       />
     </div>
     <div
-      v-if="networkData.length == 0 && (results.length > 0 || missingGenes.length == 0)"
+      v-if="
+        networkData.length == 0 &&
+        genesInScope.length == 0 &&
+        (results.length > 0 || missingGenes.length == 0)
+      "
       class="no-data-placeholder"
     >
       <p>No network data is available</p>
@@ -152,13 +160,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, toRefs } from 'vue'
 import ResultsTable from './ResultsTable.vue'
 import BarChart from './BarChart.vue'
 import NetworkGraph from './NetworkGraph.vue'
 import CladeSlider from './CladeSlider.vue'
 
-defineProps({
+const props = defineProps({
   results: Array,
   apiErrorMessage: String,
   chartData: Object,
@@ -170,6 +178,8 @@ defineProps({
   genesInSelectedClade: Set,
   missingGenes: Array,
 })
+
+const { results, cladeList, selectedCladeIndex } = toRefs(props)
 
 defineEmits(['export', 'update:selectedCladeIndex'])
 
@@ -193,6 +203,18 @@ const handleExportNetwork = (format) => {
   }
   showNetworkExportOptions.value = false
 }
+
+const genesInScope = computed(() => {
+  if (!results.value || !cladeList.value.length) return []
+  const selectedClade = cladeList.value[selectedCladeIndex.value]
+  if (!selectedClade) return []
+  const selectedRootId = parseInt(selectedClade.rootId)
+
+  const uniqueGenes = new Set(
+    results.value.filter((r) => r.root >= selectedRootId).map((r) => r.preferred_name),
+  )
+  return Array.from(uniqueGenes)
+})
 </script>
 
 <style scoped>

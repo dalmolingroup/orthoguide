@@ -1,7 +1,13 @@
 <template>
   <div class="network-container" ref="networkContainer">
-    <svg v-if="networkData && networkData.length > 0" ref="svgRef"></svg>
-    <div v-if="networkData && networkData.length > 0" class="legend">
+    <svg
+      v-if="(networkData && networkData.length > 0) || (allGenes && allGenes.length > 0)"
+      ref="svgRef"
+    ></svg>
+    <div
+      v-if="(networkData && networkData.length > 0) || (allGenes && allGenes.length > 0)"
+      class="legend"
+    >
       <div class="legend-item">
         <span class="legend-color-box orange"></span>
         <span>Arose in this clade</span>
@@ -23,6 +29,10 @@ import * as d3 from 'd3'
 
 const props = defineProps({
   networkData: {
+    type: Array,
+    required: true,
+  },
+  allGenes: {
     type: Array,
     required: true,
   },
@@ -49,8 +59,8 @@ const renderNetwork = () => {
   svg.selectAll('*').remove()
 
   if (
-    !props.networkData ||
-    props.networkData.length === 0 ||
+    ((!props.networkData || props.networkData.length === 0) &&
+      (!props.allGenes || props.allGenes.length === 0)) ||
     !svgRef.value ||
     !networkContainer.value
   ) {
@@ -64,6 +74,12 @@ const renderNetwork = () => {
     return { source: d.preferredName_A, target: d.preferredName_B, score: d.score }
   })
   const nodes = Array.from(nodesMap.values())
+
+  const connectedIds = new Set(nodesMap.keys())
+  const unconnectedNodes = props.allGenes
+    .filter((id) => !connectedIds.has(id))
+    .sort()
+    .map((id) => ({ id }))
 
   const linkedByIndex = {}
   links.forEach((d) => {
@@ -139,6 +155,82 @@ const renderNetwork = () => {
     .attr('stroke', 'white')
     .attr('stroke-width', '3px')
     .attr('visibility', props.showGeneNames ? 'visible' : 'hidden')
+
+  // Render unconnected nodes in a box
+  if (unconnectedNodes.length > 0) {
+    const colWidth = props.largeFont ? 180 : 130
+    const boxWidth = colWidth + 40
+    const rowHeight = props.largeFont ? 40 : 30
+    const cols = 1
+    const rows = unconnectedNodes.length
+    const boxHeight = rows * rowHeight + 35
+
+    // Position box in top-left of the view
+    let boxX = -width / 2 + 20
+    let boxY = -height / 2 + 20
+
+    const boxGroup = g
+      .append('g')
+      .attr('transform', `translate(${boxX}, ${boxY})`)
+      .style('cursor', 'move')
+
+    boxGroup.call(
+      d3.drag().on('drag', (event) => {
+        boxX += event.dx
+        boxY += event.dy
+        boxGroup.attr('transform', `translate(${boxX}, ${boxY})`)
+      }),
+    )
+
+    boxGroup
+      .append('rect')
+      .attr('width', boxWidth)
+      .attr('height', boxHeight)
+      .attr('fill', 'rgba(255, 255, 255, 0.9)')
+      .attr('stroke', '#ccc')
+      .attr('rx', 6)
+
+    boxGroup
+      .append('text')
+      .attr('x', 10)
+      .attr('y', 20)
+      .text('Unconnected Genes')
+      .attr('font-size', '12px')
+      .attr('font-weight', 'bold')
+      .attr('fill', '#374151')
+
+    const dotsGroup = boxGroup.append('g').attr('transform', `translate(10, 35)`)
+
+    dotsGroup
+      .selectAll('circle')
+      .data(unconnectedNodes)
+      .join('circle')
+      .attr('cx', (d, i) => (i % cols) * colWidth + 20)
+      .attr('cy', (d, i) => Math.floor(i / cols) * rowHeight + rowHeight / 2)
+      .attr('r', 5)
+      .attr('fill', (d) => (props.genesInSelectedClade.has(d.id) ? '#f97316' : '#2563eb'))
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 1)
+      .append('title')
+      .text((d) => d.id)
+
+    dotsGroup
+      .selectAll('text')
+      .data(unconnectedNodes)
+      .join('text')
+      .text((d) => d.id)
+      .attr('x', (d, i) => (i % cols) * colWidth + 32)
+      .attr(
+        'y',
+        (d, i) => Math.floor(i / cols) * rowHeight + rowHeight / 2 + (props.largeFont ? 5 : 4),
+      )
+      .attr('text-anchor', 'start')
+      .attr('font-size', props.largeFont ? '16px' : '12px')
+      .attr('paint-order', 'stroke')
+      .attr('stroke', 'white')
+      .attr('stroke-width', '3px')
+      .attr('visibility', 'visible')
+  }
 
   function fade(opacity) {
     return (event, d) => {
@@ -275,7 +367,10 @@ onMounted(() => {
   }
 })
 
-watch([() => props.networkData, () => props.showGeneNames, () => props.largeFont], renderNetwork)
+watch(
+  [() => props.networkData, () => props.allGenes, () => props.showGeneNames, () => props.largeFont],
+  renderNetwork,
+)
 
 onBeforeUnmount(() => {
   if (simulation) {
