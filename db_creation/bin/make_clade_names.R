@@ -180,7 +180,7 @@ root_names <- root_names_one %>%
   group_by(root) %>%
   summarise(clade_name = first(clade_name, order_by = clade_depth))
 
-output_filename <- paste0("data/", MANUAL_SPECIES_ID, "_root_names.tsv")
+output_filename <- paste0("data/clade_names/", MANUAL_SPECIES_ID, "_root_names.tsv")
 message(paste("Saving final root names to:", output_filename))
 
 root_names_final %>%
