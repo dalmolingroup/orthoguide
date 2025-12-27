@@ -15,9 +15,6 @@ library(XML)
 
 message("Defining input files and parameters...")
 
-MANUAL_SPECIES_ID <- "7955"
-
-
 species_list_file     <- "data/species_list.txt"
 clade_names_file      <- "data/geneplast_clade_names.tsv"
 string_eukaryotes_rda <- "data/string_eukaryotes.rda"
@@ -57,37 +54,6 @@ ogdata <- unique(rbind(cogdata, cogs))
 protein_info <- vroom(protein_info_gz) %>%
   dplyr::select(protein_external_id, preferred_name)
 
-message(paste("Starting GeneBridge analysis for species:", MANUAL_SPECIES_ID))
-
-# Select appropriate COG reference data based on the species
-cogref <- if (MANUAL_SPECIES_ID %in% c("10090", "10116", "9606")) {
-  ogdata
-} else {
-  cogs
-}
-
-# Check if any proteins are found for the target species
-species_proteins <- cogref %>% filter(ssp_id == MANUAL_SPECIES_ID)
-if (nrow(species_proteins) == 0) {
-  stop(paste("No proteins found for species_id:", MANUAL_SPECIES_ID, "in the cogdata dataframe."))
-}
-
-message("Initializing GeneBridge object...")
-ogr <- newBridge(
-  ogdata = cogref,
-  phyloTree = phyloTree,
-  ogids = unique(species_proteins$og_id),
-  refsp = MANUAL_SPECIES_ID
-)
-
-message("Running Bridge analysis (rooting)...")
-ogr <- runBridge(ogr, penalty = 2, threshold = 0.5, verbose = TRUE)
-
-message("Running permutation test for statistical significance...")
-ogr <- runPermutation(ogr, nPermutations = 1000, verbose = TRUE)
-
-message("GeneBridge analysis completed. The 'ogr' object has been created.")
-
 message("Fetching taxonomic lineages from NCBI Entrez...")
 
 all_taxon_ids <- string_eukaryotes[["taxid"]]
@@ -109,6 +75,42 @@ lineages_list <- purrr::map(id_chunks, function(chunk) {
 lineages_list_two <- purrr::map(lineages_list, ~XML::xpathSApply(.x, "//Lineage", XML::xmlValue))
 lineages <- unlist(lineages_list_two)
 message("Finished fetching and parsing lineages.")
+string_eukaryotes$lineage_txt <- lineages
+
+species_ids <- scan(species_list_file, what = "character", quiet = TRUE)
+
+for (MANUAL_SPECIES_ID in species_ids) {
+  message(paste("Starting GeneBridge analysis for species:", MANUAL_SPECIES_ID))
+
+# Select appropriate COG reference data based on the species
+cogref <- if (MANUAL_SPECIES_ID %in% c("10090", "10116", "9606")) {
+  ogdata
+} else {
+  cogs
+}
+
+# Check if any proteins are found for the target species
+species_proteins <- cogref %>% filter(ssp_id == MANUAL_SPECIES_ID)
+if (nrow(species_proteins) == 0) {
+  warning(paste("No proteins found for species_id:", MANUAL_SPECIES_ID, "in the cogdata dataframe. Skipping."))
+  next
+}
+
+message("Initializing GeneBridge object...")
+ogr <- newBridge(
+  ogdata = cogref,
+  phyloTree = phyloTree,
+  ogids = unique(species_proteins$og_id),
+  refsp = MANUAL_SPECIES_ID
+)
+
+message("Running Bridge analysis (rooting)...")
+ogr <- runBridge(ogr, penalty = 2, threshold = 0.5, verbose = TRUE)
+
+message("Running permutation test for statistical significance...")
+ogr <- runPermutation(ogr, nPermutations = 1000, verbose = TRUE)
+
+message("GeneBridge analysis completed. The 'ogr' object has been created.")
 
 message("Calculating tip groups based on the rooted tree...")
 
@@ -130,14 +132,13 @@ for (i in sort(unique(tgroup))) {
 ogr@tree$tip.group <- tgroup
 
 message("Annotating main dataframe with root group and lineage info...")
-string_eukaryotes %<>% mutate(
-  root = ogr@tree$tip.group[as.character(taxid)],
-  lineage_txt = lineages
+current_string_eukaryotes <- string_eukaryotes %>% mutate(
+  root = ogr@tree$tip.group[as.character(taxid)]
 )
 
 message("Determining informative names for each root...")
 
-root_names_one <- string_eukaryotes %>%
+root_names_one <- current_string_eukaryotes %>%
   # Put lineages in a long format
   mutate(lineage_split = strsplit(lineage_txt, "; ")) %>%
   unnest_longer(col = lineage_split, values_to = "clade_name", indices_to = "clade_depth") %>%
@@ -184,6 +185,8 @@ message(paste("Saving final root names to:", output_filename))
 
 root_names_final %>%
   vroom::vroom_write(output_filename, delim = "\t")
+
+}
 
 # Optional: You can also inspect the main results dataframe from GeneBridge
 # res <- getBridge(ogr, what = "results")
