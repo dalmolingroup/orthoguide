@@ -15,12 +15,16 @@ library(XML)
 
 message("Defining input files and parameters...")
 
-species_list_file     <- "data/species_list.txt"
+species_list_file     <- "data/final_species_list.txt"
 clade_names_file      <- "data/geneplast_clade_names.tsv"
 string_eukaryotes_rda <- "data/string_eukaryotes.rda"
 geneplast_data_rdata  <- "data/gpdata_string_v11.RData"
 cogdata_table_string  <- "data/COG.mappings.v11.0.txt.gz"
 protein_info_gz       <- "data/protein.info.v11.0.txt.gz"
+
+# Execution control
+skip_existing <- TRUE
+skip_errors   <- TRUE
 
 message("Loading and pre-processing external data...")
 
@@ -30,12 +34,12 @@ load(geneplast_data_rdata) # This loads 'cogdata' and 'phyloTree'
 # Process COG mapping data from STRING
 cogs <- vroom(cogdata_table_string, col_select = c(1, 4))
 cogs <- cogs |>
-  rename(
-    `taxid.string_id` = "##protein",
-    og_id = orthologous_group
-  )
+  rename(`taxid.string_id` = "##protein", og_id = orthologous_group)
 
-separated_ids <- cogs %$% stri_split_fixed(taxid.string_id, pattern = ".", n = 2, simplify = TRUE)
+separated_ids <- cogs %$% stri_split_fixed(taxid.string_id,
+                                           pattern = ".",
+                                           n = 2,
+                                           simplify = TRUE)
 cogs[["taxid"]]      <- separated_ids[, 1]
 cogs[["protein_id"]] <- separated_ids[, 2]
 rm(separated_ids)
@@ -72,7 +76,8 @@ lineages_list <- purrr::map(id_chunks, function(chunk) {
 })
 
 # Parse the XML and extract lineage strings
-lineages_list_two <- purrr::map(lineages_list, ~XML::xpathSApply(.x, "//Lineage", XML::xmlValue))
+lineages_list_two <- purrr::map(lineages_list,
+                                ~ XML::xpathSApply(.x, "//Lineage", XML::xmlValue))
 lineages <- unlist(lineages_list_two)
 message("Finished fetching and parsing lineages.")
 string_eukaryotes$lineage_txt <- lineages
@@ -80,112 +85,166 @@ string_eukaryotes$lineage_txt <- lineages
 species_ids <- scan(species_list_file, what = "character", quiet = TRUE)
 
 for (MANUAL_SPECIES_ID in species_ids) {
-  message(paste("Starting GeneBridge analysis for species:", MANUAL_SPECIES_ID))
+  output_filename <- paste0("data/clade_names/", MANUAL_SPECIES_ID, "_root_names.tsv")
+  error_filename  <- paste0("data/clade_names/", MANUAL_SPECIES_ID, ".err")
 
-# Select appropriate COG reference data based on the species
-cogref <- if (MANUAL_SPECIES_ID %in% c("10090", "10116", "9606")) {
-  ogdata
-} else {
-  cogs
-}
+  if (skip_existing && file.exists(output_filename)) {
+    message(paste("Skipping", MANUAL_SPECIES_ID, "- output already exists."))
+    next
+  }
+  if (skip_errors && file.exists(error_filename)) {
+    message(paste("Skipping", MANUAL_SPECIES_ID, "- previous error detected."))
+    next
+  }
 
-# Check if any proteins are found for the target species
-species_proteins <- cogref %>% filter(ssp_id == MANUAL_SPECIES_ID)
-if (nrow(species_proteins) == 0) {
-  warning(paste("No proteins found for species_id:", MANUAL_SPECIES_ID, "in the cogdata dataframe. Skipping."))
-  next
-}
+  message(paste(
+    "Starting GeneBridge analysis for species:",
+    MANUAL_SPECIES_ID
+  ))
+  tryCatch({
+    # Select appropriate COG reference data based on the species
+    cogref <- if (MANUAL_SPECIES_ID %in% c("10090", "10116", "9606")) {
+      ogdata
+    } else {
+      cogs
+    }
 
-message("Initializing GeneBridge object...")
-ogr <- newBridge(
-  ogdata = cogref,
-  phyloTree = phyloTree,
-  ogids = unique(species_proteins$og_id),
-  refsp = MANUAL_SPECIES_ID
-)
+    # Check if any proteins are found for the target species
+    species_proteins <- cogref %>% filter(ssp_id == MANUAL_SPECIES_ID)
+    if (nrow(species_proteins) == 0) {
+      warning(
+        paste(
+          "No proteins found for species_id:",
+          MANUAL_SPECIES_ID,
+          "in the cogdata dataframe. Skipping."
+        )
+      )
+    } else {
 
-message("Running Bridge analysis (rooting)...")
-ogr <- runBridge(ogr, penalty = 2, threshold = 0.5, verbose = TRUE)
+    }
 
-message("Running permutation test for statistical significance...")
-ogr <- runPermutation(ogr, nPermutations = 1000, verbose = TRUE)
+    message("Initializing GeneBridge object...")
+    ogr <- newBridge(
+      ogdata = cogref,
+      phyloTree = phyloTree,
+      ogids = unique(species_proteins$og_id),
+      refsp = MANUAL_SPECIES_ID
+    )
 
-message("GeneBridge analysis completed. The 'ogr' object has been created.")
+    message("Running Bridge analysis (rooting)...")
+    ogr <- runBridge(ogr,
+                     penalty = 2,
+                     threshold = 0.5,
+                     verbose = TRUE)
 
-message("Calculating tip groups based on the rooted tree...")
+    message("Running permutation test for statistical significance...")
+    ogr <- runPermutation(ogr, nPermutations = 1000, verbose = TRUE)
 
-# Calculate the distance from each node to the specified species tip
-top.tip <- which(ogr@tree$tip.label == MANUAL_SPECIES_ID)
-tgroup <- ape::dist.nodes(ogr@tree)[, top.tip]
-mrcas <- mrca(ogr@tree)[, MANUAL_SPECIES_ID]
-tgroup <- tgroup[mrcas]
-names(tgroup) <- names(mrcas)
+    message("GeneBridge analysis completed. The 'ogr' object has been created.")
 
-# Re-index the groups sequentially
-ct <- 1; tp <- tgroup
-for (i in sort(unique(tgroup))) {
-  tgroup[tp == i] <- ct
-  ct <- ct + 1
-}
+    message("Calculating tip groups based on the rooted tree...")
 
-# Assign the calculated group to each tip in the tree
-ogr@tree$tip.group <- tgroup
+    # Calculate the distance from each node to the specified species tip
+    top.tip <- which(ogr@tree$tip.label == MANUAL_SPECIES_ID)
+    tgroup <- ape::dist.nodes(ogr@tree)[, top.tip]
+    mrcas <- mrca(ogr@tree)[, MANUAL_SPECIES_ID]
+    tgroup <- tgroup[mrcas]
+    names(tgroup) <- names(mrcas)
 
-message("Annotating main dataframe with root group and lineage info...")
-current_string_eukaryotes <- string_eukaryotes %>% mutate(
-  root = ogr@tree$tip.group[as.character(taxid)]
-)
+    # Re-index the groups sequentially
+    ct <- 1
+    tp <- tgroup
+    for (i in sort(unique(tgroup))) {
+      tgroup[tp == i] <- ct
+      ct <- ct + 1
+    }
 
-message("Determining informative names for each root...")
+    # Assign the calculated group to each tip in the tree
+    ogr@tree$tip.group <- tgroup
 
-root_names_one <- current_string_eukaryotes %>%
-  # Put lineages in a long format
-  mutate(lineage_split = strsplit(lineage_txt, "; ")) %>%
-  unnest_longer(col = lineage_split, values_to = "clade_name", indices_to = "clade_depth") %>%
-  # Count occurrences of each clade name within each root and depth
-  group_by(root, clade_depth, clade_name) %>%
-  tally(sort = TRUE) %>%
-  # Collapse lineages by clade depths to find where they diverge
-  summarise(
-    diverging_rank = n_distinct(clade_name) > 1,
-    clade_name = ifelse(diverging_rank, paste0(clade_name, " (", n, ")", collapse = "; "), clade_name)
-  ) %>%
-  # Keep only ranks up to the first point of divergence
-  filter(cumsum(diverging_rank) <= 1) %>%
-  # Remove taxonomically broad basal ranks (like 'Eukaryota')
-  group_by(clade_depth) %>%
-  arrange(root)
+    message("Annotating main dataframe with root group and lineage info...")
+    current_string_eukaryotes <- string_eukaryotes %>% mutate(root = ogr@tree$tip.group[as.character(taxid)])
 
-root_names_final <- root_names_one %>%
+    message("Determining informative names for each root...")
 
-  # 1. Group by root, then count how many times each clade_name appears.
-  count(root, clade_name, name = "name_count", sort = TRUE) %>%
+    root_names_one <- current_string_eukaryotes %>%
+      # Put lineages in a long format
+      mutate(lineage_split = strsplit(lineage_txt, "; ")) %>%
+      unnest_longer(col = lineage_split,
+                    values_to = "clade_name",
+                    indices_to = "clade_depth") %>%
+      # Count occurrences of each clade name within each root and depth
+      group_by(root, clade_depth, clade_name) %>%
+      tally(sort = TRUE) %>%
+      # Collapse lineages by clade depths to find where they diverge
+      summarise(
+        diverging_rank = n_distinct(clade_name) > 1,
+        clade_name = ifelse(
+          diverging_rank,
+          paste0(clade_name, " (", n, ")", collapse = "; "),
+          clade_name
+        )
+      ) %>%
+      # Keep only ranks up to the first point of divergence
+      filter(cumsum(diverging_rank) <= 1) %>%
+      # Remove taxonomically broad basal ranks (like 'Eukaryota')
+      group_by(clade_depth) %>%
+      arrange(root)
 
-  # 2. Format the string for each name to be "Name (count)".
-  mutate(formatted_name = paste0(clade_name, " (", name_count, ")")) %>%
+    root_names_final <- root_names_one %>%
 
-  # 3. Group again by root to collapse the formatted strings together.
-  group_by(root) %>%
+      # 1. Group by root, then count how many times each clade_name appears.
+      count(root, clade_name, name = "name_count", sort = TRUE) %>%
 
-  # 4. Paste all the formatted strings for a root into one, separated by "; ".
-  summarise(clade_name = paste(formatted_name, collapse = "; ")) %>%
+      # 2. Format the string for each name to be "Name (count)".
+      mutate(formatted_name = paste0(clade_name, " (", name_count, ")")) %>%
 
-  # 5. Ungroup for a clean final tibble.
-  ungroup()
+      # 3. Group again by root to collapse the formatted strings together.
+      group_by(root) %>%
 
-# Select the most informative name for each root
-root_names <- root_names_one %>%
-  filter(!(duplicated(clade_name) | duplicated(clade_name, fromLast = TRUE)) | diverging_rank) %>%
-  # Choose the first informative name based on clade depth
-  group_by(root) %>%
-  summarise(clade_name = first(clade_name, order_by = clade_depth))
+      # 4. Paste all the formatted strings for a root into one, separated by "; ".
+      summarise(clade_name = paste(formatted_name, collapse = "; ")) %>%
 
-output_filename <- paste0("data/clade_names/", MANUAL_SPECIES_ID, "_root_names.tsv")
-message(paste("Saving final root names to:", output_filename))
+      # 5. Ungroup for a clean final tibble.
+      ungroup()
 
-root_names_final %>%
-  vroom::vroom_write(output_filename, delim = "\t")
+    # Select the most informative name for each root
+    root_names <- root_names_one %>%
+      filter(!(
+        duplicated(clade_name) |
+          duplicated(clade_name, fromLast = TRUE)
+      ) | diverging_rank) %>%
+      # Choose the first informative name based on clade depth
+      group_by(root) %>%
+      summarise(clade_name = first(clade_name, order_by = clade_depth))
 
+    message(paste("Saving final root names to:", output_filename))
+
+    root_names %>%
+      vroom::vroom_write(output_filename, delim = "\t")
+
+    root_names_final %>%
+      vroom::vroom_write(
+        paste0(
+          "data/clade_names/",
+          "raw_",
+          MANUAL_SPECIES_ID,
+          "_root_names.tsv"
+        ),
+        delim = "\t"
+      )
+
+    if (file.exists(error_filename))
+      unlink(error_filename)
+  }, error = function(e) {
+    message(paste(
+      "Error processing",
+      MANUAL_SPECIES_ID,
+      ":",
+      conditionMessage(e)
+    ))
+    writeLines(as.character(conditionMessage(e)), error_filename)
+  })
 }
 
 # Optional: You can also inspect the main results dataframe from GeneBridge
