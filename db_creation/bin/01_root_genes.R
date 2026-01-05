@@ -14,18 +14,18 @@ library(magrittr)
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 6) {
-  stop("Usage: Rscript 01_root_genes.R <species_list_file> <clade_names_file> <string_eukaryotes_rda> <geneplast_data_rdata> <cogdata_table> <protein_info_gz>", call. = FALSE)
+  stop("Usage: Rscript 01_root_genes.R <species_list_file> <clade_names_dir> <string_eukaryotes_rda> <geneplast_data_rdata> <cogdata_table> <protein_info_gz>", call. = FALSE)
 }
 
 species_list_file <- args[1]
-clade_names_file <- args[2]
+clade_names_dir <- args[2]
 string_eukaryotes_rda <- args[3]
 geneplast_data_rdata <- args[4]
 cogdata_table_string <- args[5]
 protein_info_gz <- args[6]
 
 # species_list_file      <- "data/species_list.txt"
-# clade_names_file       <- "data/geneplast_clade_names.tsv"
+# clade_names_dir        <- "data/clade_names"
 # string_eukaryotes_rda <- "data/string_eukaryotes.rda"
 # geneplast_data_rdata    <- "data/gpdata_string_v11.RData"
 # cogdata_table_string     <- "data/COG.mappings.v11.0.txt.gz"
@@ -123,8 +123,6 @@ cogdata <- dplyr::select(cogdata, "protein_id", "ssp_id", "og_id" = "cog_id")
 
 ogdata <- unique(rbind(cogdata, cogs))
 
-lca_names <- vroom(clade_names_file)
-
 protein_info <- vroom(protein_info_gz) %>%
   dplyr::select(protein_external_id, preferred_name)
 
@@ -134,15 +132,17 @@ for (current_species_id in TARGET_SPECIES_IDS) {
 
   tryCatch({
 
+    clade_file <- file.path(clade_names_dir, paste0(current_species_id, "_root_names.tsv"))
+    if (!file.exists(clade_file)) {
+      stop(paste("Clade file not found:", clade_file))
+    }
+    lca_names_filter <- vroom(clade_file)
+
     if (current_species_id %in% c("10090", "10116", "9606")) {
       cogref <- ogdata
     } else {
       cogref <- cogs
     }
-
-    lca_names_filter <- lca_names %>%
-      filter(species_id == current_species_id) %>%
-      dplyr::select(-species_id)
 
     final_results <- process_species_rooting(
       species_id = current_species_id,

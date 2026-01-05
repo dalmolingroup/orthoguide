@@ -25,7 +25,7 @@ process GENEBRIDGE {
 
     input:
         path species_list
-        path clade_names
+        path clade_names_dir
         path string_eukaryotes
         path gp_data
         path cog_map
@@ -38,7 +38,7 @@ process GENEBRIDGE {
     """
     01_root_genes.R \\
         $species_list \\
-        $clade_names \\
+        $clade_names_dir \\
         $string_eukaryotes \\
         $gp_data \\
         $cog_map \\
@@ -79,7 +79,7 @@ workflow {
 
     GENEBRIDGE (
         file(params.species_list),
-        file(params.clade_names),
+        file(params.clade_names_dir),
         file(params.string_eukaryotes),
         gp_data_ch,
         cog_map_ch,
