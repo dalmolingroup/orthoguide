@@ -15,7 +15,7 @@ library(XML)
 
 message("Defining input files and parameters...")
 
-species_list_file     <- "data/final_species_list.txt"
+species_list_file     <- "data/full_species_list.txt"
 clade_names_file      <- "data/geneplast_clade_names.tsv"
 string_eukaryotes_rda <- "data/string_eukaryotes.rda"
 geneplast_data_rdata  <- "data/gpdata_string_v11.RData"
