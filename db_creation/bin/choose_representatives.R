@@ -38,6 +38,12 @@ representatives <- string_eukaryotes %>%
   ungroup()
 
 # Combine and save
-bind_rows(priority_species, representatives) %>%
+combined <- bind_rows(priority_species, representatives)
+
+combined %>%
   select(taxid) %>%
   write_tsv("data/full_species_list.txt", col_names = F)
+
+combined %>%
+  select(taxid, string_name) %>%
+  write_tsv("data/full_species_map.tsv", col_names = F)
