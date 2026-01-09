@@ -39,7 +39,8 @@ find "$CSV_DIR/" -name "*_result.csv" | while read -r filepath; do
     
     sqlite3 "$DB_FILE" <<EOF
 
-CREATE TABLE IF NOT EXISTS "$species_id" (
+-- Create a temporary table matching the CSV structure exactly
+CREATE TABLE "${species_id}_temp" (
     cog_id          TEXT,
     root            INTEGER,
     Dscore          REAL,
@@ -53,12 +54,30 @@ CREATE TABLE IF NOT EXISTS "$species_id" (
 );
 
 .mode csv
+.import --skip 1 "$filepath" "${species_id}_temp"
 
-.import --skip 1 "$filepath" "$species_id"
+-- Create the final table with only columns used by the application
+CREATE TABLE "$species_id" (
+    preferred_name  TEXT,
+    protein_id      TEXT,
+    clade_name      TEXT,
+    root            INTEGER,
+    cog_id          TEXT
+);
+
+-- Copy data from temp to final
+INSERT INTO "$species_id" (preferred_name, protein_id, clade_name, root, cog_id)
+SELECT preferred_name, protein_id, clade_name, root, cog_id FROM "${species_id}_temp";
+
+-- Drop the temporary table
+DROP TABLE "${species_id}_temp";
 
 EOF
     
 done
+
+echo "Optimizing database size..."
+sqlite3 "$DB_FILE" "VACUUM;"
 
 echo ""
 echo "Database '$DB_FILE' created successfully with the following tables:"
