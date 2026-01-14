@@ -40,8 +40,15 @@
           style="display: none"
         />
         <p class="input-hint">
-          Insert one {{ identifierType === 'preferred_name' ? 'Gene Symbol' : 'Protein' }} ID per
-          line or upload a .txt file.
+          Insert one
+          {{
+            identifierType === 'preferred_name'
+              ? 'Gene Symbol'
+              : identifierType === 'protein_id'
+                ? 'Protein'
+                : 'COG'
+          }}
+          ID per line or upload a .txt file.
         </p>
       </div>
 
@@ -50,14 +57,9 @@
           <div class="form-group-small">
             <label for="organism-db">Organism <span class="required">*</span></label>
             <select id="organism-db" v-model="selectedOrganism" @change="clearInput">
-              <option value="9606">Homo sapiens</option>
-              <option value="10090">Mus musculus</option>
-              <option value="10116">Rattus norvegicus</option>
-              <option value="7955">Danio rerio</option>
-              <option value="7227">Drosophila melanogaster</option>
-              <option value="6239">Caenorhabditis elegans</option>
-              <option value="3702">Arabidopsis thaliana</option>
-              <option value="4932">Saccharomyces cerevisiae</option>
+              <option v-for="species in speciesList" :key="species.id" :value="species.id">
+                {{ species.name }}
+              </option>
             </select>
           </div>
           <div class="form-group-small">
@@ -65,6 +67,7 @@
             <select id="identifier-type" v-model="identifierType" @change="clearInput">
               <option value="preferred_name">Gene Symbol</option>
               <option value="protein_id">Protein ID</option>
+              <option value="cog_id">Orthologous Group ID</option>
             </select>
           </div>
         </div>
@@ -135,6 +138,10 @@ import { hsa, mmu, rno, dme, cel, ath, sce, dre } from '../data/exampleGenes.js'
 
 const props = defineProps({
   isLoading: Boolean,
+  speciesList: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 const emit = defineEmits(['start-analysis'])
@@ -147,9 +154,13 @@ const fileInput = ref(null)
 const showNetwork = ref(true)
 
 const placeholderText = computed(() => {
-  return identifierType.value === 'preferred_name'
-    ? 'Ex: NRP1, CDK6, ITGB7...'
-    : 'Ex: ENSP00000223177, ENSP00000266970...'
+  if (identifierType.value === 'preferred_name') {
+    return 'Ex: NRP1, CDK6, ITGB7...'
+  } else if (identifierType.value === 'protein_id') {
+    return 'Ex: ENSP00000223177, ENSP00000266970...'
+  } else {
+    return 'Ex: NOG106405, KOG0018...'
+  }
 })
 
 const geneCount = computed(() => {
@@ -259,6 +270,7 @@ const clearValidationError = () => {
 }
 .organism-identifier-wrapper {
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 .form-group-small {

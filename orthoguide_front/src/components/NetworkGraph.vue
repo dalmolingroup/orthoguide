@@ -1,7 +1,13 @@
 <template>
   <div class="network-container" ref="networkContainer">
-    <svg v-if="networkData && networkData.length > 0" ref="svgRef"></svg>
-    <div v-if="networkData && networkData.length > 0" class="legend">
+    <svg
+      v-if="(networkData && networkData.length > 0) || (allGenes && allGenes.length > 0)"
+      ref="svgRef"
+    ></svg>
+    <div
+      v-if="(networkData && networkData.length > 0) || (allGenes && allGenes.length > 0)"
+      class="legend"
+    >
       <div class="legend-item">
         <span class="legend-color-box orange"></span>
         <span>Arose in this clade</span>
@@ -26,9 +32,21 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  allGenes: {
+    type: Array,
+    required: true,
+  },
   genesInSelectedClade: {
     type: Set,
     required: true,
+  },
+  showGeneNames: {
+    type: Boolean,
+    default: false,
+  },
+  largeFont: {
+    type: Boolean,
+    default: false,
   },
 })
 
@@ -41,8 +59,8 @@ const renderNetwork = () => {
   svg.selectAll('*').remove()
 
   if (
-    !props.networkData ||
-    props.networkData.length === 0 ||
+    ((!props.networkData || props.networkData.length === 0) &&
+      (!props.allGenes || props.allGenes.length === 0)) ||
     !svgRef.value ||
     !networkContainer.value
   ) {
@@ -57,9 +75,15 @@ const renderNetwork = () => {
   })
   const nodes = Array.from(nodesMap.values())
 
+  const connectedIds = new Set(nodesMap.keys())
+  const unconnectedNodes = props.allGenes
+    .filter((id) => !connectedIds.has(id))
+    .sort()
+    .map((id) => ({ id }))
+
   const linkedByIndex = {}
   links.forEach((d) => {
-    linkedByIndex[`${d.source.id},${d.target.id}`] = 1
+    linkedByIndex[`${d.source},${d.target}`] = 1
   })
 
   function isConnected(a, b) {
@@ -126,11 +150,87 @@ const renderNetwork = () => {
     .data(nodes)
     .join('text')
     .text((d) => d.id)
-    .attr('font-size', '12px')
+    .attr('font-size', props.largeFont ? '16px' : '12px')
     .attr('paint-order', 'stroke')
     .attr('stroke', 'white')
     .attr('stroke-width', '3px')
-    .attr('visibility', 'hidden')
+    .attr('visibility', props.showGeneNames ? 'visible' : 'hidden')
+
+  // Render unconnected nodes in a box
+  if (unconnectedNodes.length > 0) {
+    const colWidth = props.largeFont ? 180 : 130
+    const boxWidth = colWidth + 40
+    const rowHeight = props.largeFont ? 40 : 30
+    const cols = 1
+    const rows = unconnectedNodes.length
+    const boxHeight = rows * rowHeight + 35
+
+    // Position box in top-left of the view
+    let boxX = -width / 2 + 20
+    let boxY = -height / 2 + 20
+
+    const boxGroup = g
+      .append('g')
+      .attr('transform', `translate(${boxX}, ${boxY})`)
+      .style('cursor', 'move')
+
+    boxGroup.call(
+      d3.drag().on('drag', (event) => {
+        boxX += event.dx
+        boxY += event.dy
+        boxGroup.attr('transform', `translate(${boxX}, ${boxY})`)
+      }),
+    )
+
+    boxGroup
+      .append('rect')
+      .attr('width', boxWidth)
+      .attr('height', boxHeight)
+      .attr('fill', 'rgba(255, 255, 255, 0.9)')
+      .attr('stroke', '#ccc')
+      .attr('rx', 6)
+
+    boxGroup
+      .append('text')
+      .attr('x', 10)
+      .attr('y', 20)
+      .text('Unconnected Genes')
+      .attr('font-size', '12px')
+      .attr('font-weight', 'bold')
+      .attr('fill', '#374151')
+
+    const dotsGroup = boxGroup.append('g').attr('transform', `translate(10, 35)`)
+
+    dotsGroup
+      .selectAll('circle')
+      .data(unconnectedNodes)
+      .join('circle')
+      .attr('cx', (d, i) => (i % cols) * colWidth + 20)
+      .attr('cy', (d, i) => Math.floor(i / cols) * rowHeight + rowHeight / 2)
+      .attr('r', 5)
+      .attr('fill', (d) => (props.genesInSelectedClade.has(d.id) ? '#f97316' : '#2563eb'))
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 1)
+      .append('title')
+      .text((d) => d.id)
+
+    dotsGroup
+      .selectAll('text')
+      .data(unconnectedNodes)
+      .join('text')
+      .text((d) => d.id)
+      .attr('x', (d, i) => (i % cols) * colWidth + 32)
+      .attr(
+        'y',
+        (d, i) => Math.floor(i / cols) * rowHeight + rowHeight / 2 + (props.largeFont ? 5 : 4),
+      )
+      .attr('text-anchor', 'start')
+      .attr('font-size', props.largeFont ? '16px' : '12px')
+      .attr('paint-order', 'stroke')
+      .attr('stroke', 'white')
+      .attr('stroke-width', '3px')
+      .attr('visibility', 'visible')
+  }
 
   function fade(opacity) {
     return (event, d) => {
@@ -139,7 +239,7 @@ const renderNetwork = () => {
       })
 
       text.style('visibility', function (o) {
-        return o.id === d.id ? 'visible' : 'hidden'
+        return isConnected(d, o) ? 'visible' : 'hidden'
       })
 
       link.style('stroke-opacity', (o) =>
@@ -148,7 +248,7 @@ const renderNetwork = () => {
 
       if (opacity === 1) {
         node.style('opacity', 1)
-        text.style('visibility', 'hidden')
+        text.style('visibility', props.showGeneNames ? 'visible' : 'hidden')
         link.style('stroke-opacity', 0.6)
       }
     }
@@ -210,8 +310,52 @@ const exportSVG = () => {
   URL.revokeObjectURL(url)
 }
 
+const exportPNG = () => {
+  if (!svgRef.value) return
+
+  const svgNode = svgRef.value.cloneNode(true)
+  d3.select(svgNode)
+    .attr('style', 'background-color: white;')
+    .selectAll('text')
+    .attr('font-family', 'sans-serif')
+
+  const svgData = new XMLSerializer().serializeToString(svgNode)
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+
+  const width = parseInt(svgRef.value.getAttribute('width'))
+  const height = parseInt(svgRef.value.getAttribute('height'))
+
+  const scale = 2
+  canvas.width = width * scale
+  canvas.height = height * scale
+  ctx.scale(scale, scale)
+
+  const img = new Image()
+  img.onload = () => {
+    ctx.fillStyle = 'white'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(img, 0, 0)
+    const url = canvas.toDataURL('image/png')
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'orthoguide_network.png'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+  img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgData)}`
+}
+
 defineExpose({
-  exportSVG,
+  exportGraph: (format = 'svg') => {
+    if (format === 'png') {
+      exportPNG()
+    } else {
+      exportSVG()
+    }
+  },
 })
 
 let resizeObserver
@@ -223,7 +367,10 @@ onMounted(() => {
   }
 })
 
-watch(() => props.networkData, renderNetwork)
+watch(
+  [() => props.networkData, () => props.allGenes, () => props.showGeneNames, () => props.largeFont],
+  renderNetwork,
+)
 
 onBeforeUnmount(() => {
   if (simulation) {

@@ -1,6 +1,10 @@
 <template>
   <div class="space-y-8">
-    <AnalysisCard :is-loading="isLoading || isDbLoading" @start-analysis="handleAnalysis" />
+    <AnalysisCard
+      :is-loading="isLoading || isDbLoading"
+      :species-list="speciesList"
+      @start-analysis="handleAnalysis"
+    />
     <div v-if="isDbLoading" class="loading-db-message">
       <p>Loading database, please wait...</p>
     </div>
@@ -37,6 +41,17 @@ const networkData = ref([])
 const apiErrorMessage = ref('')
 const selectedCladeIndex = ref(0)
 const missingGenes = ref([])
+
+const speciesList = [
+  { id: '9606', name: 'Homo sapiens' },
+  { id: '10090', name: 'Mus musculus' },
+  { id: '10116', name: 'Rattus norvegicus' },
+  { id: '7955', name: 'Danio rerio' },
+  { id: '7227', name: 'Drosophila melanogaster' },
+  { id: '6239', name: 'Caenorhabditis elegans' },
+  { id: '3702', name: 'Arabidopsis thaliana' },
+  { id: '4932', name: 'Saccharomyces cerevisiae' },
+]
 
 const tableHeaders = ref([
   { title: 'Gene', data: 'preferred_name' },
@@ -204,7 +219,16 @@ const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred
 
       stmt.bind(chunk)
       while (stmt.step()) {
-        allResults.push(stmt.getAsObject())
+        const row = stmt.getAsObject()
+        const speciesObj = speciesList.find((s) => s.id === species)
+        let commonName = speciesObj ? speciesObj.name : 'Species'
+
+        const parts = commonName.split(' ')
+        if (parts.length >= 2) {
+          commonName = `${parts[0][0]}.${parts[1]}`
+        }
+        row.clade_name = `${commonName}-${row.clade_name} LCA`
+        allResults.push(row)
       }
       stmt.free()
     }

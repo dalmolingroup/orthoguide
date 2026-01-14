@@ -70,7 +70,7 @@ defineEmits(['update:modelValue'])
 }
 .slider-value {
   font-weight: 600;
-  min-width: 120px;
+  min-width: 220px;
   text-align: left;
 }
 </style>
