@@ -6,7 +6,14 @@
         <div class="label-with-button">
           <label for="gene-ids">Input Gene IDs: <span class="required">*</span></label>
           <div class="action-buttons">
-            <button @click="loadExampleData" class="example-button">Use Example Data</button>
+            <button
+              @click="loadExampleData"
+              class="example-button"
+              :disabled="!hasExampleData"
+              :title="hasExampleData ? '' : 'No example data is available for this species'"
+            >
+              Use Example Data
+            </button>
             <button @click="triggerFileUpload" class="upload-button">
               <svg
                 width="14"
@@ -49,15 +56,10 @@
         <div class="organism-identifier-wrapper">
           <div class="form-group-small">
             <label for="organism-db">Organism <span class="required">*</span></label>
-            <select id="organism-db" v-model="selectedOrganism" @change="clearInput">
-              <option value="9606">Homo sapiens</option>
-              <option value="10090">Mus musculus</option>
-              <option value="10116">Rattus norvegicus</option>
-              <option value="7955">Danio rerio</option>
-              <option value="7227">Drosophila melanogaster</option>
-              <option value="6239">Caenorhabditis elegans</option>
-              <option value="3702">Arabidopsis thaliana</option>
-              <option value="4932">Saccharomyces cerevisiae</option>
+            <select id="organism-db" ref="organismSelect" v-model="selectedOrganism">
+              <option v-for="org in organismList" :key="org.value" :value="org.value">
+                {{ org.text }}
+              </option>
             </select>
           </div>
           <div class="form-group-small">
@@ -130,8 +132,10 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { hsa, mmu, rno, dme, cel, ath, sce, dre } from '../data/exampleGenes.js'
+import TomSelect from 'tom-select'
+import 'tom-select/dist/css/tom-select.default.css'
 
 const props = defineProps({
   isLoading: Boolean,
@@ -140,6 +144,10 @@ const props = defineProps({
 const emit = defineEmits(['start-analysis'])
 
 const geneIds = ref('')
+const organismList = ref([])
+const organismSelect = ref(null)
+const exampleDataSpecies = ['9606', '10090', '10116', '7955', '7227', '6239', '3702', '4932']
+const hasExampleData = computed(() => exampleDataSpecies.includes(selectedOrganism.value))
 const selectedOrganism = ref('9606')
 const identifierType = ref('preferred_name')
 const validationError = ref('')
@@ -163,7 +171,58 @@ const clearInput = () => {
   geneIds.value = ''
 }
 
+let tomSelectInstance = null
+
+onMounted(async () => {
+  try {
+    const response = await fetch(`${import.meta.env.BASE_URL}final_species_map.tsv`)
+    if (response.ok) {
+      const text = await response.text()
+      const allOrganisms = text
+        .trim()
+        .split('\n')
+        .map((line) => {
+          const [id, name] = line.split('\t')
+          return { value: id, text: name }
+        })
+
+      const topOrganisms = []
+      const organismMap = new Map(allOrganisms.map((org) => [org.value, org]))
+
+      exampleDataSpecies.forEach((id) => {
+        if (organismMap.has(id)) {
+          topOrganisms.push(organismMap.get(id))
+          organismMap.delete(id)
+        }
+      })
+
+      organismList.value = [...topOrganisms, ...organismMap.values()]
+    }
+  } catch (e) {
+    console.error('Failed to load species map', e)
+  }
+
+  await nextTick()
+
+  if (organismSelect.value) {
+    tomSelectInstance = new TomSelect(organismSelect.value, {
+      sortField: [{ field: '$order' }, { field: '$score' }],
+      onChange: (value) => {
+        selectedOrganism.value = value
+        clearInput()
+      },
+    })
+  }
+})
+
+onBeforeUnmount(() => {
+  if (tomSelectInstance) {
+    tomSelectInstance.destroy()
+  }
+})
+
 const loadExampleData = () => {
+  if (!hasExampleData.value) return
   identifierType.value = 'preferred_name'
   clearInput()
   switch (selectedOrganism.value) {
@@ -259,6 +318,7 @@ const clearValidationError = () => {
 }
 .organism-identifier-wrapper {
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 .form-group-small {
@@ -301,6 +361,13 @@ const clearValidationError = () => {
 .upload-button:hover,
 .example-button:hover {
   background-color: #f3f4f6;
+}
+.example-button:disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+.example-button:disabled:hover {
+  background-color: #f9fafb;
 }
 label {
   font-weight: 600;
@@ -462,5 +529,57 @@ input:disabled + .slider {
   .analysis-card {
     padding: 20px;
   }
+}
+
+/* Tom Select Customization */
+:deep(.ts-wrapper) {
+  width: 100%;
+}
+
+:deep(.ts-control) {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  padding: 12px 12px;
+  padding-right: 2.5rem !important;
+  font-size: 0.95rem;
+  font-family: inherit;
+  box-shadow: none;
+  background-color: white;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+:deep(.ts-wrapper.single .ts-control) {
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+}
+
+:deep(.ts-wrapper.focus .ts-control) {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Hide default Tom Select caret to use our custom SVG */
+:deep(.ts-wrapper.single .ts-control::after) {
+  display: none !important;
+}
+
+:deep(.ts-dropdown) {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-top: 4px;
+  z-index: 10;
+}
+
+:deep(.ts-dropdown .option.active) {
+  background-color: #f3f4f6;
+  color: inherit;
 }
 </style>
