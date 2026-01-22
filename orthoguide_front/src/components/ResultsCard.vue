@@ -129,6 +129,7 @@
         v-if="cladeList.length > 1"
         :clades="cladeList"
         :modelValue="selectedCladeIndex"
+        :disabled="isSliderDisabled"
         @update:modelValue="$emit('update:selectedCladeIndex', $event)"
       />
       <NetworkGraph
@@ -138,6 +139,9 @@
         :genes-in-selected-clade="genesInSelectedClade"
         :show-gene-names="showGeneNames"
         :large-font="largeFont"
+        :node-coordinates="nodeCoordinates"
+        @simulation-end="handleSimulationEnd"
+        @node-dragged="handleNodeDragged"
       />
     </div>
     <div
@@ -189,6 +193,19 @@ const showChartExportOptions = ref(false)
 const showNetworkExportOptions = ref(false)
 const showGeneNames = ref(false)
 const largeFont = ref(false)
+const isSliderDisabled = ref(true)
+const nodeCoordinates = ref(new Map())
+
+const handleSimulationEnd = (coords) => {
+  isSliderDisabled.value = false
+  nodeCoordinates.value = coords
+}
+
+const handleNodeDragged = ({ id, x, y }) => {
+  if (nodeCoordinates.value) {
+    nodeCoordinates.value.set(id, { x, y })
+  }
+}
 
 const handleExportChart = (format) => {
   if (barChartRef.value) {
