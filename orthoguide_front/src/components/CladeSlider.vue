@@ -48,12 +48,13 @@ defineEmits(['update:modelValue'])
   font-weight: 600;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
+  color: var(--color-text);
 }
 .slider {
   width: 100%;
   height: 8px;
   border-radius: 5px;
-  background: #d1d5db;
+  background: var(--color-border);
   outline: none;
   opacity: 0.7;
   transition: opacity 0.2s;
@@ -81,6 +82,7 @@ defineEmits(['update:modelValue'])
   font-weight: 600;
   min-width: 220px;
   text-align: left;
+  color: var(--color-text);
 }
 .slider-disabled {
   opacity: 0.4 !important;

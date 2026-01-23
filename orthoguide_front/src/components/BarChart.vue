@@ -195,6 +195,17 @@ onBeforeUnmount(() => {
   width: 100%;
   font-family: sans-serif;
 }
+/* Theme support for D3 elements */
+:deep(text) {
+  fill: var(--color-text);
+}
+:deep(.domain) {
+  stroke: var(--color-text);
+}
+:deep(.tick line) {
+  stroke: var(--color-border);
+}
+
 .tooltip {
   position: absolute;
   visibility: hidden;
