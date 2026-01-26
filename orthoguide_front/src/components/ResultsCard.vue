@@ -197,17 +197,13 @@ const isSliderDisabled = ref(true)
 const nodeCoordinates = ref(new Map())
 
 // Reset node coordinates and slider state when a new analysis starts
-watch(
-  results,
-  (newResults, oldResults) => {
-    if (newResults === null && oldResults !== null) {
-      // A new analysis is starting (transition from non-null to null), reset the state
-      nodeCoordinates.value = new Map()
-      isSliderDisabled.value = true
-    }
-  },
-  { immediate: true },
-)
+watch(results, (newResults, oldResults) => {
+  if (newResults === null && oldResults !== null) {
+    // A new analysis is starting (transition from non-null to null), reset the state
+    nodeCoordinates.value = new Map()
+    isSliderDisabled.value = true
+  }
+})
 
 const handleSimulationEnd = (coords) => {
   isSliderDisabled.value = false
