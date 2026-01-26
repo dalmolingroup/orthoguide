@@ -148,7 +148,7 @@
       v-if="
         networkData.length == 0 &&
         genesInScope.length == 0 &&
-        (results.length > 0 || missingGenes.length == 0)
+        ((results && results.length > 0) || missingGenes.length == 0)
       "
       class="no-data-placeholder"
     >
@@ -164,7 +164,7 @@
 </template>
 
 <script setup>
-import { ref, computed, toRefs } from 'vue'
+import { ref, computed, toRefs, watch } from 'vue'
 import ResultsTable from './ResultsTable.vue'
 import BarChart from './BarChart.vue'
 import NetworkGraph from './NetworkGraph.vue'
@@ -195,6 +195,15 @@ const showGeneNames = ref(false)
 const largeFont = ref(false)
 const isSliderDisabled = ref(true)
 const nodeCoordinates = ref(new Map())
+
+// Reset node coordinates and slider state when a new analysis starts
+watch(results, (newResults) => {
+  if (newResults === null) {
+    // A new analysis is starting, reset the state
+    nodeCoordinates.value = new Map()
+    isSliderDisabled.value = true
+  }
+})
 
 const handleSimulationEnd = (coords) => {
   isSliderDisabled.value = false
