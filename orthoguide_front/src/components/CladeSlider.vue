@@ -101,8 +101,8 @@ defineEmits(['update:modelValue'])
   bottom: 150%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #374151;
-  color: white;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 0.8rem;
@@ -111,6 +111,7 @@ defineEmits(['update:modelValue'])
   opacity: 0;
   transition: opacity 0.2s;
   z-index: 10;
+  border: 1px solid var(--color-border);
 }
 .tooltip::after {
   content: '';
@@ -120,7 +121,7 @@ defineEmits(['update:modelValue'])
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #374151 transparent transparent transparent;
+  border-color: var(--color-border) transparent transparent transparent;
 }
 .has-tooltip:hover .tooltip {
   opacity: 1;
