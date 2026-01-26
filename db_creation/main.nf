@@ -56,7 +56,7 @@ process DB_CREATION {
         path csv_results
 
     output:
-        path "orthoguide_data.db", emit: db
+        path "orthoguide_data.db.gz", emit: db
 
     script:
     """
