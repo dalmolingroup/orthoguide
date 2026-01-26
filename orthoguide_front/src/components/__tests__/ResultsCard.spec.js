@@ -82,9 +82,7 @@ describe('ResultsCard.vue - State Reset on New Analysis', () => {
     })
 
     // Simulate simulation end which sets nodeCoordinates
-    const mockCoords = new Map([
-      ['GENE1', { x: 100, y: 200 }],
-    ])
+    const mockCoords = new Map([['GENE1', { x: 100, y: 200 }]])
 
     wrapper.vm.handleSimulationEnd(mockCoords)
 
