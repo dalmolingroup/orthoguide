@@ -31,7 +31,7 @@ describe('ResultsCard.vue - State Reset on New Analysis', () => {
     missingGenes: [],
   }
 
-  it('resets nodeCoordinates and isSliderDisabled when results become null', async () => {
+  it('resets nodeCoordinates and isSliderDisabled when results transition from non-null to null', async () => {
     const wrapper = mount(ResultsCard, {
       props: defaultProps,
       global: {
@@ -57,7 +57,7 @@ describe('ResultsCard.vue - State Reset on New Analysis', () => {
     expect(wrapper.vm.nodeCoordinates.size).toBe(2)
     expect(wrapper.vm.isSliderDisabled).toBe(false)
 
-    // Simulate a new analysis by setting results to null
+    // Simulate a new analysis by setting results to null (transition from non-null to null)
     await wrapper.setProps({ results: null })
 
     // Wait for the watcher to trigger
@@ -107,5 +107,28 @@ describe('ResultsCard.vue - State Reset on New Analysis', () => {
     // Verify state is NOT reset (should remain the same)
     expect(wrapper.vm.nodeCoordinates.size).toBe(1)
     expect(wrapper.vm.isSliderDisabled).toBe(false)
+  })
+
+  it('does not reset state on initial mount with null results', async () => {
+    const wrapper = mount(ResultsCard, {
+      props: {
+        ...defaultProps,
+        results: null, // Start with null
+      },
+      global: {
+        stubs: {
+          ResultsTable: true,
+          BarChart: true,
+          NetworkGraph: true,
+          CladeSlider: true,
+        },
+      },
+    })
+
+    await wrapper.vm.$nextTick()
+
+    // Verify initial state is maintained (not reset since there's no transition)
+    expect(wrapper.vm.nodeCoordinates.size).toBe(0)
+    expect(wrapper.vm.isSliderDisabled).toBe(true)
   })
 })
