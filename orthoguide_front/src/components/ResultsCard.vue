@@ -129,6 +129,7 @@
         v-if="cladeList.length > 1"
         :clades="cladeList"
         :modelValue="selectedCladeIndex"
+        :disabled="isSliderDisabled"
         @update:modelValue="$emit('update:selectedCladeIndex', $event)"
       />
       <NetworkGraph
@@ -138,6 +139,9 @@
         :genes-in-selected-clade="genesInSelectedClade"
         :show-gene-names="showGeneNames"
         :large-font="largeFont"
+        :node-coordinates="nodeCoordinates"
+        @simulation-end="handleSimulationEnd"
+        @node-dragged="handleNodeDragged"
       />
     </div>
     <div
@@ -189,6 +193,19 @@ const showChartExportOptions = ref(false)
 const showNetworkExportOptions = ref(false)
 const showGeneNames = ref(false)
 const largeFont = ref(false)
+const isSliderDisabled = ref(true)
+const nodeCoordinates = ref(new Map())
+
+const handleSimulationEnd = (coords) => {
+  isSliderDisabled.value = false
+  nodeCoordinates.value = coords
+}
+
+const handleNodeDragged = ({ id, x, y }) => {
+  if (nodeCoordinates.value) {
+    nodeCoordinates.value.set(id, { x, y })
+  }
+}
 
 const handleExportChart = (format) => {
   if (barChartRef.value) {
@@ -219,11 +236,11 @@ const genesInScope = computed(() => {
 
 <style scoped>
 .results-card {
-  background-color: white;
+  background-color: var(--color-background);
   padding: 40px;
   border-radius: 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
 }
 .results-header {
   display: flex;
@@ -256,7 +273,7 @@ const genesInScope = computed(() => {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 20px;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 10px;
 }
 .table-container {
@@ -267,9 +284,9 @@ const genesInScope = computed(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #f9fafb;
-  color: #374151;
-  border: 1px solid #d1d5db;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -280,8 +297,8 @@ const genesInScope = computed(() => {
     border-color 0.2s;
 }
 .export-button:hover {
-  background-color: #f3f4f6;
-  border-color: #9ca3af;
+  background-color: var(--color-background-mute);
+  border-color: var(--color-border-hover);
 }
 .error-message {
   background-color: #fee2e2;
@@ -292,10 +309,11 @@ const genesInScope = computed(() => {
 }
 .no-results-message {
   text-align: center;
-  background-color: #f9fafb;
+  background-color: var(--color-background-soft);
   padding: 2rem;
   border-radius: 8px;
-  color: #6c757d;
+  color: var(--color-text);
+  opacity: 0.7;
 }
 .no-data-placeholder {
   display: flex;
@@ -303,9 +321,10 @@ const genesInScope = computed(() => {
   align-items: center;
   width: 100%;
   height: 500px;
-  color: #6b7280;
+  color: var(--color-text);
+  opacity: 0.7;
   font-style: italic;
-  background-color: #f9fafb;
+  background-color: var(--color-background-soft);
 }
 .missing-genes-note {
   margin-top: 1.5rem;
@@ -332,7 +351,7 @@ const genesInScope = computed(() => {
 }
 .checkbox-text {
   font-weight: 500;
-  color: #374151;
+  color: var(--color-text);
 }
 .export-container {
   position: relative;
@@ -341,8 +360,8 @@ const genesInScope = computed(() => {
 .export-options {
   position: absolute;
   right: 0;
-  background-color: white;
-  border: 1px solid #d1d5db;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   margin-top: 4px;
   padding: 4px;
@@ -360,9 +379,10 @@ const genesInScope = computed(() => {
   cursor: pointer;
   font-size: 0.9rem;
   border-radius: 6px;
+  color: var(--color-text);
 }
 .export-options button:hover {
-  background-color: #f3f4f6;
+  background-color: var(--color-background-soft);
 }
 @media (max-width: 768px) {
   .results-card {

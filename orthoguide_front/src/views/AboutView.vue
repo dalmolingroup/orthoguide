@@ -62,11 +62,11 @@
   display: flex;
   align-items: flex-start; /* Alinha os itens ao topo */
   justify-content: space-between;
-  background-color: white;
+  background-color: var(--color-background);
   padding: 40px;
   border-radius: 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
 }
 
 .about > div {
@@ -91,9 +91,9 @@ p {
 .download-button {
   display: inline-block;
   margin-top: 1.5em;
-  background-color: #f9fafb;
-  color: #374151;
-  border: 1px solid #d1d5db;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   padding: 10px 18px;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -106,8 +106,8 @@ p {
 }
 
 .download-button:hover {
-  background-color: #f3f4f6;
-  border-color: #9ca3af;
+  background-color: var(--color-background-mute);
+  border-color: var(--color-border-hover);
 }
 
 @media (max-width: 768px) {

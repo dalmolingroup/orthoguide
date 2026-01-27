@@ -48,14 +48,35 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  nodeCoordinates: {
+    type: Map,
+    default: () => new Map(),
+  },
 })
+
+const emit = defineEmits(['simulation-end', 'node-dragged'])
 
 const networkContainer = ref(null)
 const svgRef = ref(null)
+const currentZoomTransform = ref(null)
 let simulation
 
 const renderNetwork = () => {
   const svg = d3.select(svgRef.value)
+
+  // Capture current zoom transform before clearing
+  if (svg.node()) {
+    const currentTransform = d3.zoomTransform(svg.node())
+    // Only save if it's not the identity transform (default) or if we already have a saved transform
+    // This check prevents overwriting a saved transform with identity on first render
+    if (
+      currentTransform &&
+      (currentTransform.k !== 1 || currentTransform.x !== 0 || currentTransform.y !== 0)
+    ) {
+      currentZoomTransform.value = currentTransform
+    }
+  }
+
   svg.selectAll('*').remove()
 
   if (
@@ -73,7 +94,17 @@ const renderNetwork = () => {
     if (!nodesMap.has(d.preferredName_B)) nodesMap.set(d.preferredName_B, { id: d.preferredName_B })
     return { source: d.preferredName_A, target: d.preferredName_B, score: d.score }
   })
-  const nodes = Array.from(nodesMap.values())
+  const nodes = Array.from(nodesMap.values()).map((n) => {
+    if (props.nodeCoordinates && props.nodeCoordinates.has(n.id)) {
+      const coords = props.nodeCoordinates.get(n.id)
+      return { ...n, x: coords.x, y: coords.y, fx: coords.x, fy: coords.y }
+    }
+    return n
+  })
+
+  // If we have any coordinates stored, we know we have them for all nodes from the initial simulation.
+  // The initial simulation always runs on the full dataset, so coordinates will be available for any subset.
+  const hasCoordinates = props.nodeCoordinates.size > 0
 
   const connectedIds = new Set(nodesMap.keys())
   const unconnectedNodes = props.allGenes
@@ -98,20 +129,43 @@ const renderNetwork = () => {
     .attr('viewBox', [-width / 2, -height / 2, width, height])
     .attr('style', 'max-width: 100%; height: auto; cursor: grab;')
 
-  simulation = d3
-    .forceSimulation(nodes)
-    .force(
+  simulation = d3.forceSimulation(nodes)
+
+  if (!hasCoordinates) {
+    simulation
+      .force(
+        'link',
+        d3
+          .forceLink(links)
+          .id((d) => d.id)
+          .distance((d) => 100 - d.score * 50),
+      )
+      .force('charge', d3.forceManyBody().strength(-200))
+      .force('center', d3.forceCenter())
+      .force('x', d3.forceX().strength(0.05))
+      .force('y', d3.forceY().strength(0.05))
+      .force('collide', d3.forceCollide().radius(12))
+
+    simulation.on('end', () => {
+      const currentCoords = new Map()
+      nodes.forEach((n) => {
+        currentCoords.set(n.id, { x: n.x, y: n.y })
+      })
+      emit('simulation-end', currentCoords)
+    })
+  } else {
+    // If we have coordinates, initialize simulation but with no forces
+    // This allows drag behavior to still work via simulation.on('tick')
+    simulation.force(
       'link',
       d3
         .forceLink(links)
         .id((d) => d.id)
-        .distance((d) => 100 - d.score * 50),
+        .strength(0),
     )
-    .force('charge', d3.forceManyBody().strength(-200))
-    .force('center', d3.forceCenter())
-    .force('x', d3.forceX().strength(0.05))
-    .force('y', d3.forceY().strength(0.05))
-    .force('collide', d3.forceCollide().radius(12))
+    // We trigger one tick to render initial positions
+    simulation.tick()
+  }
 
   const zoomRect = svg
     .append('rect')
@@ -135,7 +189,7 @@ const renderNetwork = () => {
 
   const node = g
     .append('g')
-    .attr('stroke', '#fff')
+    .attr('stroke', 'var(--color-background)')
     .attr('stroke-width', 1.5)
     .selectAll('circle')
     .data(nodes)
@@ -152,7 +206,7 @@ const renderNetwork = () => {
     .text((d) => d.id)
     .attr('font-size', props.largeFont ? '16px' : '12px')
     .attr('paint-order', 'stroke')
-    .attr('stroke', 'white')
+    .attr('stroke', 'var(--color-background)')
     .attr('stroke-width', '3px')
     .attr('visibility', props.showGeneNames ? 'visible' : 'hidden')
 
@@ -186,8 +240,8 @@ const renderNetwork = () => {
       .append('rect')
       .attr('width', boxWidth)
       .attr('height', boxHeight)
-      .attr('fill', 'rgba(255, 255, 255, 0.9)')
-      .attr('stroke', '#ccc')
+      .attr('fill', 'var(--color-background-soft)')
+      .attr('stroke', 'var(--color-border)')
       .attr('rx', 6)
 
     boxGroup
@@ -197,7 +251,7 @@ const renderNetwork = () => {
       .text('Unconnected Genes')
       .attr('font-size', '12px')
       .attr('font-weight', 'bold')
-      .attr('fill', '#374151')
+      .attr('fill', 'var(--color-text)')
 
     const dotsGroup = boxGroup.append('g').attr('transform', `translate(10, 35)`)
 
@@ -209,7 +263,7 @@ const renderNetwork = () => {
       .attr('cy', (d, i) => Math.floor(i / cols) * rowHeight + rowHeight / 2)
       .attr('r', 5)
       .attr('fill', (d) => (props.genesInSelectedClade.has(d.id) ? '#f97316' : '#2563eb'))
-      .attr('stroke', '#fff')
+      .attr('stroke', 'var(--color-background)')
       .attr('stroke-width', 1)
       .append('title')
       .text((d) => d.id)
@@ -227,7 +281,7 @@ const renderNetwork = () => {
       .attr('text-anchor', 'start')
       .attr('font-size', props.largeFont ? '16px' : '12px')
       .attr('paint-order', 'stroke')
-      .attr('stroke', 'white')
+      .attr('stroke', 'var(--color-background)')
       .attr('stroke-width', '3px')
       .attr('visibility', 'visible')
   }
@@ -276,6 +330,11 @@ const renderNetwork = () => {
     })
 
   svg.call(zoom)
+
+  // Restore previous zoom if available
+  if (currentZoomTransform.value) {
+    svg.call(zoom.transform, currentZoomTransform.value)
+  }
 }
 
 const drag = (simulation) => {
@@ -292,6 +351,7 @@ const drag = (simulation) => {
     if (!event.active) simulation.alphaTarget(0)
     d.fx = null
     d.fy = null
+    emit('node-dragged', { id: d.id, x: d.x, y: d.y })
   }
   return d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended)
 }
@@ -386,7 +446,7 @@ onBeforeUnmount(() => {
 .network-container {
   position: relative;
   width: 100%;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   overflow: hidden;
   min-height: 500px;
@@ -394,10 +454,10 @@ onBeforeUnmount(() => {
 .network-container text {
   pointer-events: none;
   text-shadow:
-    -1px -1px 0 #fff,
-    1px -1px 0 #fff,
-    -1px 1px 0 #fff,
-    1px 1px 0 #fff;
+    -1px -1px 0 var(--color-background),
+    1px -1px 0 var(--color-background),
+    -1px 1px 0 var(--color-background),
+    1px 1px 0 var(--color-background);
 }
 .no-data-placeholder {
   display: flex;
@@ -405,20 +465,22 @@ onBeforeUnmount(() => {
   align-items: center;
   width: 100%;
   height: 500px;
-  color: #6b7280;
+  color: var(--color-text);
   font-style: italic;
-  background-color: #f9fafb;
+  background-color: var(--color-background-soft);
 }
 .legend {
   position: absolute;
   bottom: 10px;
   left: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--color-background);
+  color: var(--color-text);
   padding: 8px 12px;
   border-radius: 6px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border);
   font-size: 12px;
   pointer-events: none;
+  opacity: 0.9;
 }
 .legend-item {
   display: flex;

@@ -11,6 +11,7 @@
     <transition name="fade">
       <ResultsCard
         v-if="results !== null"
+        :key="analysisTimestamp"
         :results="results"
         :api-error-message="apiErrorMessage"
         :chart-data="chartData"
@@ -37,6 +38,7 @@ const isLoading = ref(false)
 const isDbLoading = ref(true)
 const db = ref(null)
 const results = ref(null)
+const analysisTimestamp = ref(null)
 const networkData = ref([])
 const apiErrorMessage = ref('')
 const selectedCladeIndex = ref(0)
@@ -182,6 +184,7 @@ const getPPINet = async (genes, speciesId) => {
 }
 
 const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred_name') => {
+  analysisTimestamp.value = Date.now()
   results.value = null
   networkData.value = []
   apiErrorMessage.value = ''
@@ -293,6 +296,7 @@ const exportToCSV = () => {
   text-align: center;
   padding: 1rem;
   font-style: italic;
-  color: #6b7280;
+  color: var(--color-text);
+  opacity: 0.7;
 }
 </style>
