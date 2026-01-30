@@ -255,11 +255,11 @@ const clearValidationError = () => {
 
 <style scoped>
 .analysis-card {
-  background-color: white;
+  background-color: var(--color-background);
   padding: 40px;
   border-radius: 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
   padding-bottom: 20px;
 }
 .analysis-card h2 {
@@ -304,20 +304,22 @@ const clearValidationError = () => {
   font-size: 0.8rem;
   font-weight: 600;
   padding: 4px 10px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border);
   border-radius: 6px;
-  background-color: #f9fafb;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 .upload-button:hover,
 .example-button:hover {
-  background-color: #f3f4f6;
+  background-color: var(--color-background-mute);
 }
 label {
   font-weight: 600;
   margin-bottom: 8px;
   font-size: 0.9rem;
+  color: var(--color-text);
 }
 label .required {
   color: #ef4444;
@@ -326,12 +328,14 @@ textarea {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-border);
   font-family: inherit;
   font-size: 0.95rem;
   min-height: 120px;
   resize: vertical;
   box-sizing: border-box;
+  background-color: var(--color-background);
+  color: var(--color-text);
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
@@ -344,7 +348,8 @@ select:focus {
 }
 .input-hint {
   font-size: 0.8rem;
-  color: #6c757d;
+  color: var(--color-text);
+  opacity: 0.7;
   margin-top: 8px;
 }
 .input-hint-warning {
@@ -355,10 +360,11 @@ select:focus {
 select {
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-border);
   font-family: inherit;
   font-size: 0.95rem;
-  background-color: white;
+  background-color: var(--color-background);
+  color: var(--color-text);
   appearance: none;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.5rem center;
@@ -413,6 +419,7 @@ select {
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 0;
+  color: var(--color-text);
 }
 .switch {
   position: relative;
@@ -432,7 +439,7 @@ select {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--vt-c-divider-dark-2);
   transition: 0.4s;
   border-radius: 28px;
 }
@@ -464,7 +471,8 @@ input:disabled + .slider {
   text-align: center;
   width: 100%;
   display: block;
-  color: #9ca3af;
+  color: var(--color-text);
+  opacity: 0.5;
   margin-top: 2rem;
 }
 @media (max-width: 768px) {

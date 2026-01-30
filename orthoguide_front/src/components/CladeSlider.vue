@@ -48,12 +48,13 @@ defineEmits(['update:modelValue'])
   font-weight: 600;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
+  color: var(--color-text);
 }
 .slider {
   width: 100%;
   height: 8px;
   border-radius: 5px;
-  background: #d1d5db;
+  background: var(--color-border);
   outline: none;
   opacity: 0.7;
   transition: opacity 0.2s;
@@ -81,6 +82,49 @@ defineEmits(['update:modelValue'])
   font-weight: 600;
   min-width: 220px;
   text-align: left;
+  color: var(--color-text);
+}
+.slider-disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+}
+.has-tooltip {
+  cursor: not-allowed;
+}
+.tooltip {
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+  border: 1px solid var(--color-border);
+}
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--color-border) transparent transparent transparent;
+}
+.has-tooltip:hover .tooltip {
+  opacity: 1;
 }
 .slider-disabled {
   opacity: 0.4 !important;

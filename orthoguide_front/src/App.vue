@@ -1,5 +1,28 @@
 <script setup>
+import { ref, onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import ThemeToggle from './components/ThemeToggle.vue'
+
+const isDark = ref(false)
+
+const toggleTheme = () => {
+  isDark.value = !isDark.value
+  const newTheme = isDark.value ? 'dark' : 'light'
+  localStorage.setItem('orthoguide-theme', newTheme)
+  document.documentElement.setAttribute('data-theme', newTheme)
+}
+
+onMounted(() => {
+  const savedTheme = localStorage.getItem('orthoguide-theme')
+  if (savedTheme) {
+    isDark.value = savedTheme === 'dark'
+    document.documentElement.setAttribute('data-theme', savedTheme)
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    // Optional: Respect system preference if no saved preference
+    isDark.value = true
+    document.documentElement.setAttribute('data-theme', 'dark')
+  }
+})
 </script>
 
 <template>
@@ -40,6 +63,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <RouterLink to="/">Home</RouterLink>
     <RouterLink to="/about">About</RouterLink>
     <div class="tagline">So crossing the bridge is easier.</div>
+    <ThemeToggle :is-dark="isDark" @toggle="toggleTheme" />
   </header>
   <RouterView />
 </template>
@@ -58,11 +82,13 @@ import { RouterLink, RouterView } from 'vue-router'
   align-items: center;
   width: 100%;
   margin-bottom: 40px;
+  gap: 1rem;
 }
 
 .tagline {
   font-size: 0.8rem;
-  color: #727272;
+  color: var(--color-text);
+  opacity: 0.8;
 }
 
 .logo-text {

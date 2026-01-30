@@ -296,6 +296,7 @@ const exportToCSV = () => {
   text-align: center;
   padding: 1rem;
   font-style: italic;
-  color: #6b7280;
+  color: var(--color-text);
+  opacity: 0.7;
 }
 </style>

@@ -189,7 +189,7 @@ const renderNetwork = () => {
 
   const node = g
     .append('g')
-    .attr('stroke', '#fff')
+    .attr('stroke', 'var(--color-background)')
     .attr('stroke-width', 1.5)
     .selectAll('circle')
     .data(nodes)
@@ -206,7 +206,7 @@ const renderNetwork = () => {
     .text((d) => d.id)
     .attr('font-size', props.largeFont ? '16px' : '12px')
     .attr('paint-order', 'stroke')
-    .attr('stroke', 'white')
+    .attr('stroke', 'var(--color-background)')
     .attr('stroke-width', '3px')
     .attr('visibility', props.showGeneNames ? 'visible' : 'hidden')
 
@@ -240,8 +240,8 @@ const renderNetwork = () => {
       .append('rect')
       .attr('width', boxWidth)
       .attr('height', boxHeight)
-      .attr('fill', 'rgba(255, 255, 255, 0.9)')
-      .attr('stroke', '#ccc')
+      .attr('fill', 'var(--color-background-soft)')
+      .attr('stroke', 'var(--color-border)')
       .attr('rx', 6)
 
     boxGroup
@@ -251,7 +251,7 @@ const renderNetwork = () => {
       .text('Unconnected Genes')
       .attr('font-size', '12px')
       .attr('font-weight', 'bold')
-      .attr('fill', '#374151')
+      .attr('fill', 'var(--color-text)')
 
     const dotsGroup = boxGroup.append('g').attr('transform', `translate(10, 35)`)
 
@@ -263,7 +263,7 @@ const renderNetwork = () => {
       .attr('cy', (d, i) => Math.floor(i / cols) * rowHeight + rowHeight / 2)
       .attr('r', 5)
       .attr('fill', (d) => (props.genesInSelectedClade.has(d.id) ? '#f97316' : '#2563eb'))
-      .attr('stroke', '#fff')
+      .attr('stroke', 'var(--color-background)')
       .attr('stroke-width', 1)
       .append('title')
       .text((d) => d.id)
@@ -281,7 +281,7 @@ const renderNetwork = () => {
       .attr('text-anchor', 'start')
       .attr('font-size', props.largeFont ? '16px' : '12px')
       .attr('paint-order', 'stroke')
-      .attr('stroke', 'white')
+      .attr('stroke', 'var(--color-background)')
       .attr('stroke-width', '3px')
       .attr('visibility', 'visible')
   }
@@ -446,7 +446,7 @@ onBeforeUnmount(() => {
 .network-container {
   position: relative;
   width: 100%;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   overflow: hidden;
   min-height: 500px;
@@ -454,10 +454,10 @@ onBeforeUnmount(() => {
 .network-container text {
   pointer-events: none;
   text-shadow:
-    -1px -1px 0 #fff,
-    1px -1px 0 #fff,
-    -1px 1px 0 #fff,
-    1px 1px 0 #fff;
+    -1px -1px 0 var(--color-background),
+    1px -1px 0 var(--color-background),
+    -1px 1px 0 var(--color-background),
+    1px 1px 0 var(--color-background);
 }
 .no-data-placeholder {
   display: flex;
@@ -465,20 +465,22 @@ onBeforeUnmount(() => {
   align-items: center;
   width: 100%;
   height: 500px;
-  color: #6b7280;
+  color: var(--color-text);
   font-style: italic;
-  background-color: #f9fafb;
+  background-color: var(--color-background-soft);
 }
 .legend {
   position: absolute;
   bottom: 10px;
   left: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--color-background);
+  color: var(--color-text);
   padding: 8px 12px;
   border-radius: 6px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border);
   font-size: 12px;
   pointer-events: none;
+  opacity: 0.9;
 }
 .legend-item {
   display: flex;
