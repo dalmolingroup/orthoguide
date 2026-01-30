@@ -13,8 +13,17 @@
           @input="$emit('update:modelValue', parseInt($event.target.value))"
           class="slider"
           :class="{ 'slider-disabled': disabled }"
+          :aria-describedby="disabled ? 'clade-slider-disabled-message' : undefined"
         />
-        <div v-if="disabled" class="tooltip">Please wait for the layout to stabilize</div>
+        <div 
+          v-if="disabled" 
+          id="clade-slider-disabled-message"
+          class="tooltip"
+          role="tooltip"
+          aria-live="polite"
+        >
+          Please wait for the layout to stabilize
+        </div>
       </div>
       <span class="slider-value">{{ clades[modelValue] ? clades[modelValue].name : '' }}</span>
     </div>
