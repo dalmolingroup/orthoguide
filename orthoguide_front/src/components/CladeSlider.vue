@@ -14,7 +14,7 @@
           class="slider"
           :class="{ 'slider-disabled': disabled }"
         />
-        <div v-if="disabled" class="tooltip">Please wait for the simulation to stabilize</div>
+        <div v-if="disabled" class="tooltip">Please wait for the layout to stabilize</div>
       </div>
       <span class="slider-value">{{ clades[modelValue] ? clades[modelValue].name : '' }}</span>
     </div>
