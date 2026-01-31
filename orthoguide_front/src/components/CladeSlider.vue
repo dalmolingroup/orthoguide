@@ -13,8 +13,17 @@
           @input="$emit('update:modelValue', parseInt($event.target.value))"
           class="slider"
           :class="{ 'slider-disabled': disabled }"
+          :aria-describedby="disabled ? 'clade-slider-disabled-message' : undefined"
         />
-        <div v-if="disabled" class="tooltip">Please wait for the simulation to stabilize</div>
+        <div 
+          v-if="disabled" 
+          id="clade-slider-disabled-message"
+          class="tooltip"
+          role="tooltip"
+          aria-live="polite"
+        >
+          Please wait for the layout to stabilize
+        </div>
       </div>
       <span class="slider-value">{{ clades[modelValue] ? clades[modelValue].name : '' }}</span>
     </div>
@@ -122,6 +131,47 @@ defineEmits(['update:modelValue'])
   border-width: 5px;
   border-style: solid;
   border-color: var(--color-border) transparent transparent transparent;
+}
+.has-tooltip:hover .tooltip {
+  opacity: 1;
+}
+.slider-disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+}
+.has-tooltip {
+  cursor: not-allowed;
+}
+.tooltip {
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #374151;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #374151 transparent transparent transparent;
 }
 .has-tooltip:hover .tooltip {
   opacity: 1;
