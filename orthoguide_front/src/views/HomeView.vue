@@ -36,6 +36,7 @@ import ResultsCard from '../components/ResultsCard.vue'
 
 const isLoading = ref(false)
 const isDbLoading = ref(true)
+const dbLoadError = ref(false)
 const db = ref(null)
 const results = ref(null)
 const analysisTimestamp = ref(null)
@@ -69,14 +70,27 @@ onMounted(async () => {
       locateFile: (file) => `${import.meta.env.BASE_URL}${file}`,
     })
 
-    const response = await fetch(`${import.meta.env.BASE_URL}orthoguide_data.db`)
-    const buffer = await response.arrayBuffer()
+    const response = await fetch(`${import.meta.env.BASE_URL}orthoguide_data.db.gz`)
+    if (!response.ok) {
+      throw new Error(`Failed to fetch database: ${response.statusText}`)
+    }
 
-    db.value = new SQL.Database(new Uint8Array(buffer))
+    const buffer = await response.arrayBuffer()
+    const u8 = new Uint8Array(buffer)
+    let dbData = u8
+
+    // Check for GZIP magic number (0x1f 0x8b)
+    if (u8[0] === 0x1f && u8[1] === 0x8b) {
+      const stream = new Blob([buffer]).stream().pipeThrough(new DecompressionStream('gzip'))
+      dbData = new Uint8Array(await new Response(stream).arrayBuffer())
+    }
+
+    db.value = new SQL.Database(dbData)
     console.log('Database loaded successfully!')
   } catch (error) {
     console.error('Failed to load database:', error)
     apiErrorMessage.value = 'Could not load the application database.'
+    dbLoadError.value = true
   } finally {
     isDbLoading.value = false
   }
@@ -187,7 +201,6 @@ const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred
   analysisTimestamp.value = Date.now()
   results.value = null
   networkData.value = []
-  apiErrorMessage.value = ''
   selectedCladeIndex.value = 0
   missingGenes.value = []
 
@@ -196,10 +209,13 @@ const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred
     return
   }
   if (!db.value) {
-    apiErrorMessage.value = 'Database is not loaded yet. Please wait.'
+    apiErrorMessage.value = dbLoadError.value
+      ? 'Database failed to load. Please refresh the page.'
+      : 'Database is not loaded yet. Please wait.'
     results.value = []
     return
   }
+  apiErrorMessage.value = ''
 
   isLoading.value = true
 
