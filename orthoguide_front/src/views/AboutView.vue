@@ -54,12 +54,103 @@
         </a>
       </div>
     </div>
+    <div class="documentation-section">
+      <h3>Database Schema</h3>
+      <div class="table-container">
+        <table class="schema-table">
+          <thead>
+            <tr>
+              <th>Column</th>
+              <th>Data Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>cog_id</td>
+              <td>TEXT</td>
+              <td>The Cluster of Orthologous Groups (COG) identifier.</td>
+            </tr>
+            <tr>
+              <td>root</td>
+              <td>INTEGER</td>
+              <td>The numerical ID representing the last common ancestor (LCA) or root clade.</td>
+            </tr>
+            <tr>
+              <td>clade_name</td>
+              <td>TEXT</td>
+              <td>The descriptive name of the root clade.</td>
+            </tr>
+            <tr>
+              <td>protein_id</td>
+              <td>TEXT</td>
+              <td>The STRING protein identifier for the specific protein.</td>
+            </tr>
+            <tr>
+              <td>preferred_name</td>
+              <td>TEXT</td>
+              <td>The common gene name (e.g., HGNC symbol) used for querying.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="documentation-section">
+      <h3>Using the Database</h3>
+      <p>
+        The OrthoGuide database is provided as a SQLite file, which allows for efficient querying
+        without loading the entire dataset into memory. Below are examples of how to interact with
+        the database using R and Python.
+      </p>
+      <div class="code-examples">
+        <div class="code-block">
+          <h4>R</h4>
+          <pre><code>library(RSQLite)
+library(dplyr)
+
+# Connect to the database
+con &lt;- dbConnect(SQLite(), "orthoguide_data.db")
+
+# List tables
+dbListTables(con)
+
+# Query the data
+# (Assuming 'orthoguide' is the table name)
+data &lt;- tbl(con, "orthoguide") %&gt;%
+  head(10) %&gt;%
+  collect()
+
+# Disconnect
+dbDisconnect(con)</code></pre>
+        </div>
+        <div class="code-block">
+          <h4>Python</h4>
+          <pre><code>import sqlite3
+import pandas as pd
+
+# Connect to the database
+con = sqlite3.connect("orthoguide_data.db")
+
+# List tables
+cursor = con.cursor()
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+print(cursor.fetchall())
+
+# Query the data
+df = pd.read_sql_query("SELECT * FROM orthoguide LIMIT 10", con)
+
+# Close connection
+con.close()</code></pre>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .about {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start; /* Alinha os itens ao topo */
   justify-content: space-between;
   background-color: var(--color-background);
@@ -71,7 +162,7 @@
 
 .about > div {
   margin: 0 1em;
-  width: 50%;
+  width: 45%;
 }
 
 p {
@@ -110,6 +201,56 @@ p {
   border-color: var(--color-border-hover);
 }
 
+.about > .documentation-section {
+  width: 100%;
+  margin-top: 2em;
+}
+
+.code-examples {
+  display: flex;
+  gap: 20px;
+  margin-top: 1em;
+}
+
+.code-block {
+  flex: 1;
+  background-color: var(--color-background-soft);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  overflow-x: auto;
+}
+
+pre {
+  margin: 0;
+  font-family: monospace;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-top: 1em;
+}
+
+.schema-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.schema-table th,
+.schema-table td {
+  border: 1px solid var(--color-border);
+  padding: 8px;
+  text-align: left;
+}
+
+.schema-table th {
+  background-color: var(--color-background-soft);
+  font-weight: 600;
+}
+
 @media (max-width: 768px) {
   .about {
     flex-direction: column;
@@ -131,6 +272,10 @@ p {
 
   .download-button {
     text-align: center;
+  }
+
+  .code-examples {
+    flex-direction: column;
   }
 }
 </style>
