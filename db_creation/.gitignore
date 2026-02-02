@@ -5,4 +5,5 @@ testing/
 testing*
 *.pyc
 null/
+# All contents of results/ are generated/ephemeral and should never be committed.
 results/
