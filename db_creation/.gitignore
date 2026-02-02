@@ -5,5 +5,4 @@ testing/
 testing*
 *.pyc
 null/
-results/*cogs.csv
 results/
