@@ -398,9 +398,10 @@ const clearValidationError = () => {
 .example-button:disabled {
   color: #9ca3af;
   cursor: not-allowed;
+  opacity: 0.5;
 }
 .example-button:disabled:hover {
-  background-color: #f9fafb;
+  background-color: transparent;
 }
 label {
   font-weight: 600;
@@ -432,6 +433,10 @@ select:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+textarea::placeholder {
+  color: var(--color-text);
+  opacity: 0.4;
 }
 .input-hint {
   font-size: 0.8rem;
@@ -551,8 +556,9 @@ input:checked + .slider:before {
   transform: translateX(22px);
 }
 input:disabled + .slider {
-  background-color: #e5e7eb;
+  background-color: var(--color-background-mute);
   cursor: not-allowed;
+  opacity: 0.5;
 }
 #version-statement {
   text-align: center;
@@ -578,13 +584,14 @@ input:disabled + .slider {
 
 :deep(.ts-control) {
   border-radius: 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-border);
   padding: 12px 12px;
   padding-right: 2.5rem !important;
   font-size: 0.95rem;
   font-family: inherit;
   box-shadow: none;
-  background-color: white;
+  background-color: var(--color-background);
+  color: var(--color-text);
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
@@ -598,9 +605,15 @@ input:disabled + .slider {
   background-size: 1.5em 1.5em;
 }
 
+:deep(.ts-control input) {
+  color: var(--color-text) !important;
+}
+
 :deep(.ts-wrapper.focus .ts-control) {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  background-color: var(--color-background) !important;
+  color: var(--color-text) !important;
 }
 
 /* Hide default Tom Select caret to use our custom SVG */
@@ -610,17 +623,23 @@ input:disabled + .slider {
 
 :deep(.ts-dropdown) {
   border-radius: 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-border);
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   margin-top: 4px;
   z-index: 10;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+:deep(.ts-dropdown .option) {
+  color: var(--color-text);
 }
 
 :deep(.ts-dropdown .option.active) {
-  background-color: #f3f4f6;
-  color: inherit;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
 }
 
 .input-docs {
