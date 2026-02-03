@@ -11,7 +11,7 @@
     <div v-if="results && results.length > 0" class="table-section">
       <span class="chart-section-header"
         >Detailed Results
-        <button v-if="results && results.length > 0" @click="$emit('export')" class="export-button">
+        <button v-if="results && results.length > 0" @click="handleExport" class="export-button">
           <svg
             width="16"
             height="16"
@@ -30,7 +30,12 @@
         </button></span
       >
       <div class="table-container">
-        <ResultsTable :items="results" :columns="tableHeaders" :key="results.length" />
+        <ResultsTable
+          ref="resultsTableRef"
+          :items="results"
+          :columns="tableHeaders"
+          :key="results.length"
+        />
       </div>
     </div>
 
@@ -185,16 +190,25 @@ const props = defineProps({
 
 const { results, cladeList, selectedCladeIndex } = toRefs(props)
 
-defineEmits(['export', 'update:selectedCladeIndex'])
+const emit = defineEmits(['export', 'update:selectedCladeIndex'])
 
 const barChartRef = ref(null)
 const networkGraphRef = ref(null)
+const resultsTableRef = ref(null)
 const showChartExportOptions = ref(false)
 const showNetworkExportOptions = ref(false)
 const showGeneNames = ref(false)
 const largeFont = ref(false)
 const isSliderDisabled = ref(true)
 const nodeCoordinates = ref(new Map())
+
+const handleExport = () => {
+  let dataToExport = results.value
+  if (resultsTableRef.value) {
+    dataToExport = resultsTableRef.value.getSortedData()
+  }
+  emit('export', dataToExport)
+}
 
 const handleSimulationEnd = (coords) => {
   isSliderDisabled.value = false

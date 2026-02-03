@@ -252,7 +252,11 @@ const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred
       stmt.free()
     }
 
-    results.value = allResults
+    results.value = allResults.sort((a, b) => {
+      const nameA = a.preferred_name || ''
+      const nameB = b.preferred_name || ''
+      return nameA.localeCompare(nameB)
+    })
 
     const foundGenes = new Set(allResults.map((r) => r[queryColumn]))
     missingGenes.value = genes.filter((g) => !foundGenes.has(g))
@@ -275,11 +279,12 @@ const handleAnalysis = (genes, species, fetchNetwork, queryColumn) => {
   inferRoots(genes, species, fetchNetwork, queryColumn)
 }
 
-const exportToCSV = () => {
-  if (!results.value || results.value.length === 0) return
+const exportToCSV = (data) => {
+  const dataToExport = Array.isArray(data) ? data : results.value
+  if (!dataToExport || dataToExport.length === 0) return
 
   const headers = tableHeaders.value.map((h) => h.title)
-  const rows = results.value.map((row) =>
+  const rows = dataToExport.map((row) =>
     tableHeaders.value.map((header) => `"${row[header.data] || ''}"`).join(','),
   )
 
