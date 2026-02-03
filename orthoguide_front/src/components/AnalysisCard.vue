@@ -57,6 +57,22 @@
           }}
           ID per line or upload a .txt file.
         </p>
+        <details class="input-docs">
+          <summary>Supported Input Formats</summary>
+          <div class="docs-content">
+            <p>
+              <strong>Gene Symbol:</strong> Standard gene symbols (e.g., <em>NRP1</em>,
+              <em>CDK6</em>).
+            </p>
+            <p>
+              <strong>Protein ID:</strong> Ensembl Protein IDs (e.g., <em>ENSP00000223177</em>).
+            </p>
+            <p>
+              <strong>COG ID:</strong> Orthologous Group IDs (e.g., <em>KOG0018</em>,
+              <em>NOG106405</em>).
+            </p>
+          </div>
+        </details>
       </div>
 
       <div class="form-group">
@@ -605,5 +621,41 @@ input:disabled + .slider {
 :deep(.ts-dropdown .option.active) {
   background-color: #f3f4f6;
   color: inherit;
+}
+
+.input-docs {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-background-soft);
+  overflow: hidden;
+}
+
+.input-docs summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 8px 12px;
+  user-select: none;
+  background-color: var(--color-background-mute);
+  transition: background-color 0.2s;
+}
+
+.input-docs summary:hover {
+  background-color: var(--color-border);
+}
+
+.docs-content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid var(--color-border);
+}
+
+.docs-content p {
+  margin: 0;
+  line-height: 1.4;
 }
 </style>
