@@ -3,9 +3,9 @@
     <div class="text-section">
       <h3>About OrthoGuide</h3>
       <p>
-        OrthoGuide provides immediate access to high-quality, pre-computed rooting data for 8
-        species. Instead of running complex analyses, users can query our database and get the
-        information they need in seconds, along with a few exploratory plots.
+        OrthoGuide provides immediate access to high-quality, pre-computed rooting data for over 300
+        eukaryotic species. Instead of running complex analyses, users can query our database and
+        get the information they need in seconds, along with a few exploratory plots.
       </p>
       <p>
         All data in our database is generated using the
@@ -19,6 +19,19 @@
           rel="noopener noreferrer"
           >STRING-db version 11.0</a
         >.
+      </p>
+    </div>
+    <div class="text-section">
+      <h3>How it Works</h3>
+      <p>
+        When you query a gene set for a selected species, OrthoGuide identifies the
+        <strong>Cluster of Orthologous Groups (COG)</strong> for each gene in the database. A COG
+        represents a group of orthologs found across many different species.
+      </p>
+      <p>
+        The evolutionary root (the Last Common Ancestor where the gene first appeared) for each COG
+        was pre-computed using the <strong>Bridge algorithm</strong>. This algorithm analyzes the
+        presence and absence of the COG across the <em>entire eukaryotic phylogenetic tree</em>.
       </p>
     </div>
     <div class="text-section">
