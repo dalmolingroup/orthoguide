@@ -44,17 +44,7 @@ const networkData = ref([])
 const apiErrorMessage = ref('')
 const selectedCladeIndex = ref(0)
 const missingGenes = ref([])
-
-const speciesList = [
-  { id: '9606', name: 'Homo sapiens' },
-  { id: '10090', name: 'Mus musculus' },
-  { id: '10116', name: 'Rattus norvegicus' },
-  { id: '7955', name: 'Danio rerio' },
-  { id: '7227', name: 'Drosophila melanogaster' },
-  { id: '6239', name: 'Caenorhabditis elegans' },
-  { id: '3702', name: 'Arabidopsis thaliana' },
-  { id: '4932', name: 'Saccharomyces cerevisiae' },
-]
+const speciesList = ref([])
 
 const tableHeaders = ref([
   { title: 'Gene', data: 'preferred_name' },
@@ -70,12 +60,12 @@ onMounted(async () => {
       locateFile: (file) => `${import.meta.env.BASE_URL}${file}`,
     })
 
-    const response = await fetch(`${import.meta.env.BASE_URL}orthoguide_data.db.gz`)
-    if (!response.ok) {
-      throw new Error(`Failed to fetch database: ${response.statusText}`)
+    const dbResponse = await fetch(`${import.meta.env.BASE_URL}orthoguide_data.db.gz`)
+    if (!dbResponse.ok) {
+      throw new Error(`Failed to fetch database: ${dbResponse.statusText}`)
     }
 
-    const buffer = await response.arrayBuffer()
+    const buffer = await dbResponse.arrayBuffer()
     const u8 = new Uint8Array(buffer)
     let dbData = u8
 
@@ -87,6 +77,19 @@ onMounted(async () => {
 
     db.value = new SQL.Database(dbData)
     console.log('Database loaded successfully!')
+
+    // Load species map
+    const mapResponse = await fetch(`${import.meta.env.BASE_URL}final_species_map.tsv`)
+    if (mapResponse.ok) {
+      const text = await mapResponse.text()
+      speciesList.value = text
+        .trim()
+        .split('\n')
+        .map((line) => {
+          const [id, name] = line.split('\t')
+          return { id, name }
+        })
+    }
   } catch (error) {
     console.error('Failed to load database:', error)
     apiErrorMessage.value = 'Could not load the application database.'
@@ -220,12 +223,6 @@ const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred
   isLoading.value = true
 
   try {
-    const allowedTableNames = ['9606', '10090', '10116', '7955', '7227', '6239', '3702', '4932']
-
-    if (!allowedTableNames.includes(species)) {
-      throw new Error(`Organism ID '${species}' is not supported.`)
-    }
-
     const CHUNK_SIZE = 600
     let allResults = []
 
@@ -239,7 +236,7 @@ const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred
       stmt.bind(chunk)
       while (stmt.step()) {
         const row = stmt.getAsObject()
-        const speciesObj = speciesList.find((s) => s.id === species)
+        const speciesObj = speciesList.value.find((s) => s.id === species)
         let commonName = speciesObj ? speciesObj.name : 'Species'
 
         const parts = commonName.split(' ')
