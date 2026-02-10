@@ -1,23 +1,23 @@
-root	clade_name
-3	Paracoccidioides
-4	Blastomyces (1); Histoplasma (1)
-5	Arthrodermataceae (5); Onygenaceae (1)
-6	Eurotiales
-7	Eurotiomycetes (8); dothideomyceta (1)
-8	sordariomyceta
-9	dothideomyceta
-10	Pezizomycetes
-11	Orbiliomycetes
-12	Saccharomycotina
-13	Taphrinomycotina
-14	Basidiomycota
-15	Mucoromycota
-16	Chytridiomycota
-17	Blastocladiomycota
-18	Metazoa (161); Fungi (3); Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)
-19	Amoebozoa
-20	Viridiplantae
-21	Discoba (6); Metamonada (1); Sar (1)
-22	Rhodophyta
-23	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)
-24	Metamonada
+root	clade_name	counts
+3	Paracoccidioides	2
+4	Blastomyces (1); Histoplasma (1)	1; 1
+5	Arthrodermataceae (5); Onygenaceae (1)	5; 1
+6	Eurotiales	15
+7	Eurotiomycetes (8); dothideomyceta (1)	8; 1
+8	sordariomyceta	46
+9	dothideomyceta	16
+10	Pezizomycetes	2
+11	Orbiliomycetes	2
+12	Saccharomycotina	33
+13	Taphrinomycotina	7
+14	Basidiomycota	30
+15	Mucoromycota	1
+16	Chytridiomycota	2
+17	Blastocladiomycota	1
+18	Metazoa (161); Fungi (3); Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	161; 3; 2; 1; 1; 1
+19	Amoebozoa	4
+20	Viridiplantae	75
+21	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+22	Rhodophyta	2
+23	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+24	Metamonada	1

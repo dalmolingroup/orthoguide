@@ -1,16 +1,16 @@
-root	clade_name
-7	Leersia
-8	Pooideae
-9	PACMAD clade
-10	Zingiberales
-11	Arecales
-12	eudicotyledons (40); Proteales (1); Ranunculales (1)
-13	Amborellales
-14	Lycopodiopsida
-15	Bryophyta
-16	Chlorophyta
-17	Opisthokonta (345); Amoebozoa (4)
-18	Discoba (6); Metamonada (1); Sar (1)
-19	Rhodophyta
-20	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)
-21	Metamonada
+root	clade_name	counts
+7	Leersia	1
+8	Pooideae	5
+9	PACMAD clade	4
+10	Zingiberales	1
+11	Arecales	1
+12	eudicotyledons (40); Proteales (1); Ranunculales (1)	40; 1; 1
+13	Amborellales	1
+14	Lycopodiopsida	1
+15	Bryophyta	1
+16	Chlorophyta	10
+17	Opisthokonta (345); Amoebozoa (4)	345; 4
+18	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+19	Rhodophyta	2
+20	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+21	Metamonada	1

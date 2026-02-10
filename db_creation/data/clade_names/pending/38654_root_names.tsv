@@ -1,25 +1,25 @@
-root	clade_name
-3	Dinosauria
-4	Testudinata
-5	Lepidosauria
-6	Mammalia
-7	Amphibia
-8	Coelacanthimorpha
-9	Actinopterygii
-10	Tunicata
-11	Cephalochordata
-12	Echinodermata (1); Hemichordata (1)
-13	Ecdysozoa (43); Spiralia (2)
-14	Spiralia
-15	Cnidaria
-16	Ctenophora
-17	Placozoa
-18	Porifera
-19	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)
-20	Fungi
-21	Amoebozoa
-22	Viridiplantae
-23	Discoba (6); Metamonada (1); Sar (1)
-24	Rhodophyta
-25	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)
-26	Metamonada
+root	clade_name	counts
+3	Dinosauria	6
+4	Testudinata	3
+5	Lepidosauria	2
+6	Mammalia	70
+7	Amphibia	1
+8	Coelacanthimorpha	1
+9	Actinopterygii	19
+10	Tunicata	2
+11	Cephalochordata	1
+12	Echinodermata (1); Hemichordata (1)	1; 1
+13	Ecdysozoa (43); Spiralia (2)	43; 2
+14	Spiralia	2
+15	Cnidaria	2
+16	Ctenophora	1
+17	Placozoa	1
+18	Porifera	1
+19	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
+20	Fungi	179
+21	Amoebozoa	4
+22	Viridiplantae	75
+23	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+24	Rhodophyta	2
+25	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+26	Metamonada	1

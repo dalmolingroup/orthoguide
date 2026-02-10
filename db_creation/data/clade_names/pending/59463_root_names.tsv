@@ -1,30 +1,30 @@
-root	clade_name
-4	Eptesicus
-5	Yinpterochiroptera
-6	Artiodactyla (10); Carnivora (8)
-7	Eulipotyphla
-8	Euarchontoglires
-9	Afrotheria (6); Xenarthra (1)
-10	Metatheria
-11	Prototheria
-12	Sauropsida
-13	Amphibia
-14	Coelacanthimorpha
-15	Actinopterygii
-16	Tunicata
-17	Cephalochordata
-18	Echinodermata (1); Hemichordata (1)
-19	Ecdysozoa (43); Spiralia (2)
-20	Spiralia
-21	Cnidaria
-22	Ctenophora
-23	Placozoa
-24	Porifera
-25	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)
-26	Fungi
-27	Amoebozoa
-28	Viridiplantae
-29	Discoba (6); Metamonada (1); Sar (1)
-30	Rhodophyta
-31	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)
-32	Metamonada
+root	clade_name	counts
+4	Eptesicus	1
+5	Yinpterochiroptera	2
+6	Artiodactyla (10); Carnivora (8)	10; 8
+7	Eulipotyphla	2
+8	Euarchontoglires	33
+9	Afrotheria (6); Xenarthra (1)	6; 1
+10	Metatheria	3
+11	Prototheria	1
+12	Sauropsida	13
+13	Amphibia	1
+14	Coelacanthimorpha	1
+15	Actinopterygii	19
+16	Tunicata	2
+17	Cephalochordata	1
+18	Echinodermata (1); Hemichordata (1)	1; 1
+19	Ecdysozoa (43); Spiralia (2)	43; 2
+20	Spiralia	2
+21	Cnidaria	2
+22	Ctenophora	1
+23	Placozoa	1
+24	Porifera	1
+25	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
+26	Fungi	179
+27	Amoebozoa	4
+28	Viridiplantae	75
+29	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+30	Rhodophyta	2
+31	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+32	Metamonada	1

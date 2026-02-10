@@ -1,25 +1,25 @@
-root	clade_name
-1	Chaetomiaceae
-2	Chaetomiaceae (3); Podosporaceae (1)
-3	Sordariaceae
-4	Magnaporthales (3); Ophiostomatales (3); Togniniales (1)
-5	Hypocreomycetidae
-6	Xylariomycetidae
-7	Leotiomycetes
-8	Eurotiomycetes (35); dothideomyceta (1)
-9	dothideomyceta
-10	Pezizomycetes
-11	Orbiliomycetes
-12	Saccharomycotina
-13	Taphrinomycotina
-14	Basidiomycota
-15	Mucoromycota
-16	Chytridiomycota
-17	Blastocladiomycota
-18	Metazoa (161); Fungi (3); Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)
-19	Amoebozoa
-20	Viridiplantae
-21	Discoba (6); Metamonada (1); Sar (1)
-22	Rhodophyta
-23	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)
-24	Metamonada
+root	clade_name	counts
+1	Chaetomiaceae	1
+2	Chaetomiaceae (3); Podosporaceae (1)	3; 1
+3	Sordariaceae	3
+4	Magnaporthales (3); Ophiostomatales (3); Togniniales (1)	3; 3; 1
+5	Hypocreomycetidae	23
+6	Xylariomycetidae	2
+7	Leotiomycetes	6
+8	Eurotiomycetes (35); dothideomyceta (1)	35; 1
+9	dothideomyceta	16
+10	Pezizomycetes	2
+11	Orbiliomycetes	2
+12	Saccharomycotina	33
+13	Taphrinomycotina	7
+14	Basidiomycota	30
+15	Mucoromycota	1
+16	Chytridiomycota	2
+17	Blastocladiomycota	1
+18	Metazoa (161); Fungi (3); Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	161; 3; 2; 1; 1; 1
+19	Amoebozoa	4
+20	Viridiplantae	75
+21	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+22	Rhodophyta	2
+23	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+24	Metamonada	1
