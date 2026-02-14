@@ -7,3 +7,7 @@ testing*
 null/
 results/*cogs.csv
 results/
+
+data/clade_names/pending/test/prompts/*
+data/clade_names/pending/test/problems/*.counts.tsv
+data/clade_names/pending/test/problems/*.lineage.tsv
