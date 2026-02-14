@@ -1,26 +1,26 @@
-root	clade_name	counts
-1	Ophiocordycipitaceae	1
-2	Clavicipitaceae (3); Hypocreaceae (3)	3; 3
-3	Cordycipitaceae	2
-4	Nectriaceae	6
-5	Glomerellales	8
-6	Sordariomycetidae	15
-7	Xylariomycetidae	2
-8	Leotiomycetes	6
-9	Eurotiomycetes (35); dothideomyceta (1)	35; 1
-10	dothideomyceta	16
-11	Pezizomycetes	2
-12	Orbiliomycetes	2
-13	Saccharomycotina	33
-14	Taphrinomycotina	7
-15	Basidiomycota	30
-16	Mucoromycota	1
-17	Chytridiomycota	2
-18	Blastocladiomycota	1
-19	Metazoa (161); Fungi (3); Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	161; 3; 2; 1; 1; 1
-20	Amoebozoa	4
-21	Viridiplantae	75
-22	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
-23	Rhodophyta	2
-24	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
-25	Metamonada	1
+root	clade_name	counts	reason
+1	Ophiocordycipitaceae	1	
+2	Uncertain: Clavicipitaceae (3); Hypocreaceae (3)	3; 3	uncertain
+3	Cordycipitaceae	2	
+4	Nectriaceae	6	
+5	Glomerellales	8	
+6	Sordariomycetidae	15	
+7	Xylariomycetidae	2	
+8	Leotiomycetes	6	
+9	Eurotiomycetes	35; 1	majority of species
+10	dothideomyceta	16	
+11	Pezizomycetes	2	
+12	Orbiliomycetes	2	
+13	Saccharomycotina	33	
+14	Taphrinomycotina	7	
+15	Basidiomycota	30	
+16	Mucoromycota	1	
+17	Chytridiomycota	2	
+18	Blastocladiomycota	1	
+19	Metazoa	161; 3; 2; 1; 1; 1	normalized entropy < 0.7
+20	Amoebozoa	4	
+21	Viridiplantae	75	
+22	Discoba	6; 1; 1	normalized entropy < 0.7
+23	Rhodophyta	2	
+24	Sar	38; 1; 1; 1	normalized entropy < 0.7
+25	Metamonada	1	

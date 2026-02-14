@@ -1,24 +1,24 @@
-root	clade_name	counts
-3	Arabideae	1
-4	Eutremeae	1
-5	Camelineae (5); Boechereae (1)	5; 1
-6	Cleomaceae	1
-7	Caricaceae	1
-8	Malvales	2
-9	Sapindales	2
-10	Myrtales	1
-11	fabids	16
-12	rosids incertae sedis	1
-13	asterids (5); Caryophyllales (1)	5; 1
-14	Proteales	1
-15	Ranunculales	1
-16	Liliopsida	20
-17	Amborellales	1
-18	Lycopodiopsida	1
-19	Bryophyta	1
-20	Chlorophyta	10
-21	Opisthokonta (345); Amoebozoa (4)	345; 4
-22	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
-23	Rhodophyta	2
-24	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
-25	Metamonada	1
+root	clade_name	counts	reason
+3	Arabideae	1	
+4	Eutremeae	1	
+5	Camelineae	5; 1	normalized entropy < 0.7
+6	Cleomaceae	1	
+7	Caricaceae	1	
+8	Malvales	2	
+9	Sapindales	2	
+10	Myrtales	1	
+11	fabids	16	
+12	rosids incertae sedis	1	
+13	asterids	5; 1	normalized entropy < 0.7
+14	Proteales	1	
+15	Ranunculales	1	
+16	Liliopsida	20	
+17	Amborellales	1	
+18	Lycopodiopsida	1	
+19	Bryophyta	1	
+20	Chlorophyta	10	
+21	Opisthokonta	345; 4	normalized entropy < 0.7
+22	Discoba	6; 1; 1	normalized entropy < 0.7
+23	Rhodophyta	2	
+24	Sar	38; 1; 1; 1	normalized entropy < 0.7
+25	Metamonada	1	

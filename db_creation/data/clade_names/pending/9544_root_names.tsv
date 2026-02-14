@@ -1,36 +1,36 @@
-root	clade_name	counts
-3	Papio	1
-4	Chlorocebus	1
-5	Colobinae	1
-6	Hominoidea	6
-7	Platyrrhini	2
-8	Tarsiiformes	1
-9	Strepsirrhini	1
-10	Dermoptera	1
-11	Scandentia	1
-12	Glires	16
-13	Laurasiatheria	26
-14	Afrotheria (6); Xenarthra (1)	6; 1
-15	Metatheria	3
-16	Prototheria	1
-17	Sauropsida	13
-18	Amphibia	1
-19	Coelacanthimorpha	1
-20	Actinopterygii	19
-21	Tunicata	2
-22	Cephalochordata	1
-23	Echinodermata (1); Hemichordata (1)	1; 1
-24	Ecdysozoa (43); Spiralia (2)	43; 2
-25	Spiralia	2
-26	Cnidaria	2
-27	Ctenophora	1
-28	Placozoa	1
-29	Porifera	1
-30	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
-31	Fungi	179
-32	Amoebozoa	4
-33	Viridiplantae	75
-34	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
-35	Rhodophyta	2
-36	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
-37	Metamonada	1
+root	clade_name	counts	reason
+3	Papio	1	
+4	Chlorocebus	1	
+5	Colobinae	1	
+6	Hominoidea	6	
+7	Platyrrhini	2	
+8	Tarsiiformes	1	
+9	Strepsirrhini	1	
+10	Dermoptera	1	
+11	Scandentia	1	
+12	Glires	16	
+13	Laurasiatheria	26	
+14	Afrotheria	6; 1	normalized entropy < 0.7
+15	Metatheria	3	
+16	Prototheria	1	
+17	Sauropsida	13	
+18	Amphibia	1	
+19	Coelacanthimorpha	1	
+20	Actinopterygii	19	
+21	Tunicata	2	
+22	Cephalochordata	1	
+23	Ambulacraria	1; 1	custom rule
+24	Ecdysozoa	43; 2	majority of species
+25	Spiralia	2	
+26	Cnidaria	2	
+27	Ctenophora	1	
+28	Placozoa	1	
+29	Porifera	1	
+30	Uncertain: Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1	uncertain
+31	Fungi	179	
+32	Amoebozoa	4	
+33	Viridiplantae	75	
+34	Discoba	6; 1; 1	normalized entropy < 0.7
+35	Rhodophyta	2	
+36	Sar	38; 1; 1; 1	normalized entropy < 0.7
+37	Metamonada	1	

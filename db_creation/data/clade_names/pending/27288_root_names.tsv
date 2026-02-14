@@ -1,21 +1,21 @@
-root	clade_name	counts
-3	Saccharomyces	1
-4	Huiozyma (1); Kazachstania (1)	1; 1
-5	Henningerozyma (1); Tetrapisispora (1); Vanderwaltozyma (1)	1; 1; 1
-6	Nakaseomyces (1); Torulaspora (1); Zygosaccharomyces (1)	1; 1; 1
-7	Eremothecium (2); Kluyveromyces (1); Lachancea (1)	2; 1; 1
-8	Pichiomycetes	1
-9	Pichiomycetes (15); Dipodascomycetes (1); Saccharomycetes (1)	15; 1; 1
-10	Pezizomycotina	102
-11	Taphrinomycotina	7
-12	Basidiomycota	30
-13	Mucoromycota	1
-14	Chytridiomycota	2
-15	Blastocladiomycota	1
-16	Metazoa (161); Fungi (3); Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	161; 3; 2; 1; 1; 1
-17	Amoebozoa	4
-18	Viridiplantae	75
-19	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
-20	Rhodophyta	2
-21	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
-22	Metamonada	1
+root	clade_name	counts	reason
+3	Saccharomyces	1	
+4	Uncertain: Huiozyma (1); Kazachstania (1)	1; 1	no clear candidate
+5	Uncertain: Henningerozyma (1); Tetrapisispora (1); Vanderwaltozyma (1)	1; 1; 1	no clear candidate
+6	Uncertain: Nakaseomyces (1); Torulaspora (1); Zygosaccharomyces (1)	1; 1; 1	no clear candidate
+7	Uncertain: Eremothecium (2); Kluyveromyces (1); Lachancea (1)	2; 1; 1	no majority candidate
+8	Pichiomycetes	1	
+9	Pichiomycetes	15; 1; 1	normalized entropy < 0.7
+10	Pezizomycotina	102	
+11	Taphrinomycotina	7	
+12	Basidiomycota	30	
+13	Mucoromycota	1	
+14	Chytridiomycota	2	
+15	Blastocladiomycota	1	
+16	Metazoa	161; 3; 2; 1; 1; 1	normalized entropy < 0.7
+17	Amoebozoa	4	
+18	Viridiplantae	75	
+19	Discoba	6; 1; 1	normalized entropy < 0.7
+20	Rhodophyta	2	
+21	Sar	38; 1; 1; 1	normalized entropy < 0.7
+22	Metamonada	1	

@@ -1,27 +1,27 @@
-root	clade_name	counts
-3	Xiphophorus	1
-4	Beloniformes	1
-5	Cichlomorphae (5); Ovalentaria incertae sedis (1)	5; 1
-6	Eupercaria (3); Carangaria (1)	3; 1
-7	Paracanthopterygii	1
-8	Protacanthopterygii	1
-9	Otomorpha	2
-10	Holostei	1
-11	Sarcopterygii	85
-12	Tunicata	2
-13	Cephalochordata	1
-14	Echinodermata (1); Hemichordata (1)	1; 1
-15	Ecdysozoa (43); Spiralia (2)	43; 2
-16	Spiralia	2
-17	Cnidaria	2
-18	Ctenophora	1
-19	Placozoa	1
-20	Porifera	1
-21	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
-22	Fungi	179
-23	Amoebozoa	4
-24	Viridiplantae	75
-25	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
-26	Rhodophyta	2
-27	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
-28	Metamonada	1
+root	clade_name	counts	reason
+3	Xiphophorus	1	
+4	Beloniformes	1	
+5	Cichlomorphae	5; 1	majority of species
+6	Eupercaria	3; 1	majority of species
+7	Paracanthopterygii	1	
+8	Protacanthopterygii	1	
+9	Otomorpha	2	
+10	Holostei	1	
+11	Sarcopterygii	85	
+12	Tunicata	2	
+13	Cephalochordata	1	
+14	Ambulacraria	1; 1	custom rule
+15	Ecdysozoa	43; 2	majority of species
+16	Spiralia	2	
+17	Cnidaria	2	
+18	Ctenophora	1	
+19	Placozoa	1	
+20	Porifera	1	
+21	Uncertain: Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1	uncertain
+22	Fungi	179	
+23	Amoebozoa	4	
+24	Viridiplantae	75	
+25	Discoba	6; 1; 1	normalized entropy < 0.7
+26	Rhodophyta	2	
+27	Sar	38; 1; 1; 1	normalized entropy < 0.7
+28	Metamonada	1	

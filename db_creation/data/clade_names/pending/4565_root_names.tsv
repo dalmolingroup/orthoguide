@@ -1,18 +1,18 @@
-root	clade_name	counts
-3	Aegilops	1
-4	Hordeinae	1
-5	Stipodae	1
-6	Oryzoideae	9
-7	PACMAD clade	4
-8	Zingiberales	1
-9	Arecales	1
-10	eudicotyledons (40); Proteales (1); Ranunculales (1)	40; 1; 1
-11	Amborellales	1
-12	Lycopodiopsida	1
-13	Bryophyta	1
-14	Chlorophyta	10
-15	Opisthokonta (345); Amoebozoa (4)	345; 4
-16	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
-17	Rhodophyta	2
-18	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
-19	Metamonada	1
+root	clade_name	counts	reason
+3	Aegilops	1	
+4	Hordeinae	1	
+5	Stipodae	1	
+6	Oryzoideae	9	
+7	PACMAD clade	4	
+8	Zingiberales	1	
+9	Arecales	1	
+10	eudicotyledons	40; 1; 1	normalized entropy < 0.7
+11	Amborellales	1	
+12	Lycopodiopsida	1	
+13	Bryophyta	1	
+14	Chlorophyta	10	
+15	Opisthokonta	345; 4	normalized entropy < 0.7
+16	Discoba	6; 1; 1	normalized entropy < 0.7
+17	Rhodophyta	2	
+18	Sar	38; 1; 1; 1	normalized entropy < 0.7
+19	Metamonada	1	

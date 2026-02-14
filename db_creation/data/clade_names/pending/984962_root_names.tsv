@@ -1,24 +1,24 @@
-root	clade_name	counts
-1	Bondarzewiaceae	1
-2	Stereaceae	1
-3	Gloeophyllales	1
-4	Hymenochaetales	1
-5	Corticiales (1); Polyporales (1)	1; 1
-6	Auriculariales	1
-7	Sebacinales	1
-8	Agaricomycetidae	6
-9	Tremellomycetes	4
-10	Wallemiomycotina	2
-11	Ustilaginomycotina	6
-12	Pucciniomycotina	4
-13	Ascomycota	142
-14	Mucoromycota	1
-15	Chytridiomycota	2
-16	Blastocladiomycota	1
-17	Metazoa (161); Fungi (3); Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	161; 3; 2; 1; 1; 1
-18	Amoebozoa	4
-19	Viridiplantae	75
-20	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
-21	Rhodophyta	2
-22	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
-23	Metamonada	1
+root	clade_name	counts	reason
+1	Bondarzewiaceae	1	
+2	Stereaceae	1	
+3	Gloeophyllales	1	
+4	Hymenochaetales	1	
+5	Uncertain: Corticiales (1); Polyporales (1)	1; 1	uncertain
+6	Auriculariales	1	
+7	Sebacinales	1	
+8	Agaricomycetidae	6	
+9	Tremellomycetes	4	
+10	Wallemiomycotina	2	
+11	Ustilaginomycotina	6	
+12	Pucciniomycotina	4	
+13	Ascomycota	142	
+14	Mucoromycota	1	
+15	Chytridiomycota	2	
+16	Blastocladiomycota	1	
+17	Metazoa	161; 3; 2; 1; 1; 1	normalized entropy < 0.7
+18	Amoebozoa	4	
+19	Viridiplantae	75	
+20	Discoba	6; 1; 1	normalized entropy < 0.7
+21	Rhodophyta	2	
+22	Sar	38; 1; 1; 1	normalized entropy < 0.7
+23	Metamonada	1	
