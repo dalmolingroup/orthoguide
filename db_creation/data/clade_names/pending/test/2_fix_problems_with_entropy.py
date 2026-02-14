@@ -147,19 +147,23 @@ def process_files():
                 rows_to_write = []
                 for item in final_rows:
                     entropy = item['entropy']
+                    original_row = item['row']
+                    parsed = item['parsed']
+                    root_val = original_row.get('root', '')
+                    
+                    # Find name with greatest count
+                    if parsed:
+                        parsed.sort(key=lambda x: x[1], reverse=True)
+                        best_name = parsed[0][0]
+                    else:
+                        best_name = original_row.get('clade_name', '')
+                    
                     if entropy > 0.0:
-                        original_row = item['row']
-                        parsed = item['parsed']
-                        root_val = original_row.get('root', '')
-                        
-                        # Find name with greatest count
-                        if parsed:
-                            parsed.sort(key=lambda x: x[1], reverse=True)
-                            best_name = parsed[0][0]
-                        else:
-                            best_name = original_row.get('clade_name', '')
-                        
-                        rows_to_write.append([root_val, best_name, "normalized entropy < 0.7"])
+                        reason = "normalized entropy < 0.7"
+                    else:
+                        reason = ""
+                    
+                    rows_to_write.append([root_val, best_name, reason])
                 
                 if rows_to_write:
                     with open(fix_filename, 'w', encoding='utf-8', newline='') as f_out:
@@ -168,7 +172,7 @@ def process_files():
                         writer.writerows(rows_to_write)
                     print(f"Created {os.path.basename(fix_filename)}")
                 else:
-                    print(f"Skipping {os.path.basename(fix_filename)}: No rows with entropy > 0 found.")
+                    print(f"Skipping {os.path.basename(fix_filename)}: No rows found.")
             
             except Exception as e:
                 print(f"Error writing {fix_filename}: {e}", file=sys.stderr)

@@ -94,6 +94,10 @@ for INPUT_FILE in INPUT_FILES:
         # Filter original rows (+/- 1 root)
         rows_to_write = [r for r in rows if (min_root - 1) <= int(r['root']) <= (max_root + 1)]
 
+        # Check actual min/max root values in filtered rows
+        actual_min_root = min(int(r['root']) for r in rows_to_write)
+        actual_max_root = max(int(r['root']) for r in rows_to_write)
+
         # Renumber root column
         for j, r in enumerate(rows_to_write):
             r['root'] = j + 1
@@ -112,7 +116,7 @@ for INPUT_FILE in INPUT_FILES:
             os.replace(filepath, new_filepath)
             
             with open(FIX_MAP_FILE, 'a', newline='', encoding='utf-8') as f:
-                f.write(f"{INPUT_FILE}\t{file_hash}\t{min_root}\t{max_root}\n")
+                f.write(f"{INPUT_FILE}\t{file_hash}\t{actual_min_root}\t{actual_max_root}\n")
 
             print(f"-> Wrote {filename} ({len(rows_to_write)} rows) -> hashed to {new_filename}")
 
