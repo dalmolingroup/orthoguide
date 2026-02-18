@@ -1,13 +1,13 @@
 root	clade_name	counts
 3	Bubalus	1
-4	Antilopinae (1); Caprinae (1)	1; 1
+4	Uncertain: Antilopinae (1); Caprinae (1)	1; 1
 5	Whippomorpha	4
 6	Suina	1
 7	Carnivora	8
 8	Chiroptera	6
 9	Eulipotyphla	2
 10	Euarchontoglires	33
-11	Afrotheria (6); Xenarthra (1)	6; 1
+11	Afrotheria	6; 1
 12	Metatheria	3
 13	Prototheria	1
 14	Sauropsida	13
@@ -16,18 +16,18 @@ root	clade_name	counts
 17	Actinopterygii	19
 18	Tunicata	2
 19	Cephalochordata	1
-20	Echinodermata (1); Hemichordata (1)	1; 1
-21	Ecdysozoa (43); Spiralia (2)	43; 2
+20	Ambulacraria	1; 1
+21	Ecdysozoa	43; 2
 22	Spiralia	2
 23	Cnidaria	2
 24	Ctenophora	1
 25	Placozoa	1
 26	Porifera	1
-27	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
+27	Uncertain: Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
 28	Fungi	179
 29	Amoebozoa	4
 30	Viridiplantae	75
-31	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+31	Discoba	6; 1; 1
 32	Rhodophyta	2
-33	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+33	Sar	38; 1; 1; 1
 34	Metamonada	1

@@ -9,7 +9,7 @@ def main():
     fixes_by_file = {}
     try:
         with open(fix_map_path, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f, delimiter='	')
+            reader = csv.DictReader(f, delimiter='\t')
             for row in reader:
                 prob_file = row['problematic']
                 fix_hash = row['fix']
@@ -56,7 +56,7 @@ def main():
                 
             try:
                 with open(fix_file_path, 'r', encoding='utf-8') as f:
-                    reader = csv.DictReader(f, delimiter='	')
+                    reader = csv.DictReader(f, delimiter='\t')
                     for row in reader:
                         original_root = int(row['root'])
                         # Renumber: new_root = fix_root + (from_root - 1)
@@ -72,10 +72,9 @@ def main():
         
         try:
             with open(prob_path, 'r', encoding='utf-8') as f:
-                reader = csv.DictReader(f, delimiter='	')
+                reader = csv.DictReader(f, delimiter='\t')
                 fieldnames = reader.fieldnames
-                if fieldnames and 'reason' not in fieldnames:
-                    fieldnames.append('reason')
+                # Keep only original columns (root, clade_name, counts) - don't add 'reason'
                 
                 for row in reader:
                     try:
@@ -87,19 +86,14 @@ def main():
                     
                     if root_val in fix_lookup:
                         fix_row = fix_lookup[root_val]
-                        # Apply fix
+                        # Apply fix - only update clade_name, not reason
                         row['clade_name'] = fix_row['clade_name']
-                        row['reason'] = fix_row.get('reason', '')
-                    else:
-                        # Ensure 'reason' key exists
-                        if 'reason' not in row:
-                            row['reason'] = ''
                             
                     updated_rows.append(row)
                     
             # 4. Write back
             with open(prob_path, 'w', encoding='utf-8', newline='') as f:
-                writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter='	')
+                writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter='\t')
                 writer.writeheader()
                 writer.writerows(updated_rows)
                 

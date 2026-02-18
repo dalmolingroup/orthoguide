@@ -60,6 +60,13 @@ for INPUT_FILE in INPUT_FILES:
                 flagged_roots.add(int(row['root']))
                 continue
 
+        # Checks row below (i+1)
+        if i < len(rows) - 1:
+            next_set = clean_clade_set(rows[i+1].get('clade_name', ''))
+            if not current_set.isdisjoint(next_set):
+                flagged_roots.add(int(row['root']))
+                continue
+
     # Groups roots according to gaps in the sequence ([1, 2, 5, 6] -> [[1, 2], [5, 6]])
     # Sort first to ensure sequence logic works
     flagged_roots = sorted(flagged_roots)

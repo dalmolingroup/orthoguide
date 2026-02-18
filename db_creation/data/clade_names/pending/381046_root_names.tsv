@@ -1,19 +1,19 @@
 root	clade_name	counts
 1	Lachancea	1
-2	Eremothecium (2); Kluyveromyces (1)	2; 1
-3	Naumovozyma (2); Henningerozyma (1); Huiozyma (1); Kazachstania (1); Nakaseomyces (1); Saccharomyces (1); Tetrapisispora (1); Torulaspora (1); Vanderwaltozyma (1); Zygosaccharomyces (1)	2; 1; 1; 1; 1; 1; 1; 1; 1; 1
-4	Pichiomycetes	1
-5	Pichiomycetes (15); Dipodascomycetes (1); Saccharomycetes (1)	15; 1; 1
+2	Uncertain: Eremothecium (2); Kluyveromyces (1)	2; 1
+3	Uncertain: Naumovozyma (2); Henningerozyma (1); Huiozyma (1); Kazachstania (1); Nakaseomyces (1); Saccharomyces (1); Tetrapisispora (1); Torulaspora (1); Vanderwaltozyma (1); Zygosaccharomyces (1)	2; 1; 1; 1; 1; 1; 1; 1; 1; 1
+4	Uncertain: Pichiomycetes (1)	1
+5	Pichiomycetes	15; 1; 1
 6	Pezizomycotina	102
 7	Taphrinomycotina	7
 8	Basidiomycota	30
 9	Mucoromycota	1
 10	Chytridiomycota	2
 11	Blastocladiomycota	1
-12	Metazoa (161); Fungi (3); Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	161; 3; 2; 1; 1; 1
+12	Metazoa	161; 3; 2; 1; 1; 1
 13	Amoebozoa	4
 14	Viridiplantae	75
-15	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+15	Discoba	6; 1; 1
 16	Rhodophyta	2
-17	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+17	Sar	38; 1; 1; 1
 18	Metamonada	1
