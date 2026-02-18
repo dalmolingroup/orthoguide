@@ -1,8 +1,8 @@
 root	clade_name	counts
-1	Uncertain: Helotiales (1)	1
-2	Uncertain: Helotiales (3); Erysiphales (1); Thelebolales (1)	3; 1; 1
+1	Helotiales	1
+2	Helotiales (3); Erysiphales (1); Thelebolales (1)	3; 1; 1
 3	Sordariomycetes	40
-4	Eurotiomycetes	35; 1
+4	Eurotiomycetes (35); dothideomyceta (1)	35; 1
 5	dothideomyceta	16
 6	Pezizomycetes	2
 7	Orbiliomycetes	2
@@ -12,10 +12,10 @@ root	clade_name	counts
 11	Mucoromycota	1
 12	Chytridiomycota	2
 13	Blastocladiomycota	1
-14	Metazoa	161; 3; 2; 1; 1; 1
+14	Metazoa (161); Fungi (3); Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	161; 3; 2; 1; 1; 1
 15	Amoebozoa	4
 16	Viridiplantae	75
-17	Discoba	6; 1; 1
+17	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
 18	Rhodophyta	2
-19	Sar	38; 1; 1; 1
+19	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
 20	Metamonada	1
