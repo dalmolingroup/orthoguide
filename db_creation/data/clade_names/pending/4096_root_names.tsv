@@ -1,17 +1,17 @@
-root	clade_name	counts	reason
-3	Solanoideae	2	
-4	Lamiales	1	
-5	Caryophyllales	1	
-6	rosids	34	
-7	Proteales	1	
-8	Ranunculales	1	
-9	Liliopsida	20	
-10	Amborellales	1	
-11	Lycopodiopsida	1	
-12	Bryophyta	1	
-13	Chlorophyta	10	
-14	Opisthokonta	345; 4	normalized entropy < 0.7
-15	Discoba	6; 1; 1	normalized entropy < 0.7
-16	Rhodophyta	2	
-17	Sar	38; 1; 1; 1	normalized entropy < 0.7
-18	Metamonada	1	
+root	clade_name	counts
+3	Solanoideae	2
+4	Lamiales	1
+5	Caryophyllales	1
+6	rosids	34
+7	Proteales	1
+8	Ranunculales	1
+9	Liliopsida	20
+10	Amborellales	1
+11	Lycopodiopsida	1
+12	Bryophyta	1
+13	Chlorophyta	10
+14	Opisthokonta (345); Amoebozoa (4)	345; 4
+15	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+16	Rhodophyta	2
+17	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+18	Metamonada	1

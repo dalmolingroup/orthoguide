@@ -1,10 +1,10 @@
-root	clade_name	counts	reason
-4	Hyaloperonospora	1	
-5	Pythiales	4	
-6	Uncertain: Peronosporomycetes (1); Saprolegniomycetes (1)	1; 1	Oomycota conflicts with root 1
-7	Uncertain: Saprolegniomycetes (1)	1	conflicts with root 2
-8	Ochrophyta	5	
-9	Alveolata	20	
-10	Haptista	1	
-11	Opisthokonta	345; 75; 6; 4; 2; 1; 1; 1; 1	majority of species
-12	Metamonada	1	
+root	clade_name	counts
+4	Hyaloperonospora	1
+5	Pythiales	4
+6	Peronosporomycetes (1); Saprolegniomycetes (1)	1; 1
+7	Saprolegniomycetes	1
+8	Ochrophyta	5
+9	Alveolata	20
+10	Haptista	1
+11	Opisthokonta (345); Viridiplantae (75); Discoba (6); Amoebozoa (4); Rhodophyta (2); Apusozoa (1); Cryptophyceae (1); Metamonada (1); Sar (1)	345; 75; 6; 4; 2; 1; 1; 1; 1
+12	Metamonada	1
