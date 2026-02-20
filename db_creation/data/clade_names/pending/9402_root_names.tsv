@@ -1,9 +1,9 @@
 root	clade_name	counts
 3	Yangochiroptera	4
-4	Artiodactyla (10); Carnivora (8)	10; 8
+4	Uncertain: Artiodactyla (10); Carnivora (8)	10; 8
 5	Eulipotyphla	2
 6	Euarchontoglires	33
-7	Afrotheria (6); Xenarthra (1)	6; 1
+7	Afrotheria	6; 1
 8	Metatheria	3
 9	Prototheria	1
 10	Sauropsida	13
@@ -12,18 +12,18 @@ root	clade_name	counts
 13	Actinopterygii	19
 14	Tunicata	2
 15	Cephalochordata	1
-16	Echinodermata (1); Hemichordata (1)	1; 1
-17	Ecdysozoa (43); Spiralia (2)	43; 2
+16	Ambulacraria	1; 1
+17	Ecdysozoa	43; 2
 18	Spiralia	2
 19	Cnidaria	2
 20	Ctenophora	1
 21	Placozoa	1
 22	Porifera	1
-23	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
+23	Uncertain: Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
 24	Fungi	179
 25	Amoebozoa	4
 26	Viridiplantae	75
-27	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+27	Discoba	6; 1; 1
 28	Rhodophyta	2
-29	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+29	Sar	38; 1; 1; 1
 30	Metamonada	1
