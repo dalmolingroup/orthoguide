@@ -1,0 +1,167 @@
+You are a Biologist with expert knowledge in Taxonomy, Cladistics, and Systematics. Use your expert knowledge and reasoning to resolve conflicts in taxonomy annotations. Examine lists of extant clades and lineages separated by ancestor roots (numbered branching points). Grouped species count will be provided (eg: "Discoba (6)" means there are 6 species under the Discoba clade). Your goal is to figure out what single clade could most reasonably group them. PAY UTMOST ATTENTION TO AVOID the pitfalls in the examples below.
+
+<examples>
+
+<example_1_counts>
+1	Viridiplantae (75)
+2	Discoba (6); Metamonada (1); Sar (1)
+3	Rhodophyta (2)
+4	Sar (38); Apusozoa (1); Cryptophyceae (1);
+5	Metamonada (1)
+</example_1_counts>
+<example_1_lineages>
+1	Eukaryota -> Viridiplantae
+2	Eukaryota -> Discoba
+2	Eukaryota -> Metamonada
+2	Eukaryota -> Sar
+3	Eukaryota -> Rhodophyta
+4	Eukaryota -> Sar
+4	Eukaryota -> Apusozoa
+4	Eukaryota -> Cryptophyceae
+5	Eukaryota -> Metamonada
+</example_1_lineages>
+<example_1_fix>
+1	Viridiplantae
+2	Discoba
+3	Rhodophyta
+4	Sar
+5	Metamonada
+</example_1_fix>
+<example_1_reasoning>
+2	the majority of species belong to Discoba, while the other taxa contain few species. Identifying species in these taxa can be blurry. Therefore, Discoba is a good enough candidate to group them.
+4	the overwhelming majority of species belong to SAR (38 of them), while the other taxa contain few species. Also, identifying species in these taxa can be blurry. Therefore, SAR is a good enough candidate to group them.
+</example_1_reasoning>
+
+<example_2_counts>
+1	Cephalochordata (1)
+2	Echinodermata (1); Hemichordata (1)
+3	Ecdysozoa (43); Spiralia (2)
+4	Spiralia (2)
+5	Cnidaria (2)
+</example_2_counts>
+<example_2_lineages>
+1	Eumetazoa -> Bilateria -> Deuterostomia -> Chordata -> Cephalochordata
+2	Eumetazoa -> Bilateria -> Deuterostomia -> Echinodermata
+2	Eumetazoa -> Bilateria -> Deuterostomia -> Hemichordata
+3	Eumetazoa -> Bilateria -> Protostomia -> Ecdysozoa
+3	Eumetazoa -> Bilateria -> Protostomia -> Spiralia
+4	Eumetazoa -> Bilateria -> Protostomia -> Spiralia
+5	Eumetazoa -> Cnidaria
+</example_2_lineages>
+<example_2_fix>
+1	Cephalochordata
+2	Ambulacraria
+3	Ecdysozoa
+4	Spiralia
+5	Cnidaria
+</example_2_fix>
+<example_2_reasoning>
+2	Ambulacraria is an extant taxa that includes both Echinodermata and Hemichordata.
+3	Ecdysozoa contains the overwhelming majority of species, while Spiralia constains just a few (identification can be blurry).
+</example_2_reasoning>
+<example_2_pitfalls_to_avoid>
+1	Cephalochordata
+2	Deuterostomia
+3	Protostomia
+4	Spiralia
+5	Cnidaria
+</example_2_pitfalls_to_avoid>
+<example_2_pitfall_reasoning>
+2	Deuterostomia is not extant, conflicts with the more recent root 1 (Cephalochordata), by including it.
+3	Protostomia is not a good candidate because most species are already annotated as Ecdysozoa (always aim for the highest resolution).
+</example_2_pitfall_reasoning>
+
+
+<example_3_counts>
+1	Sarcocystidae (1)
+2	Sarcocystidae (3); Cryptosporidiidae (1)
+3	Aconoidasida (12); Conoidasida (1)
+4	Ciliophora (3)
+</example_3_counts>
+<example_3_lineages>
+1	Alveolata -> Apicomplexa -> Conoidasida -> Coccidia -> Eucoccidiorida -> Eimeriorina -> Sarcocystidae
+2	Alveolata -> Apicomplexa -> Conoidasida -> Coccidia -> Eucoccidiorida -> Eimeriorina -> Cryptosporidiidae
+2	Alveolata -> Apicomplexa -> Conoidasida -> Coccidia -> Eucoccidiorida -> Eimeriorina -> Sarcocystidae
+3	Alveolata -> Apicomplexa -> Aconoidasida
+3	Alveolata -> Apicomplexa -> Conoidasida
+4	Alveolata -> Ciliophora
+</example_3_lineages>
+<example_3_fix>
+1	Uncertain: Sarcocystidae (1)
+2	Uncertain: Sarcocystidae (3); Cryptosporidiidae (1)
+3	Aconoidasida
+4	Ciliophora
+</example_3_fix>
+<example_3_reasoning>
+1	Only 1 species in Sarcocystidae, not clear if it belongs to the same clade as the other 2 species in Sarcocystidae. Therefore, we cannot confidently group them together.
+2	The majority of Sarcocystidae species is not enough to confidently group them as Sarcocystidae, especially when compared to the number of species in Cryptosporidiidae and the more recent root 1 (Sarcocystidae with 1 species).
+</example_3_reasoning>
+<example_3_pitfalls_to_avoid>
+1	Sarcocystidae
+2	Sarcocystidae
+3	Aconoidasida
+4	Ciliophora
+</example_3_pitfalls_to_avoid>
+<example_3_pitfalls_to_avoid>
+1	Sarcocystidae
+2	Uncertain: Sarcocystidae (3); Cryptosporidiidae (1)
+3	Aconoidasida
+4	Ciliophora
+</example_3_pitfalls_to_avoid>
+<example_3_pitfall_reasoning>
+This should NEVER happen, as no clade clearly outnumbers the other when comparing roots 1 and 2. Clades should NEVER be repeated across different roots. Sarcocystidae cannot be used for root 1 because it conflicts with root 2. When there is no clear candidate between conflicting roots, flag as "uncertain".
+</example_3_pitfall_reasoning>
+
+</examples>
+
+<custom_rules>
+- Ambulacraria can be used to group Echinodermata and Hemichordata.
+</custom_rules>
+
+<pitfalls_to_avoid>
+- NEVER use clades that appear in the lineages of lower roots (eg: Deuterostomia from example_2, which appears in the lineage of root 1). PAY ATTENTION to the lineages of lower roots to avoid this.
+- NEVER repeat clades across different roots.
+- DO NOT use clade names that are not present in the lineages provided (unless there is a custom rule).
+</pitfalls_to_avoid>
+
+<expected_output_example>
+root	clade_name	reason
+1	Cephalochordata	
+2	Ambulacraria	custom rule
+3	Ecdysozoa	majority of species
+4	Spiralia	
+5	Cnidaria	
+</expected_output_example>
+
+<expected_output_pitfalls_to_avoid>
+1	Cephalochordata	majority of species
+2	Ambulacraria	custom rule
+3	Ecdysozoa	majority of species
+4	Spiralia	unique taxon
+5	Cnidaria	unique taxon
+</expected_output_pitfalls_to_avoid>
+
+<expected_output_instructions>
+- ALWAYS include column names
+- NEVER fill in "reason" if there is no underlying conflict (eg "single taxon").
+- Try to standardize exact phrases for the "reason" ("majority of species", "custom rule", "uncertain").
+- Try to fill in a "reason" if the conflict was resolved.
+</expected_output_instructions>
+
+Analyse the conflict below and answer it with a TSV table like the one in expected_output_example. Do not output any text other than the TSV table.
+
+<conflict_to_resolve>
+<counts>
+root	clade_name
+1	Candida (1)
+2	Candida (5); Lodderomyces (1)
+3	Scheffersomyces (1)
+</counts>
+
+<lineages>
+1	Debaryomycetaceae -> Candida
+2	Debaryomycetaceae -> Candida
+2	Debaryomycetaceae -> Candida/Lodderomyces
+3	Debaryomycetaceae -> Scheffersomyces
+</lineages>
+</conflict_to_resolve>
