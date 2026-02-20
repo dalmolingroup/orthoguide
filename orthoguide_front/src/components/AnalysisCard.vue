@@ -47,9 +47,32 @@
           style="display: none"
         />
         <p class="input-hint">
-          Insert one {{ identifierType === 'preferred_name' ? 'Gene Symbol' : 'Protein' }} ID per
-          line or upload a .txt file.
+          Insert one
+          {{
+            identifierType === 'preferred_name'
+              ? 'Gene Symbol'
+              : identifierType === 'protein_id'
+                ? 'Protein'
+                : 'COG'
+          }}
+          ID per line or upload a .txt file.
         </p>
+        <details class="input-docs">
+          <summary>Supported Input Formats</summary>
+          <div class="docs-content">
+            <p>
+              <strong>Gene Symbol:</strong> Standard gene symbols (e.g., <em>NRP1</em>,
+              <em>CDK6</em>).
+            </p>
+            <p>
+              <strong>Protein ID:</strong> Ensembl Protein IDs (e.g., <em>ENSP00000223177</em>).
+            </p>
+            <p>
+              <strong>COG ID:</strong> Orthologous Group IDs (e.g., <em>KOG0018</em>,
+              <em>NOG106405</em>).
+            </p>
+          </div>
+        </details>
       </div>
 
       <div class="form-group">
@@ -67,6 +90,7 @@
             <select id="identifier-type" v-model="identifierType" @change="clearInput">
               <option value="preferred_name">Gene Symbol</option>
               <option value="protein_id">Protein ID</option>
+              <option value="cog_id">Orthologous Group ID</option>
             </select>
           </div>
         </div>
@@ -139,6 +163,10 @@ import 'tom-select/dist/css/tom-select.default.css'
 
 const props = defineProps({
   isLoading: Boolean,
+  speciesList: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 const emit = defineEmits(['start-analysis'])
@@ -155,9 +183,13 @@ const fileInput = ref(null)
 const showNetwork = ref(true)
 
 const placeholderText = computed(() => {
-  return identifierType.value === 'preferred_name'
-    ? 'Ex: NRP1, CDK6, ITGB7...'
-    : 'Ex: ENSP00000223177, ENSP00000266970...'
+  if (identifierType.value === 'preferred_name') {
+    return 'Ex: NRP1, CDK6, ITGB7...'
+  } else if (identifierType.value === 'protein_id') {
+    return 'Ex: ENSP00000223177, ENSP00000266970...'
+  } else {
+    return 'Ex: NOG106405, KOG0018...'
+  }
 })
 
 const geneCount = computed(() => {
@@ -303,11 +335,11 @@ const clearValidationError = () => {
 
 <style scoped>
 .analysis-card {
-  background-color: white;
+  background-color: var(--color-background);
   padding: 40px;
   border-radius: 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
   padding-bottom: 20px;
 }
 .analysis-card h2 {
@@ -352,15 +384,24 @@ const clearValidationError = () => {
   font-size: 0.8rem;
   font-weight: 600;
   padding: 4px 10px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border);
   border-radius: 6px;
-  background-color: #f9fafb;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 .upload-button:hover,
 .example-button:hover {
-  background-color: #f3f4f6;
+  background-color: var(--color-background-mute);
+}
+.example-button:disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.example-button:disabled:hover {
+  background-color: transparent;
 }
 .example-button:disabled {
   color: #9ca3af;
@@ -373,6 +414,7 @@ label {
   font-weight: 600;
   margin-bottom: 8px;
   font-size: 0.9rem;
+  color: var(--color-text);
 }
 label .required {
   color: #ef4444;
@@ -381,12 +423,14 @@ textarea {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-border);
   font-family: inherit;
   font-size: 0.95rem;
   min-height: 120px;
   resize: vertical;
   box-sizing: border-box;
+  background-color: var(--color-background);
+  color: var(--color-text);
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
@@ -397,9 +441,14 @@ select:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
+textarea::placeholder {
+  color: var(--color-text);
+  opacity: 0.4;
+}
 .input-hint {
   font-size: 0.8rem;
-  color: #6c757d;
+  color: var(--color-text);
+  opacity: 0.7;
   margin-top: 8px;
 }
 .input-hint-warning {
@@ -410,10 +459,11 @@ select:focus {
 select {
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-border);
   font-family: inherit;
   font-size: 0.95rem;
-  background-color: white;
+  background-color: var(--color-background);
+  color: var(--color-text);
   appearance: none;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.5rem center;
@@ -468,6 +518,7 @@ select {
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 0;
+  color: var(--color-text);
 }
 .switch {
   position: relative;
@@ -487,7 +538,7 @@ select {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--vt-c-divider-dark-2);
   transition: 0.4s;
   border-radius: 28px;
 }
@@ -512,14 +563,16 @@ input:checked + .slider:before {
   transform: translateX(22px);
 }
 input:disabled + .slider {
-  background-color: #e5e7eb;
+  background-color: var(--color-background-mute);
   cursor: not-allowed;
+  opacity: 0.5;
 }
 #version-statement {
   text-align: center;
   width: 100%;
   display: block;
-  color: #9ca3af;
+  color: var(--color-text);
+  opacity: 0.5;
   margin-top: 2rem;
 }
 @media (max-width: 768px) {
@@ -538,13 +591,14 @@ input:disabled + .slider {
 
 :deep(.ts-control) {
   border-radius: 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-border);
   padding: 12px 12px;
   padding-right: 2.5rem !important;
   font-size: 0.95rem;
   font-family: inherit;
   box-shadow: none;
-  background-color: white;
+  background-color: var(--color-background);
+  color: var(--color-text);
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
@@ -558,9 +612,15 @@ input:disabled + .slider {
   background-size: 1.5em 1.5em;
 }
 
+:deep(.ts-control input) {
+  color: var(--color-text) !important;
+}
+
 :deep(.ts-wrapper.focus .ts-control) {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  background-color: var(--color-background) !important;
+  color: var(--color-text) !important;
 }
 
 /* Hide default Tom Select caret to use our custom SVG */
@@ -570,16 +630,58 @@ input:disabled + .slider {
 
 :deep(.ts-dropdown) {
   border-radius: 8px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-border);
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   margin-top: 4px;
   z-index: 10;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+:deep(.ts-dropdown .option) {
+  color: var(--color-text);
 }
 
 :deep(.ts-dropdown .option.active) {
-  background-color: #f3f4f6;
-  color: inherit;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+}
+
+.input-docs {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-background-soft);
+  overflow: hidden;
+}
+
+.input-docs summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 8px 12px;
+  user-select: none;
+  background-color: var(--color-background-mute);
+  transition: background-color 0.2s;
+}
+
+.input-docs summary:hover {
+  background-color: var(--color-border);
+}
+
+.docs-content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid var(--color-border);
+}
+
+.docs-content p {
+  margin: 0;
+  line-height: 1.4;
 }
 </style>

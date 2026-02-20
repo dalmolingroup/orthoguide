@@ -1,12 +1,17 @@
 <template>
   <div class="space-y-8">
-    <AnalysisCard :is-loading="isLoading || isDbLoading" @start-analysis="handleAnalysis" />
+    <AnalysisCard
+      :is-loading="isLoading || isDbLoading"
+      :species-list="speciesList"
+      @start-analysis="handleAnalysis"
+    />
     <div v-if="isDbLoading" class="loading-db-message">
       <p>Loading database, please wait...</p>
     </div>
     <transition name="fade">
       <ResultsCard
         v-if="results !== null"
+        :key="analysisTimestamp"
         :results="results"
         :api-error-message="apiErrorMessage"
         :chart-data="chartData"
@@ -34,10 +39,12 @@ const isDbLoading = ref(true)
 const dbLoadError = ref(false)
 const db = ref(null)
 const results = ref(null)
+const analysisTimestamp = ref(null)
 const networkData = ref([])
 const apiErrorMessage = ref('')
 const selectedCladeIndex = ref(0)
 const missingGenes = ref([])
+const speciesList = ref([])
 
 const tableHeaders = ref([
   { title: 'Gene', data: 'preferred_name' },
@@ -53,12 +60,12 @@ onMounted(async () => {
       locateFile: (file) => `${import.meta.env.BASE_URL}${file}`,
     })
 
-    const response = await fetch(`${import.meta.env.BASE_URL}orthoguide_data.db.gz`)
-    if (!response.ok) {
-      throw new Error(`Failed to fetch database: ${response.statusText}`)
+    const dbResponse = await fetch(`${import.meta.env.BASE_URL}orthoguide_data.db.gz`)
+    if (!dbResponse.ok) {
+      throw new Error(`Failed to fetch database: ${dbResponse.statusText}`)
     }
 
-    const buffer = await response.arrayBuffer()
+    const buffer = await dbResponse.arrayBuffer()
     const u8 = new Uint8Array(buffer)
     let dbData = u8
 
@@ -70,6 +77,19 @@ onMounted(async () => {
 
     db.value = new SQL.Database(dbData)
     console.log('Database loaded successfully!')
+
+    // Load species map
+    const mapResponse = await fetch(`${import.meta.env.BASE_URL}final_species_map.tsv`)
+    if (mapResponse.ok) {
+      const text = await mapResponse.text()
+      speciesList.value = text
+        .trim()
+        .split('\n')
+        .map((line) => {
+          const [id, name] = line.split('\t')
+          return { id, name }
+        })
+    }
   } catch (error) {
     console.error('Failed to load database:', error)
     apiErrorMessage.value = 'Could not load the application database.'
@@ -181,6 +201,7 @@ const getPPINet = async (genes, speciesId) => {
 }
 
 const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred_name') => {
+  analysisTimestamp.value = Date.now()
   results.value = null
   networkData.value = []
   selectedCladeIndex.value = 0
@@ -202,12 +223,6 @@ const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred
   isLoading.value = true
 
   try {
-    const allowedTableNames = ['9606', '10090', '10116', '7955', '7227', '6239', '3702', '4932']
-
-    if (!allowedTableNames.includes(species)) {
-      throw new Error(`Organism ID '${species}' is not supported.`)
-    }
-
     const CHUNK_SIZE = 600
     let allResults = []
 
@@ -220,12 +235,25 @@ const inferRoots = async (genes, species, fetchNetwork, queryColumn = 'preferred
 
       stmt.bind(chunk)
       while (stmt.step()) {
-        allResults.push(stmt.getAsObject())
+        const row = stmt.getAsObject()
+        const speciesObj = speciesList.value.find((s) => s.id === species)
+        let commonName = speciesObj ? speciesObj.name : 'Species'
+
+        const parts = commonName.split(' ')
+        if (parts.length >= 2) {
+          commonName = `${parts[0][0]}.${parts[1]}`
+        }
+        row.clade_name = `${commonName}-${row.clade_name} LCA`
+        allResults.push(row)
       }
       stmt.free()
     }
 
-    results.value = allResults
+    results.value = allResults.sort((a, b) => {
+      const nameA = a.preferred_name || ''
+      const nameB = b.preferred_name || ''
+      return nameA.localeCompare(nameB)
+    })
 
     const foundGenes = new Set(allResults.map((r) => r[queryColumn]))
     missingGenes.value = genes.filter((g) => !foundGenes.has(g))
@@ -248,11 +276,12 @@ const handleAnalysis = (genes, species, fetchNetwork, queryColumn) => {
   inferRoots(genes, species, fetchNetwork, queryColumn)
 }
 
-const exportToCSV = () => {
-  if (!results.value || results.value.length === 0) return
+const exportToCSV = (data) => {
+  const dataToExport = Array.isArray(data) ? data : results.value
+  if (!dataToExport || dataToExport.length === 0) return
 
   const headers = tableHeaders.value.map((h) => h.title)
-  const rows = results.value.map((row) =>
+  const rows = dataToExport.map((row) =>
     tableHeaders.value.map((header) => `"${row[header.data] || ''}"`).join(','),
   )
 
@@ -285,6 +314,7 @@ const exportToCSV = () => {
   text-align: center;
   padding: 1rem;
   font-style: italic;
-  color: #6b7280;
+  color: var(--color-text);
+  opacity: 0.7;
 }
 </style>

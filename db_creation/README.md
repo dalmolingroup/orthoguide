@@ -24,32 +24,65 @@ To run this pipeline, you will need:
 
 ## File Structure
 
-Before running, ensure your file structure is correct. The pipeline expects to find the input data files in the data/ folder, located at the root of the project.
+The pipeline expects input data files in the `data/` folder. Most of these can be downloaded automatically (see below).
 
 ```
 .
 ├── db_creation/
 │   ├── main.nf
 │   ├── nextflow.config
+│   └── ...
 ├── data/
-│   ├── species_list.txt
-│   ├── geneplast_clade_names.tsv
-│   ├── string_eukaryotes.rda
-│   ├── gpdata_string_v11.RData
-│   └── protein.info.v11.0.txt.gz
+│   ├── final_species_list.txt      # List of species to process
+│   ├── clade_names/                # Directory with clade names per species
+│   ├── string_eukaryotes.rda       # Required R data
+│   ├── gpdata_string_v11.RData     # Downloadable reference
+│   ├── COG.mappings.v11.0.txt.gz   # Downloadable reference
+│   └── protein.info.v11.0.txt.gz   # Downloadable reference
 └── orthoguide_front/
+```
+
+## Configuration Parameters
+
+The pipeline parameters can be configured in `nextflow.config` or overridden at runtime via the command line.
+
+| Parameter | Description | Default Value |
+|-----------|-------------|---------------|
+| `download_references` | Set to `true` to download reference datasets (`gpdata`, `COG`, `protein.info`) automatically. | `false` |
+| `species_list` | Path to the file containing the list of species IDs. | `${baseDir}/data/final_species_list.txt` |
+| `clade_names_dir` | Directory containing clade name mappings. | `${baseDir}/data/clade_names/` |
+| `string_eukaryotes` | Path to the `string_eukaryotes.rda` file. | `${baseDir}/data/string_eukaryotes.rda` |
+| `geneplast_data` | Path to Geneplast data. | `${baseDir}/data/gpdata_string_v11.RData` |
+| `cogdata_table` | Path to COG mappings. | `${baseDir}/data/COG.mappings.v11.0.txt.gz` |
+| `protein_info` | Path to protein info. | `${baseDir}/data/protein.info.v11.0.txt.gz` |
+| `outdir` | Output directory for the generated database. | `../orthoguide_front/public/` |
+
+## Downloading References
+
+If you do not have the large reference files (`gpdata_string_v11.RData`, `COG.mappings.v11.0.txt.gz`, `protein.info.v11.0.txt.gz`), you can instruct the pipeline to download them by adding `--download_references`:
+
+```bash
+nextflow run main.nf -profile docker --download_references
 ```
 
 ## How to Run the Pipeline
 
-- Open your terminal at the root of the db_creation directory.
+1. **Navigate to the directory:**
+   Open your terminal at the root of the `db_creation` directory.
 
-- Run the Nextflow command, choosing the appropriate container profile (docker or singularity).
+2. **Run the pipeline:**
+   Execute the Nextflow command, selecting your container engine (`docker` or `singularity`).
 
-```
-nextflow run main.nf -profile [docker,singularity]
-```
+   *Standard run (using existing data):*
+   ```bash
+   nextflow run main.nf -profile docker
+   ```
+
+   *Run with reference download:*
+   ```bash
+   nextflow run main.nf -profile docker --download_references
+   ```
 
 ## Output
 
-After a successful run, the pipeline will update the orthoguide_data.db in orthoguide_front/public/ (or the directory specified by the --outdir parameter).
+After a successful run, the pipeline will generate the `orthoguide_data.db` SQLite database in `orthoguide_front/public/` (or the location specified by `--outdir`).

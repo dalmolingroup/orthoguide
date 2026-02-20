@@ -9,9 +9,9 @@ root	clade_name
 8	Sciuromorpha
 9	Hystricomorpha
 10	Lagomorpha
-11	Primates (15); Dermoptera (1); Scandentia (1)
+11	Primates
 12	Laurasiatheria
-13	Afrotheria (6); Xenarthra (1)
+13	Afrotheria
 14	Metatheria
 15	Prototheria
 16	Sauropsida
@@ -20,18 +20,18 @@ root	clade_name
 19	Actinopterygii
 20	Tunicata
 21	Cephalochordata
-22	Echinodermata (1); Hemichordata (1)
-23	Ecdysozoa (43); Spiralia (2)
+22	Ambulacraria
+23	Ecdysozoa
 24	Spiralia
 25	Cnidaria
 26	Ctenophora
 27	Placozoa
 28	Porifera
-29	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)
+29	Choanoflagellata
 30	Fungi
 31	Amoebozoa
 32	Viridiplantae
-33	Discoba (6); Metamonada (1); Sar (1)
+33	Discoba
 34	Rhodophyta
-35	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)
+35	SAR
 36	Metamonada
