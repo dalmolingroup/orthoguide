@@ -1,10 +1,13 @@
 root	clade_name	counts
+1	Myotis lucifugus	1
+2	Myotis brandtii	1
+3	Myotis davidii	1
 4	Eptesicus	1
 5	Yinpterochiroptera	2
-6	Uncertain: Artiodactyla (10); Carnivora (8)	10; 8
+6	Artiodactyla (10); Carnivora (8)	10; 8
 7	Eulipotyphla	2
 8	Euarchontoglires	33
-9	Afrotheria	6; 1
+9	Afrotheria (6); Xenarthra (1)	6; 1
 10	Metatheria	3
 11	Prototheria	1
 12	Sauropsida	13
@@ -13,18 +16,18 @@ root	clade_name	counts
 15	Actinopterygii	19
 16	Tunicata	2
 17	Cephalochordata	1
-18	Ambulacraria	1; 1
-19	Ecdysozoa	43; 2
+18	Echinodermata (1); Hemichordata (1)	1; 1
+19	Ecdysozoa (43); Spiralia (2)	43; 2
 20	Spiralia	2
 21	Cnidaria	2
 22	Ctenophora	1
 23	Placozoa	1
 24	Porifera	1
-25	Uncertain: Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
+25	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
 26	Fungi	179
 27	Amoebozoa	4
 28	Viridiplantae	75
-29	Discoba	6; 1; 1
+29	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
 30	Rhodophyta	2
-31	Sar	38; 1; 1; 1
+31	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
 32	Metamonada	1

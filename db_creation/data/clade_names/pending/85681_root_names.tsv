@@ -1,9 +1,11 @@
 root	clade_name	counts
-3	Brassicales	12; 2
+1	Citrus clementina	1
+2	Citrus sinensis	1
+3	Brassicales (12); Malvales (2)	12; 2
 4	Myrtales	1
 5	fabids	16
 6	rosids incertae sedis	1
-7	asterids	5; 1
+7	asterids (5); Caryophyllales (1)	5; 1
 8	Proteales	1
 9	Ranunculales	1
 10	Liliopsida	20
@@ -11,8 +13,8 @@ root	clade_name	counts
 12	Lycopodiopsida	1
 13	Bryophyta	1
 14	Chlorophyta	10
-15	Opisthokonta	345; 4
-16	Discoba	6; 1; 1
+15	Opisthokonta (345); Amoebozoa (4)	345; 4
+16	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
 17	Rhodophyta	2
-18	Sar	38; 1; 1; 1
+18	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
 19	Metamonada	1
