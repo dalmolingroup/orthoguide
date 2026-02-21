@@ -1,0 +1,38 @@
+root	clade_name	counts
+1	Macaca mulatta	1
+2	Macaca fascicularis	1
+3	Papio	1
+4	Chlorocebus	1
+5	Colobinae	1
+6	Hominoidea	1; 1; 1; 1; 1; 1
+7	Platyrrhini	1; 1
+8	Tarsiiformes	1
+9	Strepsirrhini	1
+10	Dermoptera	1
+11	Scandentia	1
+12	Glires	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+13	Laurasiatheria	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+14	Afrotheria	1; 1; 1; 1; 1; 1
+15	Metatheria	1; 1; 1
+16	Prototheria	1
+17	Sauropsida	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+18	Amphibia	1
+19	Coelacanthimorpha	1
+20	Actinopterygii	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+21	Tunicata	1; 1
+22	Cephalochordata	1
+23	Echinodermata	1
+24	Ecdysozoa	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+25	Platyhelminthes	1; 1
+26	Cnidaria	1; 1
+27	Ctenophora	1
+28	Placozoa	1
+29	Porifera	1
+30	Choanoflagellata	1; 1
+31	Fungi	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+32	Amoebozoa	1; 1; 1; 1
+33	Viridiplantae	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+34	Discoba	1; 1; 1; 1; 1; 1
+35	Rhodophyta	1; 1
+36	Apusozoa	1
+37	Fornicata	1

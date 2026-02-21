@@ -1,0 +1,25 @@
+root	clade_name	counts
+1	Paracoccidioides lutzii	1
+2	Paracoccidioides brasiliensis	1
+3	Coccidioides	1; 1
+4	Blastomyces	1
+5	Arthrodermataceae	1; 1; 1; 1; 1
+6	Eurotiales	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+7	Chaetothyriomycetidae	1; 1; 1; 1; 1; 1; 1; 1
+8	sordariomyceta	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+9	Dothideomycetidae	1; 1; 1; 1; 1
+10	Pezizomycetes	1; 1
+11	Orbiliomycetes	1; 1
+12	Saccharomycotina	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+13	Taphrinomycotina	1; 1; 1; 1; 1; 1; 1
+14	Basidiomycota	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+15	Mucoraceae	1
+16	Chytridiomycota	1; 1
+17	Blastocladiomycota	1
+18	Choanoflagellata	1; 1
+19	Amoebozoa	1; 1; 1; 1
+20	Viridiplantae	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+21	Discoba	1; 1; 1; 1; 1; 1
+22	Rhodophyta	1; 1
+23	Apusozoa	1
+24	Fornicata	1
