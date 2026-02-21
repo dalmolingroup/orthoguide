@@ -5,35 +5,35 @@ root	clade_name	counts
 4	Gorilla	1
 5	Ponginae	1
 6	Hylobatidae	1
-7	Cercopithecoidea	1; 1; 1; 1; 1
-8	Platyrrhini	1; 1
+7	Cercopithecoidea	5
+8	Platyrrhini	2
 9	Tarsiiformes	1
 10	Strepsirrhini	1
 11	Dermoptera	1
 12	Scandentia	1
-13	Glires	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
-14	Laurasiatheria	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
-15	Afrotheria	1; 1; 1; 1; 1; 1
-16	Metatheria	1; 1; 1
+13	Glires	16
+14	Laurasiatheria	26
+15	Afrotheria (6); Xenarthra (1)	6; 1
+16	Metatheria	3
 17	Prototheria	1
-18	Sauropsida	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
+18	Sauropsida	13
 19	Amphibia	1
 20	Coelacanthimorpha	1
-21	Actinopterygii	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
-22	Tunicata	1; 1
+21	Actinopterygii	19
+22	Tunicata	2
 23	Cephalochordata	1
-24	Echinodermata	1
-25	Ecdysozoa	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
-26	Platyhelminthes	1; 1
-27	Cnidaria	1; 1
+24	Echinodermata (1); Hemichordata (1)	1; 1
+25	Ecdysozoa (43); Spiralia (2)	43; 2
+26	Spiralia	2
+27	Cnidaria	2
 28	Ctenophora	1
 29	Placozoa	1
 30	Porifera	1
-31	Choanoflagellata	1; 1
-32	Fungi	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
-33	Amoebozoa	1; 1; 1; 1
-34	Viridiplantae	1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1
-35	Discoba	1; 1; 1; 1; 1; 1
-36	Rhodophyta	1; 1
-37	Apusozoa	1
-38	Fornicata	1
+31	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
+32	Fungi	179
+33	Amoebozoa	4
+34	Viridiplantae	75
+35	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+36	Rhodophyta	2
+37	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+38	Metamonada	1

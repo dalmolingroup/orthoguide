@@ -1,7 +1,7 @@
 root	clade_name	counts
-1	Rhizaria	1
-2	Discoba	1; 1; 1; 1; 1; 1
-3	Amoebozoa	1; 1; 1; 1
-4	Rhodophyta	1; 1
-5	Apusozoa	1
-6	Fornicata	1
+1	Sar	1
+2	Discoba	6; 1
+3	Opisthokonta	345; 75; 4
+4	Rhodophyta	2
+5	Sar	38; 1; 1; 1
+6	Metamonada	1
