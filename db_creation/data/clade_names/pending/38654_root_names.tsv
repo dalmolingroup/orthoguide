@@ -10,18 +10,18 @@ root	clade_name	counts
 9	Actinopterygii	19
 10	Tunicata	2
 11	Cephalochordata	1
-12	Echinodermata (1); Hemichordata (1)	1; 1
-13	Ecdysozoa (43); Spiralia (2)	43; 2
+12	Ambulacraria	1; 1
+13	Ecdysozoa	43; 2
 14	Spiralia	2
 15	Cnidaria	2
 16	Ctenophora	1
 17	Placozoa	1
 18	Porifera	1
-19	Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
+19	Uncertain: Choanoflagellata (2); Filasterea (1); Ichthyosporea (1); Rotosphaerida (1)	2; 1; 1; 1
 20	Fungi	179
 21	Amoebozoa	4
 22	Viridiplantae	75
-23	Discoba (6); Metamonada (1); Sar (1)	6; 1; 1
+23	Discoba	6; 1; 1
 24	Rhodophyta	2
-25	Sar (38); Apusozoa (1); Cryptophyceae (1); Haptista (1)	38; 1; 1; 1
+25	Sar	38; 1; 1; 1
 26	Metamonada	1
