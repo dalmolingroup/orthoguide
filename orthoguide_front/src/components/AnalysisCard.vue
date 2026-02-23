@@ -403,6 +403,13 @@ const clearValidationError = () => {
 .example-button:disabled:hover {
   background-color: transparent;
 }
+.example-button:disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+.example-button:disabled:hover {
+  background-color: #f9fafb;
+}
 label {
   font-weight: 600;
   margin-bottom: 8px;

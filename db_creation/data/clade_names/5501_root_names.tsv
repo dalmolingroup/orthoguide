@@ -1,0 +1,25 @@
+root	clade_name	counts
+1	Coccidioides immitis	1
+2	Coccidioides posadasii	1
+3	Paracoccidioides	2
+4	Ajellomycetaceae	1; 1
+5	Arthrodermataceae	5; 1
+6	Eurotiales	15
+7	Eurotiomycetes	8; 1
+8	sordariomyceta	46
+9	dothideomyceta	16
+10	Pezizomycetes	2
+11	Orbiliomycetes	2
+12	Saccharomycotina	33
+13	Taphrinomycotina	7
+14	Basidiomycota	30
+15	Mucoromycota	1
+16	Chytridiomycota	2
+17	Blastocladiomycota	1
+18	Metazoa	161; 3; 2; 1; 1; 1
+19	Amoebozoa	4
+20	Viridiplantae	75
+21	Discoba	6; 1; 1
+22	Rhodophyta	2
+23	Sar	38; 1; 1; 1
+24	Metamonada	1

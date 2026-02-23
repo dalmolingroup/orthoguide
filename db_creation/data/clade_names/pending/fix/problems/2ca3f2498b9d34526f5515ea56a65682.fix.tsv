@@ -1,0 +1,9 @@
+root	clade_name	reason
+1	Vanderwaltozyma	
+2	Uncertain: Henningerozyma (1); Tetrapisispora (1)	no clear majority
+3	Uncertain: Naumovozyma (2); Huiozyma (1); Kazachstania (1); Saccharomyces (1)	no clear majority
+4	Uncertain: Nakaseomyces (1); Torulaspora (1); Zygosaccharomyces (1)	no clear majority
+5	Uncertain: Eremothecium (2); Kluyveromyces (1); Lachancea (1)	no clear majority
+6	Uncertain: Pichiomycetes (1)	conflict with root 7
+7	Uncertain: Pichiomycetes (15); Dipodascomycetes (1); Saccharomycetes (1)	conflict with root 6
+8	Pezizomycotina
