@@ -121,8 +121,7 @@ con &lt;- dbConnect(SQLite(), "orthoguide_data.db")
 dbListTables(con)
 
 # Query the data
-# (Assuming 'orthoguide' is the table name)
-data &lt;- tbl(con, "orthoguide") %&gt;%
+data &lt;- tbl(con, "9606") %&gt;%
   head(10) %&gt;%
   collect()
 
@@ -143,7 +142,7 @@ cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
 print(cursor.fetchall())
 
 # Query the data
-df = pd.read_sql_query("SELECT * FROM orthoguide LIMIT 10", con)
+df = pd.read_sql_query('SELECT * FROM "9606" LIMIT 10', con)
 
 # Close connection
 con.close()</code></pre>
