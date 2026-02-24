@@ -50,20 +50,12 @@
       <h3>Database</h3>
       <div class="buttons-div">
         <a
-          href="https://github.com/jvfe/orthoguide/raw/refs/heads/main/orthoguide_front/public/orthoguide_data.db"
+          href="https://github.com/jvfe/orthoguide/raw/refs/heads/main/orthoguide_front/public/orthoguide_data.db.gz"
           class="download-button"
           target="_blank"
           rel="noopener noreferrer"
         >
           Download Database
-        </a>
-        <a
-          href="https://github.com/jvfe/orthoguide/raw/refs/heads/main/db_creation/results/orthoguide_database.schema.csv"
-          class="download-button"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Download Schema
         </a>
       </div>
     </div>
@@ -111,7 +103,8 @@
     <div class="documentation-section">
       <h3>Using the Database</h3>
       <p>
-        The OrthoGuide database is provided as a SQLite file, which allows for efficient querying
+        The OrthoGuide database is provided as a compressed SQLite file (<code>.db.gz</code>).
+        <strong>You must decompress it first before using it.</strong> This allows for efficient querying
         without loading the entire dataset into memory. Below are examples of how to interact with
         the database using R and Python.
       </p>

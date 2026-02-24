@@ -151,7 +151,7 @@
         </button>
       </div>
     </div>
-    <span id="version-statement">OrthoGuide v2.11.0</span>
+    <span id="version-statement">OrthoGuide v3.0.0</span>
   </main>
 </template>
 
