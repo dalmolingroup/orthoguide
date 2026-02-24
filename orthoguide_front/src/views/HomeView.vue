@@ -79,7 +79,7 @@ onMounted(async () => {
     console.log('Database loaded successfully!')
 
     // Load species map
-    const mapResponse = await fetch(`${import.meta.env.BASE_URL}final_species_map.tsv`)
+    const mapResponse = await fetch(`${import.meta.env.BASE_URL}full_species_map.tsv`)
     if (mapResponse.ok) {
       const text = await mapResponse.text()
       speciesList.value = text

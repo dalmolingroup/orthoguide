@@ -207,7 +207,7 @@ let tomSelectInstance = null
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${import.meta.env.BASE_URL}final_species_map.tsv`)
+    const response = await fetch(`${import.meta.env.BASE_URL}full_species_map.tsv`)
     if (response.ok) {
       const text = await response.text()
       const allOrganisms = text
