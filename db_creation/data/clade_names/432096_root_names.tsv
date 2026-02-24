@@ -1,22 +1,22 @@
-root	clade_name	counts
-1	Kazachstania	1
-2	Huiozyma	1
-3	Uncertain: Naumovozyma (2); Saccharomyces (1)	2; 1
-4	Uncertain: Henningerozyma (1); Tetrapisispora (1); Vanderwaltozyma (1)	1; 1; 1
-5	Uncertain: Nakaseomyces (1); Torulaspora (1); Zygosaccharomyces (1)	1; 1; 1
-6	Uncertain: Eremothecium (2); Kluyveromyces (1); Lachancea (1)	2; 1; 1
-7	Pichiomycetes	1
-8	Uncertain: Pichiomycetes (15); Dipodascomycetes (1); Saccharomycetes (1)	15; 1; 1
-9	Pezizomycotina	102
-10	Taphrinomycotina	7
-11	Basidiomycota	30
-12	Mucoromycota	1
-13	Chytridiomycota	2
-14	Blastocladiomycota	1
-15	Metazoa	161; 3; 2; 1; 1; 1
-16	Amoebozoa	4
-17	Viridiplantae	75
-18	Discoba	6; 1; 1
-19	Rhodophyta	2
-20	Sar	38; 1; 1; 1
-21	Metamonada	1
+root	clade_name
+1	Kazachstania
+2	Huiozyma
+3	Uncertain: Naumovozyma (2); Saccharomyces (1)
+4	Uncertain: Henningerozyma (1); Tetrapisispora (1); Vanderwaltozyma (1)
+5	Uncertain: Nakaseomyces (1); Torulaspora (1); Zygosaccharomyces (1)
+6	Uncertain: Eremothecium (2); Kluyveromyces (1); Lachancea (1)
+7	Pichiomycetes
+8	Uncertain: Pichiomycetes (15); Dipodascomycetes (1); Saccharomycetes (1)
+9	Pezizomycotina
+10	Taphrinomycotina
+11	Basidiomycota
+12	Mucoromycota
+13	Chytridiomycota
+14	Blastocladiomycota
+15	Metazoa
+16	Amoebozoa
+17	Viridiplantae
+18	Discoba
+19	Rhodophyta
+20	Sar
+21	Metamonada

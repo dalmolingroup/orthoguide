@@ -1,38 +1,38 @@
-root	clade_name	counts
-1	Macaca mulatta	1
-2	Macaca fascicularis	1
-3	Papio	1
-4	Chlorocebus	1
-5	Colobinae	1
-6	Hominoidea	6
-7	Platyrrhini	2
-8	Tarsiiformes	1
-9	Strepsirrhini	1
-10	Dermoptera	1
-11	Scandentia	1
-12	Glires	16
-13	Laurasiatheria	26
-14	Afrotheria	6; 1
-15	Metatheria	3
-16	Prototheria	1
-17	Sauropsida	13
-18	Amphibia	1
-19	Coelacanthimorpha	1
-20	Actinopterygii	19
-21	Tunicata	2
-22	Cephalochordata	1
-23	Ambulacraria	1; 1
-24	Ecdysozoa	43; 2
-25	Spiralia	2
-26	Cnidaria	2
-27	Ctenophora	1
-28	Placozoa	1
-29	Porifera	1
-30	Choanoflagellata	2
-31	Fungi	179
-32	Amoebozoa	4
-33	Viridiplantae	75
-34	Discoba	6; 1; 1
-35	Rhodophyta	2
-36	Sar	38; 1; 1; 1
-37	Metamonada	1
+root	clade_name
+1	Macaca mulatta
+2	Macaca fascicularis
+3	Papio
+4	Chlorocebus
+5	Colobinae
+6	Hominoidea
+7	Platyrrhini
+8	Tarsiiformes
+9	Strepsirrhini
+10	Dermoptera
+11	Scandentia
+12	Glires
+13	Laurasiatheria
+14	Afrotheria
+15	Metatheria
+16	Prototheria
+17	Sauropsida
+18	Amphibia
+19	Coelacanthimorpha
+20	Actinopterygii
+21	Tunicata
+22	Cephalochordata
+23	Ambulacraria
+24	Ecdysozoa
+25	Spiralia
+26	Cnidaria
+27	Ctenophora
+28	Placozoa
+29	Porifera
+30	Choanoflagellata
+31	Fungi
+32	Amoebozoa
+33	Viridiplantae
+34	Discoba
+35	Rhodophyta
+36	Sar
+37	Metamonada

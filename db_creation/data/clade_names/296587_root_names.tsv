@@ -1,10 +1,10 @@
-root	clade_name	counts
-1	Uncertain: Mamiellophyceae (1)	1
-2	Uncertain: Mamiellophyceae (4); core chlorophytes (3)	4; 3
-3	Uncertain: core chlorophytes (2)	2
-4	Streptophyta	65
-5	Opisthokonta	345; 4
-6	Discoba	6; 1; 1
-7	Rhodophyta	2
-8	Sar	38; 1; 1; 1
-9	Metamonada	1
+root	clade_name
+1	Uncertain: Mamiellophyceae (1)
+2	Uncertain: Mamiellophyceae (4); core chlorophytes (3)
+3	Uncertain: core chlorophytes (2)
+4	Streptophyta
+5	Opisthokonta
+6	Discoba
+7	Rhodophyta
+8	Sar
+9	Metamonada

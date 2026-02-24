@@ -1,20 +1,20 @@
-root	clade_name	counts
-1	Cucumis sativus	1
-2	Cucumis melo	1
-3	Uncertain: Rosales (6); Fabales (4)	6; 4
-4	Malpighiales	4
-5	malvids	17
-6	rosids incertae sedis	1
-7	asterids	5; 1
-8	Proteales	1
-9	Ranunculales	1
-10	Liliopsida	20
-11	Amborellales	1
-12	Lycopodiopsida	1
-13	Bryophyta	1
-14	Chlorophyta	10
-15	Opisthokonta	345; 4
-16	Discoba	6; 1; 1
-17	Rhodophyta	2
-18	Sar	38; 1; 1; 1
-19	Metamonada	1
+root	clade_name
+1	Cucumis sativus
+2	Cucumis melo
+3	Uncertain: Rosales (6); Fabales (4)
+4	Malpighiales
+5	malvids
+6	rosids incertae sedis
+7	asterids
+8	Proteales
+9	Ranunculales
+10	Liliopsida
+11	Amborellales
+12	Lycopodiopsida
+13	Bryophyta
+14	Chlorophyta
+15	Opisthokonta
+16	Discoba
+17	Rhodophyta
+18	Sar
+19	Metamonada

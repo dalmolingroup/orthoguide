@@ -1,29 +1,29 @@
-root	clade_name	counts
-1	Poecilia formosa	1
-2	Poecilia reticulata	1
-3	Xiphophorus	1
-4	Beloniformes	1
-5	Cichlomorphae	5; 1
-6	Eupercaria	3; 1
-7	Paracanthopterygii	1
-8	Protacanthopterygii	1
-9	Otomorpha	2
-10	Holostei	1
-11	Sarcopterygii	85
-12	Tunicata	2
-13	Cephalochordata	1
-14	Ambulacraria	1; 1
-15	Ecdysozoa	43; 2
-16	Spiralia	2
-17	Cnidaria	2
-18	Ctenophora	1
-19	Placozoa	1
-20	Porifera	1
-21	Choanoflagellata	2; 1; 1; 1
-22	Fungi	179
-23	Amoebozoa	4
-24	Viridiplantae	75
-25	Discoba	6; 1; 1
-26	Rhodophyta	2
-27	Sar	38; 1; 1; 1
-28	Metamonada	1
+root	clade_name
+1	Poecilia formosa
+2	Poecilia reticulata
+3	Xiphophorus
+4	Beloniformes
+5	Cichlomorphae
+6	Eupercaria
+7	Paracanthopterygii
+8	Protacanthopterygii
+9	Otomorpha
+10	Holostei
+11	Sarcopterygii
+12	Tunicata
+13	Cephalochordata
+14	Ambulacraria
+15	Ecdysozoa
+16	Spiralia
+17	Cnidaria
+18	Ctenophora
+19	Placozoa
+20	Porifera
+21	Choanoflagellata
+22	Fungi
+23	Amoebozoa
+24	Viridiplantae
+25	Discoba
+26	Rhodophyta
+27	Sar
+28	Metamonada
