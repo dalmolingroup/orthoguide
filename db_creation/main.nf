@@ -24,21 +24,21 @@ process GENEBRIDGE {
         'docker.io/jvfe/genebridge:v0.99.5' }"
 
     input:
-        path species_list
-        path clade_names
+        val species_id
+        path clade_names_dir
         path string_eukaryotes
         path gp_data
         path cog_map
         path prot_info
 
     output:
-        path "results/", emit: csv_results
+        path "results/${species_id}_result.csv", emit: csv_results
 
     script:
     """
     01_root_genes.R \\
-        $species_list \\
-        $clade_names \\
+        $species_id \\
+        $clade_names_dir \\
         $string_eukaryotes \\
         $gp_data \\
         $cog_map \\
@@ -53,15 +53,15 @@ process DB_CREATION {
         'docker.io/jvfe/sqlite-nf:latest' }"
 
     input:
-        path csv_results
+        path csv_results, stageAs: 'results/*'
 
     output:
-        path "orthoguide_data.db", emit: db
+        path "orthoguide_data.db.gz", emit: db
 
     script:
     """
     02_create_db.sh \\
-        $csv_results
+        results
     """
 }
 
@@ -77,9 +77,14 @@ workflow {
         prot_info_ch = file(params.protein_info)
     }
 
+    species_ch = Channel
+        .fromPath(params.species_list)
+        .splitText()
+        .map { it.trim() }
+
     GENEBRIDGE (
-        file(params.species_list),
-        file(params.clade_names),
+        species_ch,
+        file(params.clade_names_dir),
         file(params.string_eukaryotes),
         gp_data_ch,
         cog_map_ch,
@@ -87,6 +92,6 @@ workflow {
     )
 
     DB_CREATION (
-        GENEBRIDGE.out.csv_results
+        GENEBRIDGE.out.csv_results.collect()
     )
 }

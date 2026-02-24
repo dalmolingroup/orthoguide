@@ -1,6 +1,13 @@
 <template>
   <div class="results-table-wrapper">
-    <DataTable :columns="columns" :data="items" class="display" width="100%">
+    <DataTable
+      ref="dt"
+      :columns="columns"
+      :data="items"
+      class="display"
+      width="100%"
+      :options="{ order: [] }"
+    >
       <thead>
         <tr>
           <th>Gene</th>
@@ -14,6 +21,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import DataTable from 'datatables.net-vue3'
 import DataTablesCore from 'datatables.net'
 
@@ -28,6 +36,19 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+})
+
+const dt = ref(null)
+
+const getSortedData = () => {
+  if (dt.value) {
+    return dt.value.dt.rows({ order: 'current' }).data().toArray()
+  }
+  return props.items
+}
+
+defineExpose({
+  getSortedData,
 })
 </script>
 

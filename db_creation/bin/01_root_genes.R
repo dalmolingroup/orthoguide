@@ -14,18 +14,18 @@ library(magrittr)
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) != 6) {
-  stop("Usage: Rscript 01_root_genes.R <species_list_file> <clade_names_file> <string_eukaryotes_rda> <geneplast_data_rdata> <cogdata_table> <protein_info_gz>", call. = FALSE)
+  stop("Usage: Rscript 01_root_genes.R <species_id> <clade_names_dir> <string_eukaryotes_rda> <geneplast_data_rdata> <cogdata_table> <protein_info_gz>", call. = FALSE)
 }
 
-species_list_file <- args[1]
-clade_names_file <- args[2]
+current_species_id <- args[1]
+clade_names_dir <- args[2]
 string_eukaryotes_rda <- args[3]
 geneplast_data_rdata <- args[4]
 cogdata_table_string <- args[5]
 protein_info_gz <- args[6]
 
 # species_list_file      <- "data/species_list.txt"
-# clade_names_file       <- "data/geneplast_clade_names.tsv"
+# clade_names_dir        <- "data/clade_names"
 # string_eukaryotes_rda <- "data/string_eukaryotes.rda"
 # geneplast_data_rdata    <- "data/gpdata_string_v11.RData"
 # cogdata_table_string     <- "data/COG.mappings.v11.0.txt.gz"
@@ -90,8 +90,6 @@ process_species_rooting <- function(species_id, cogdata, phyloTree, protein_info
 
 message("Loading external data...")
 
-TARGET_SPECIES_IDS <- readLines(species_list_file)
-
 load(string_eukaryotes_rda)
 load(geneplast_data_rdata)
 
@@ -123,50 +121,38 @@ cogdata <- dplyr::select(cogdata, "protein_id", "ssp_id", "og_id" = "cog_id")
 
 ogdata <- unique(rbind(cogdata, cogs))
 
-lca_names <- vroom(clade_names_file)
-
 protein_info <- vroom(protein_info_gz) %>%
   dplyr::select(protein_external_id, preferred_name)
 
 dir.create("results", showWarnings = FALSE)
 
-for (current_species_id in TARGET_SPECIES_IDS) {
-
-  tryCatch({
-
-    if (current_species_id %in% c("10090", "10116", "9606")) {
-      cogref <- ogdata
-    } else {
-      cogref <- cogs
-    }
-
-    lca_names_filter <- lca_names %>%
-      filter(species_id == current_species_id) %>%
-      dplyr::select(-species_id)
-
-    final_results <- process_species_rooting(
-      species_id = current_species_id,
-      cogdata = cogref,
-      phyloTree = phyloTree,
-      protein_info = protein_info,
-      lca_names = lca_names_filter
-    )
-
-    output_file_path <- file.path("results", paste0(current_species_id, "_result.csv"))
-    message(paste("Saving results for species", current_species_id, "to:", output_file_path))
-
-    vroom::vroom_write(
-      x = final_results,
-      file = output_file_path,
-      delim = ","
-    )
-
-  }, error = function(e) {
-    # If an error occurs for one species, print it and continue to the next.
-    message(paste("An error occurred for species", current_species_id, ":", e$message))
-    message("Skipping to the next species.")
-  })
-
+clade_file <- file.path(clade_names_dir, paste0(current_species_id, "_root_names.tsv"))
+if (!file.exists(clade_file)) {
+  stop(paste("Clade file not found:", clade_file))
 }
+lca_names_filter <- vroom(clade_file)
+
+if (current_species_id %in% c("10090", "10116", "9606")) {
+  cogref <- ogdata
+} else {
+  cogref <- cogs
+}
+
+final_results <- process_species_rooting(
+  species_id = current_species_id,
+  cogdata = cogref,
+  phyloTree = phyloTree,
+  protein_info = protein_info,
+  lca_names = lca_names_filter
+)
+
+output_file_path <- file.path("results", paste0(current_species_id, "_result.csv"))
+message(paste("Saving results for species", current_species_id, "to:", output_file_path))
+
+vroom::vroom_write(
+  x = final_results,
+  file = output_file_path,
+  delim = ","
+)
 
 message("All processes finished.")

@@ -1,6 +1,6 @@
 {
   "name": "orthoguide-front",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,6 +16,7 @@
     "datatables.net-dt": "^2.3.2",
     "datatables.net-vue3": "^3.0.4",
     "sql.js": "^1.13.0",
+    "tom-select": "^2.4.3",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"
   },

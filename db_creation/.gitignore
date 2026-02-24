@@ -6,3 +6,8 @@ testing*
 *.pyc
 null/
 results/*cogs.csv
+results/
+
+data/clade_names/pending/fix/prompts/*
+data/clade_names/pending/fix/problems/*.counts.tsv
+data/clade_names/pending/fix/problems/*.lineage.tsv
