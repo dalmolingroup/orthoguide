@@ -1,3 +1,20 @@
+# v3.0.0
+
+- Expanded supported organisms from 8 to ~300 representative species.
+- Implemented frontend logic to read compressed databases
+- Added support for Orthologous Group IDs
+- Refactored clade naming to specify LCA (Last Common Ancestor)
+- Integrated a native dark mode toggle with full CSS variable theming.
+- Added support for exporting visualizations as SVG or PNG.
+- Nodes now pin coordinates when changing clades to maintain visual context.
+- Added a dedicated box for unconnected nodes in the network view.
+- Added options to toggle gene names and dynamically increase font sizes in PPI graphs.
+- Improved layouts for small displays and mobile accessibility.
+- Fixed table ordering during CSV exports
+- Added persistent warnings for missing genes
+- Parallelized database creation processes and updated Nextflow configurations for better memory management.
+- Expanded the "About" page with code examples for database access and input format guides.
+
 # v2.11.1
 
 - Add download references parameter to nextflow pipeline
