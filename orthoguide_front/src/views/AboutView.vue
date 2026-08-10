@@ -37,15 +37,13 @@
     <div class="text-section">
       <h3>Citation</h3>
       <p>
-        If you use data from OrthoGuide in your research, please cite the foundational paper for the
-        Bridge algorithm:
+        If you use data from OrthoGuide in your research, please cite our paper:
       </p>
       <p>
-        Campos, L. R. S., Trefflich, S., Morais, D. A. A., Imparato, D. O., Chagas, V. S., Albanus,
-        R. D., Dalmolin, R. J. S., & Castro, M. A. A. (2024). Bridge: A New Algorithm for Rooting
-        Orthologous Genes in Large-Scale Evolutionary Analyses. Molecular Biology and Evolution,
-        41(2), msae019.
-        <a href="https://doi.org/10.1093/molbev/msae019" target="_blank">10.1093/molbev/msae019</a>
+        Cavalcante, J. V. F., de Azevedo, G. M., Imparato, D. O., Marques-Coelho, D., Castro, M. A. A., 
+        & Dalmolin, R. J. S. (2026). OrthoGuide: A Database for Rooting Inference of Orthologous Genes. 
+        Genome Biology and Evolution, 18(6).
+        <a href="https://doi.org/10.1093/gbe/evag119" target="_blank">10.1093/gbe/evag119</a>
       </p>
       <h3>Database</h3>
       <div class="buttons-div">

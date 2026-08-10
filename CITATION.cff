@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Cavalcante"
+    given-names: "J. V. F."
+  - family-names: "de Azevedo"
+    given-names: "G. M."
+  - family-names: "Imparato"
+    given-names: "D. O."
+  - family-names: "Marques-Coelho"
+    given-names: "D."
+  - family-names: "Castro"
+    given-names: "M. A. A."
+  - family-names: "Dalmolin"
+    given-names: "R. J. S."
+title: "OrthoGuide: A Database for Rooting Inference of Orthologous Genes"
+doi: "10.1093/gbe/evag119"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Cavalcante"
+      given-names: "J. V. F."
+    - family-names: "de Azevedo"
+      given-names: "G. M."
+    - family-names: "Imparato"
+      given-names: "D. O."
+    - family-names: "Marques-Coelho"
+      given-names: "D."
+    - family-names: "Castro"
+      given-names: "M. A. A."
+    - family-names: "Dalmolin"
+      given-names: "R. J. S."
+  doi: "10.1093/gbe/evag119"
+  journal: "Genome Biology and Evolution"
+  title: "OrthoGuide: A Database for Rooting Inference of Orthologous Genes"
+  issue: 6
+  volume: 18
+  year: 2026
